@@ -31,7 +31,7 @@ trait PRMP_Admin_Settings {
             'sh_review_members_main',
             __('Member Pages', 'sh-review-members'),
             function () {
-                echo '<p>' . esc_html__('Konfigurera front-end inloggning/registrering och “Mina sidor” utan att medlemmar behöver se wp-admin.', 'sh-review-members') . '</p>';
+                echo '<p>' . esc_html__('Configure front-end login/registration and “My Pages” without members needing to see wp-admin.', 'sh-review-members') . '</p>';
             },
             'sh-review-member-pages'
         );
@@ -152,7 +152,7 @@ trait PRMP_Admin_Settings {
         // Handle "Create pages" action.
         if (!empty($_POST['sh_review_members_create_pages']) && check_admin_referer('sh_review_members_create_pages')) {
             self::maybe_create_pages(true);
-            echo '<div class="notice notice-success"><p>' . esc_html__('Sidor skapade/uppdaterade.', 'sh-review-members') . '</p></div>';
+            echo '<div class="notice notice-success"><p>' . esc_html__('Pages created/updated.', 'sh-review-members') . '</p></div>';
         }
 
         echo '<div class="wrap">';
@@ -165,15 +165,15 @@ trait PRMP_Admin_Settings {
         echo '</form>';
 
         echo '<hr />';
-        echo '<h2>' . esc_html__('Snabbåtgärd', 'sh-review-members') . '</h2>';
-        echo '<p>' . esc_html__('Skapa (eller uppdatera) standard-sidorna med rätt shortcodes.', 'sh-review-members') . '</p>';
+        echo '<h2>' . esc_html__('Quick Action', 'sh-review-members') . '</h2>';
+        echo '<p>' . esc_html__('Create (or update) the standard pages with the correct shortcodes.', 'sh-review-members') . '</p>';
         echo '<form method="post">';
         wp_nonce_field('sh_review_members_create_pages');
         echo '<input type="hidden" name="sh_review_members_create_pages" value="1" />';
-        submit_button(__('Skapa standard-sidor', 'sh-review-members'), 'secondary', 'submit', false);
+        submit_button(__('Create standard pages', 'sh-review-members'), 'secondary', 'submit', false);
         echo '</form>';
 
-        echo '<p style="margin-top:16px;">' . esc_html__('Shortcodes du kan använda manuellt:', 'sh-review-members') . '</p>';
+        echo '<p style="margin-top:16px;">' . esc_html__('Shortcodes you can use manually:', 'sh-review-members') . '</p>';
         echo '<code>[pr_login]</code> <code>[pr_register]</code> <code>[pr_profile]</code> <code>[pr_dashboard]</code> <code>[pr_logout]</code> <code>[pr_post_edit]</code>';
 
         // Add Javascript for conditional logic
@@ -232,9 +232,9 @@ trait PRMP_Admin_Settings {
             '<label><input type="checkbox" name="%1$s[enabled]" value="1" %2$s> %3$s</label>',
             esc_attr(self::OPT_KEY),
             checked(1, (int)$opt['enabled'], false),
-            esc_html__('Aktivera member pages på frontend', 'sh-review-members')
+            esc_html__('Enable member pages on the frontend', 'sh-review-members')
         );
-        echo '<p class="description">' . esc_html__('När avstängt kommer shortcodes fortsatt finnas, men admin-blockering och redirects görs inte.', 'sh-review-members') . '</p>';
+        echo '<p class="description">' . esc_html__('When disabled, shortcodes will still be available, but admin blocking and redirects will not be performed.', 'sh-review-members') . '</p>';
 
         printf(
             '<label style="display:block;margin-top:10px;"><input type="checkbox" name="%1$s[create_pages_on_activate]" value="1" %2$s> %3$s</label>',
@@ -247,9 +247,9 @@ trait PRMP_Admin_Settings {
             '<label style="display:block;margin-top:10px;"><input type="checkbox" name="%1$s[redirect_wp_login]" value="1" %2$s> %3$s</label>',
             esc_attr(self::OPT_KEY),
             checked(1, (int)($opt['redirect_wp_login'] ?? 1), false),
-            esc_html__('Skicka wp-login.php till den snygga login-sidan', 'sh-review-members')
+            esc_html__('Redirect wp-login.php to the nice login page', 'sh-review-members')
         );
-        echo '<p class="description">' . esc_html__('Detta påverkar inte lösenordsåterställning (lost password/reset).', 'sh-review-members') . '</p>';
+        echo '<p class="description">' . esc_html__('This does not affect password reset (lost password/reset).', 'sh-review-members') . '</p>';
     }
 
     public static function field_pages() : void {
@@ -257,16 +257,16 @@ trait PRMP_Admin_Settings {
         $pages = get_pages(['post_status' => ['publish', 'draft', 'private']]);
 
         echo '<table class="widefat striped" style="max-width:900px;">';
-        echo '<thead><tr><th>' . esc_html__('Funktion', 'sh-review-members') . '</th><th>' . esc_html__('Sida', 'sh-review-members') . '</th><th>' . esc_html__('Shortcode', 'sh-review-members') . '</th></tr></thead>';
+        echo '<thead><tr><th>' . esc_html__('Function', 'sh-review-members') . '</th><th>' . esc_html__('Page', 'sh-review-members') . '</th><th>' . esc_html__('Shortcode', 'sh-review-members') . '</th></tr></thead>';
         echo '<tbody>';
 
         $rows = [
-            'login'     => ['label' => __('Logga in', 'sh-review-members'),      'sc' => '[pr_login]'],
-            'register'  => ['label' => __('Registrering', 'sh-review-members'),  'sc' => '[pr_register]'],
-            'dashboard' => ['label' => __('Mina sidor', 'sh-review-members'),    'sc' => '[pr_dashboard]'],
-            'profile'   => ['label' => __('Profil', 'sh-review-members'),       'sc' => '[pr_profile]'],
-            'logout'    => ['label' => __('Logga ut', 'sh-review-members'),     'sc' => '[pr_logout]'],
-            'post_edit' => ['label' => __('Redigera/Skapa inlägg', 'sh-review-members'), 'sc' => '[pr_post_edit]'],
+            'login'     => ['label' => __('Log in', 'sh-review-members'),      'sc' => '[pr_login]'],
+            'register'  => ['label' => __('Register', 'sh-review-members'),  'sc' => '[pr_register]'],
+            'dashboard' => ['label' => __('My Pages', 'sh-review-members'),    'sc' => '[pr_dashboard]'],
+            'profile'   => ['label' => __('Profile', 'sh-review-members'),       'sc' => '[pr_profile]'],
+            'logout'    => ['label' => __('Log out', 'sh-review-members'),     'sc' => '[pr_logout]'],
+            'post_edit' => ['label' => __('Edit/Create Post', 'sh-review-members'), 'sc' => '[pr_post_edit]'],
         ];
 
         foreach ($rows as $key => $row) {
@@ -293,15 +293,15 @@ trait PRMP_Admin_Settings {
 
         echo '</tbody></table>';
 
-        echo '<p class="description" style="max-width:900px;">' . esc_html__('Tips: Sätt “Mina sidor” (dashboard) som landningssida efter inloggning för bäst UX.', 'sh-review-members') . '</p>';
+        echo '<p class="description" style="max-width:900px;">' . esc_html__('Tip: Set “My Pages” (dashboard) as the landing page after login for best UX.', 'sh-review-members') . '</p>';
 
         echo '<p style="margin-top:10px;">';
-        echo '<label>' . esc_html__('Redirect efter inloggning:', 'sh-review-members') . ' ';
+        echo '<label>' . esc_html__('Redirect after login:', 'sh-review-members') . ' ';
         printf('<select name="%s[redirect_after_login]">', esc_attr(self::OPT_KEY));
         $opts = [
-            'dashboard' => __('Mina sidor', 'sh-review-members'),
-            'profile'   => __('Profil', 'sh-review-members'),
-            'home'      => __('Startsida', 'sh-review-members'),
+            'dashboard' => __('My pages', 'sh-review-members'),
+            'profile'   => __('Profile', 'sh-review-members'),
+            'home'      => __('Home', 'sh-review-members'),
         ];
         foreach ($opts as $k => $label) {
             printf('<option value="%s" %s>%s</option>', esc_attr($k), selected($opt['redirect_after_login'], $k, false), esc_html($label));
@@ -318,13 +318,12 @@ trait PRMP_Admin_Settings {
             '<label><input type="checkbox" name="%1$s[block_wp_admin]" value="1" %2$s> %3$s</label>',
             esc_attr(self::OPT_KEY),
             checked(1, (int)$opt['block_wp_admin'], false),
-            esc_html__('Blockera wp-admin för valda roller', 'sh-review-members')
+            esc_html__('Block wp-admin for selected roles', 'sh-review-members')
         );
 
-        echo '<p class="description">' . esc_html__('Rekommendation: blockera Subscriber/Customer så de aldrig ser adminpanelen (förutom när de redigerar/skapaar innehåll).', 'sh-review-members') . '</p>';
-
+        echo '<p class="description">' . esc_html__('Recommendation: block Subscriber/Customer so they never see the admin panel (except when editing/creating content).', 'sh-review-members') . '</p>';
         echo '<div style="margin-top:10px;">';
-        echo '<strong>' . esc_html__('Blockerade roller:', 'sh-review-members') . '</strong><br />';
+        echo '<strong>' . esc_html__('Blocked roles:', 'sh-review-members') . '</strong><br />';
         foreach ($roles as $role_key => $role) {
             $checked = in_array($role_key, (array)$opt['blocked_roles'], true);
             printf(
@@ -341,7 +340,7 @@ trait PRMP_Admin_Settings {
             '<label style="display:block;margin-top:10px;"><input type="checkbox" name="%1$s[disable_admin_bar]" value="1" %2$s> %3$s</label>',
             esc_attr(self::OPT_KEY),
             checked(1, (int)$opt['disable_admin_bar'], false),
-            esc_html__('Dölj admin-bar på frontend för blockerade roller', 'sh-review-members')
+            esc_html__('Hide admin bar on frontend for blocked roles', 'sh-review-members')
         );
     }
 
@@ -353,7 +352,7 @@ trait PRMP_Admin_Settings {
             '<select name="%s[captcha_provider]" id="prmp_captcha_select">',
             esc_attr(self::OPT_KEY)
         );
-        echo '<option value="">' . esc_html__('Ingen', 'sh-review-members') . '</option>';
+        echo '<option value="">' . esc_html__('None', 'sh-review-members') . '</option>';
         printf('<option value="turnstile" %s>%s</option>', selected($opt['captcha_provider'], 'turnstile', false), 'Cloudflare Turnstile');
         printf('<option value="recaptcha_v3" %s>%s</option>', selected($opt['captcha_provider'], 'recaptcha_v3', false), 'Google reCAPTCHA v3');
         echo '</select>';
@@ -397,7 +396,7 @@ trait PRMP_Admin_Settings {
 
         echo '<div id="prmp_rate_limit_opts" style="display:none; margin-top:10px; padding-left:20px;">';
         printf(
-            '<p><label>Max antal försök (per 30 minuter)<br /><input type="number" min="1" max="100" name="%1$s[max_login_attempts]" value="%2$s" class="small-text" /></label></p>',
+            '<p><label>Maximum number of attempts (per 30 minutes)<br /><input type="number" min="1" max="100" name="%1$s[max_login_attempts]" value="%2$s" class="small-text" /></label></p>',
             esc_attr(self::OPT_KEY),
             esc_attr($opt['max_login_attempts'])
         );
@@ -412,7 +411,7 @@ trait PRMP_Admin_Settings {
             '<label><input type="checkbox" name="%1$s[social_login_google]" id="prmp_sl_google_check" value="1" %2$s> %3$s</label>',
             esc_attr(self::OPT_KEY),
             checked(1, (int)$opt['social_login_google'], false),
-            esc_html__('Aktivera Google-inloggning', 'sh-review-members')
+            esc_html__('Enable Google login', 'sh-review-members')
         );
 
         echo '<div id="prmp_sl_google_opts" style="display:none; margin-top:10px; padding-left:20px;">';
@@ -434,7 +433,7 @@ trait PRMP_Admin_Settings {
             '<label><input type="checkbox" name="%1$s[social_login_wordpress]" id="prmp_sl_wp_check" value="1" %2$s> %3$s</label>',
             esc_attr(self::OPT_KEY),
             checked(1, (int)$opt['social_login_wordpress'], false),
-            esc_html__('Aktivera WordPress.com-inloggning', 'sh-review-members')
+            esc_html__('Enable WordPress.com login', 'sh-review-members')
         );
 
         echo '<div id="prmp_sl_wp_opts" style="display:none; margin-top:10px; padding-left:20px;">';
@@ -455,7 +454,7 @@ trait PRMP_Admin_Settings {
         $opt = self::get_options();
         $public_post_types = get_post_types(['public' => true], 'objects');
 
-        echo '<p><strong>' . esc_html__('Post types som visas i “Mina sidor”:', 'sh-review-members') . '</strong></p>';
+        echo '<p><strong>' . esc_html__('Post types shown in “My Pages”:', 'sh-review-members') . '</strong></p>';
         foreach ($public_post_types as $pt) {
             $checked = in_array($pt->name, (array)$opt['dashboard_post_types'], true);
             printf(
@@ -468,7 +467,7 @@ trait PRMP_Admin_Settings {
         }
 
         echo '<p style="margin-top:10px;">';
-        echo '<label>' . esc_html__('Antal inlägg per sida:', 'sh-review-members') . ' ';
+        echo '<label>' . esc_html__('Number of posts per page:', 'sh-review-members') . ' ';
         printf(
             '<input type="number" min="1" max="100" name="%1$s[dashboard_posts_per_page]" value="%2$d" style="width:90px;">',
             esc_attr(self::OPT_KEY),
@@ -477,30 +476,29 @@ trait PRMP_Admin_Settings {
         echo '</label></p>';
 
         echo '<hr />';
-        echo '<p><strong>' . esc_html__('Pixel Review-koppling', 'sh-review-members') . '</strong></p>';
+        echo '<p><strong>' . esc_html__('Pixel Review connection', 'sh-review-members') . '</strong></p>';
 
         printf(
             '<label style="display:block;margin-top:6px;"><input type="checkbox" name="%1$s[dashboard_only_pixel_reviews]" value="1" %2$s> %3$s</label>',
             esc_attr(self::OPT_KEY),
             checked(1, (int)$opt['dashboard_only_pixel_reviews'], false),
-            esc_html__('Visa endast inlägg som har Pixel Review-meta (t.ex. betyg)', 'sh-review-members')
+            esc_html__('Show only posts that have Pixel Review meta (e.g. rating)', 'sh-review-members')
         );
 
         printf(
             '<label style="display:block;margin-top:6px;"><input type="checkbox" name="%1$s[dashboard_show_review_meta]" value="1" %2$s> %3$s</label>',
             esc_attr(self::OPT_KEY),
             checked(1, (int)$opt['dashboard_show_review_meta'], false),
-            esc_html__('Visa Pixel Review-fält i listan (betyg, typ, recensionsdatum)', 'sh-review-members')
+            esc_html__('Show Pixel Review fields in the list (rating, type, review date)', 'sh-review-members')
         );
 
         echo '<hr />';
-        echo '<p><strong>' . esc_html__('Editor-länkar', 'sh-review-members') . '</strong></p>';
-
+        echo '<p><strong>' . esc_html__('Editor links', 'sh-review-members') . '</strong></p>';
         printf(
             '<label style="display:block;margin-top:6px;"><input type="checkbox" name="%1$s[allow_frontend_create]" value="1" %2$s> %3$s</label>',
             esc_attr(self::OPT_KEY),
             checked(1, (int)$opt['allow_frontend_create'], false),
-            esc_html__('Visa “Skapa nytt inlägg” och “Skapa recension” (öppnar WordPress editorn)', 'sh-review-members')
+            esc_html__('Show “Create new post” and “Create review” (opens the WordPress editor)', 'sh-review-members')
         );
     }
 }

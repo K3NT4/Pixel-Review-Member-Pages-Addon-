@@ -75,17 +75,17 @@ trait PRMP_Actions {
 
     protected static function handle_login_submit() : void {
         if (self::check_rate_limit()) {
-            self::set_flash('error', __('För många inloggningsförsök. Var god vänta en stund.', 'sh-review-members'));
+            self::set_flash('error', __('Too many login attempts. Please wait a moment.', 'sh-review-members'));
             return;
         }
 
         if (empty($_POST['_wpnonce']) || !wp_verify_nonce(sanitize_text_field($_POST['_wpnonce']), 'pr_login')) {
-            self::set_flash('error', __('Ogiltig säkerhetstoken. Försök igen.', 'sh-review-members'));
+            self::set_flash('error', __('Invalid security token. Please try again.', 'sh-review-members'));
             return;
         }
 
         if (!self::verify_captcha()) {
-            self::set_flash('error', __('Verifiering misslyckades (CAPTCHA). Försök igen.', 'sh-review-members'));
+            self::set_flash('error', __('CAPTCHA verification failed. Please try again.', 'sh-review-members'));
             return;
         }
 
@@ -113,17 +113,17 @@ trait PRMP_Actions {
 
     protected static function handle_register_submit() : void {
         if (empty($_POST['_wpnonce']) || !wp_verify_nonce(sanitize_text_field($_POST['_wpnonce']), 'pr_register')) {
-            self::set_flash('error', __('Ogiltig säkerhetstoken. Försök igen.', 'sh-review-members'));
+            self::set_flash('error', __('Invalid security token. Please try again.', 'sh-review-members'));
             return;
         }
 
         if (!self::verify_captcha()) {
-            self::set_flash('error', __('Verifiering misslyckades (CAPTCHA). Försök igen.', 'sh-review-members'));
+            self::set_flash('error', __('CAPTCHA verification failed. Please try again.', 'sh-review-members'));
             return;
         }
 
         if (!get_option('users_can_register')) {
-            self::set_flash('error', __('Registrering är avstängd på denna webbplats.', 'sh-review-members'));
+            self::set_flash('error', __('Registration is disabled on this site.', 'sh-review-members'));
             return;
         }
 
@@ -133,23 +133,23 @@ trait PRMP_Actions {
         $pass2    = (string)($_POST['pr_user_pass2'] ?? '');
 
         if (empty($username) || empty($email) || empty($pass1)) {
-            self::set_flash('error', __('Fyll i användarnamn, e-post och lösenord.', 'sh-review-members'));
+            self::set_flash('error', __('Please fill in username, email, and password.', 'sh-review-members'));
             return;
         }
         if (!is_email($email)) {
-            self::set_flash('error', __('Ogiltig e-postadress.', 'sh-review-members'));
+            self::set_flash('error', __('Invalid email address.', 'sh-review-members'));
             return;
         }
         if ($pass1 !== $pass2) {
-            self::set_flash('error', __('Lösenorden matchar inte.', 'sh-review-members'));
+            self::set_flash('error', __('Passwords do not match.', 'sh-review-members'));
             return;
         }
         if (username_exists($username)) {
-            self::set_flash('error', __('Användarnamnet är upptaget.', 'sh-review-members'));
+            self::set_flash('error', __('Username is already taken.', 'sh-review-members'));
             return;
         }
         if (email_exists($email)) {
-            self::set_flash('error', __('E-postadressen används redan.', 'sh-review-members'));
+            self::set_flash('error', __('Email address is already in use.', 'sh-review-members'));
             return;
         }
 
@@ -169,12 +169,12 @@ trait PRMP_Actions {
 
     protected static function handle_profile_submit() : void {
         if (!is_user_logged_in()) {
-            self::set_flash('error', __('Du måste vara inloggad för att uppdatera din profil.', 'sh-review-members'));
+            self::set_flash('error', __('You must be logged in to update your profile.', 'sh-review-members'));
             return;
         }
 
         if (empty($_POST['_wpnonce']) || !wp_verify_nonce(sanitize_text_field($_POST['_wpnonce']), 'pr_profile')) {
-            self::set_flash('error', __('Ogiltig säkerhetstoken. Försök igen.', 'sh-review-members'));
+            self::set_flash('error', __('Invalid security token. Please try again.', 'sh-review-members'));
             return;
         }
 
@@ -189,12 +189,12 @@ trait PRMP_Actions {
         $pass2 = (string)($_POST['pr_new_pass2'] ?? '');
 
         if ($email && !is_email($email)) {
-            self::set_flash('error', __('Ogiltig e-postadress.', 'sh-review-members'));
+            self::set_flash('error', __('Invalid email address.', 'sh-review-members'));
             return;
         }
 
         if (($pass1 || $pass2) && $pass1 !== $pass2) {
-            self::set_flash('error', __('De nya lösenorden matchar inte.', 'sh-review-members'));
+            self::set_flash('error', __('New passwords do not match.', 'sh-review-members'));
             return;
         }
 
@@ -225,7 +225,7 @@ trait PRMP_Actions {
         // This will also save "sh_author_long_bio" and mirror its text to user description.
         self::prmp_save_author_profile_from_post((int)$user->ID);
 
-        self::set_flash('success', __('Profilen har uppdaterats.', 'sh-review-members'));
+        self::set_flash('success', __('Profile has been updated.', 'sh-review-members'));
 
         // Redirect to avoid resubmission.
         wp_safe_redirect(self::page_url('profile') ?: self::current_url());
