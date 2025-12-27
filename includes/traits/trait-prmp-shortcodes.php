@@ -26,10 +26,6 @@ trait PRMP_Shortcodes {
         echo '<form method="post" class="pr-form">';
         echo '<input type="hidden" name="pr_form" value="login">';
         wp_nonce_field('pr_login');
-
-        // Bot protection
-        self::render_captcha();
-
         echo '<p><label>' . esc_html__('Användarnamn eller e-post', 'sh-review-members') . '<br />';
         echo '<input type="text" name="pr_user_login" autocomplete="username" required></label></p>';
 
@@ -40,25 +36,6 @@ trait PRMP_Shortcodes {
 
         echo '<p><button type="submit" name="pr_login_submit" class="pr-button">' . esc_html__('Logga in', 'sh-review-members') . '</button></p>';
         echo '</form>';
-
-        // Social Login
-        $opt = self::get_options();
-        $has_google = !empty($opt['google_client_id']);
-        $has_wp = !empty($opt['wordpress_client_id']);
-
-        if ($has_google || $has_wp) {
-            echo '<div class="pr-social-login" style="margin-top:20px; border-top:1px solid #eee; padding-top:20px;">';
-            echo '<p><strong>' . esc_html__('Eller logga in med:', 'sh-review-members') . '</strong></p>';
-            if ($has_google) {
-                $url = add_query_arg('pr_social_login', 'google', home_url('/'));
-                echo '<a href="' . esc_url($url) . '" class="pr-button pr-button--secondary" style="margin-right:10px;">Google</a>';
-            }
-            if ($has_wp) {
-                $url = add_query_arg('pr_social_login', 'wordpress', home_url('/'));
-                echo '<a href="' . esc_url($url) . '" class="pr-button pr-button--secondary">WordPress.com</a>';
-            }
-            echo '</div>';
-        }
 
         if ($register_url && get_option('users_can_register')) {
             echo '<p class="pr-muted">' . esc_html__('Har du inget konto?', 'sh-review-members') . ' <a href="' . esc_url($register_url) . '">' . esc_html__('Registrera dig här', 'sh-review-members') . '</a></p>';
@@ -91,9 +68,6 @@ trait PRMP_Shortcodes {
         echo '<input type="hidden" name="pr_form" value="register">';
         wp_nonce_field('pr_register');
 
-        // Bot protection
-        self::render_captcha();
-
         echo '<p><label>' . esc_html__('Användarnamn', 'sh-review-members') . '<br />';
         echo '<input type="text" name="pr_user_login" autocomplete="username" required></label></p>';
 
@@ -108,25 +82,6 @@ trait PRMP_Shortcodes {
 
         echo '<p><button type="submit" name="pr_register_submit" class="pr-button">' . esc_html__('Registrera', 'sh-review-members') . '</button></p>';
         echo '</form>';
-
-        // Social Login
-        $opt = self::get_options();
-        $has_google = !empty($opt['google_client_id']);
-        $has_wp = !empty($opt['wordpress_client_id']);
-
-        if ($has_google || $has_wp) {
-            echo '<div class="pr-social-login" style="margin-top:20px; border-top:1px solid #eee; padding-top:20px;">';
-            echo '<p><strong>' . esc_html__('Eller registrera dig med:', 'sh-review-members') . '</strong></p>';
-            if ($has_google) {
-                $url = add_query_arg('pr_social_login', 'google', home_url('/'));
-                echo '<a href="' . esc_url($url) . '" class="pr-button pr-button--secondary" style="margin-right:10px;">Google</a>';
-            }
-            if ($has_wp) {
-                $url = add_query_arg('pr_social_login', 'wordpress', home_url('/'));
-                echo '<a href="' . esc_url($url) . '" class="pr-button pr-button--secondary">WordPress.com</a>';
-            }
-            echo '</div>';
-        }
 
         if ($login_url) {
             echo '<p class="pr-muted">' . esc_html__('Har du redan ett konto?', 'sh-review-members') . ' <a href="' . esc_url($login_url) . '">' . esc_html__('Logga in', 'sh-review-members') . '</a></p>';

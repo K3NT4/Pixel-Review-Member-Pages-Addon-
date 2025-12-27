@@ -45,14 +45,6 @@ trait PRMP_Admin_Settings {
         );
 
         add_settings_field(
-            'captcha',
-            __('Spam-skydd', 'sh-review-members'),
-            [__CLASS__, 'field_captcha'],
-            'sh-review-member-pages',
-            'sh_review_members_main'
-        );
-
-        add_settings_field(
             'pages',
             __('Sidor & shortcodes', 'sh-review-members'),
             [__CLASS__, 'field_pages'],
@@ -72,14 +64,6 @@ trait PRMP_Admin_Settings {
             'dashboard',
             __('Dashboard', 'sh-review-members'),
             [__CLASS__, 'field_dashboard'],
-            'sh-review-member-pages',
-            'sh_review_members_main'
-        );
-
-        add_settings_field(
-            'social_login',
-            __('Social Inloggning', 'sh-review-members'),
-            [__CLASS__, 'field_social_login'],
             'sh-review-member-pages',
             'sh_review_members_main'
         );
@@ -124,23 +108,6 @@ trait PRMP_Admin_Settings {
 
         // Admin editor links
         $out['allow_frontend_create'] = !empty($input['allow_frontend_create']) ? 1 : 0;
-
-        // Social Login
-        $out['google_client_id'] = sanitize_text_field($input['google_client_id'] ?? '');
-        $out['google_client_secret'] = sanitize_text_field($input['google_client_secret'] ?? '');
-        $out['wordpress_client_id'] = sanitize_text_field($input['wordpress_client_id'] ?? '');
-        $out['wordpress_client_secret'] = sanitize_text_field($input['wordpress_client_secret'] ?? '');
-
-        // Captcha
-        $valid_providers = ['none', 'native', 'cloudflare', 'google'];
-        $out['captcha_provider'] = in_array(($input['captcha_provider'] ?? ''), $valid_providers, true)
-            ? $input['captcha_provider']
-            : ($out['captcha_provider'] ?? 'native');
-
-        $out['cf_site_key'] = sanitize_text_field($input['cf_site_key'] ?? '');
-        $out['cf_secret_key'] = sanitize_text_field($input['cf_secret_key'] ?? '');
-        $out['google_recaptcha_site_key'] = sanitize_text_field($input['google_recaptcha_site_key'] ?? '');
-        $out['google_recaptcha_secret_key'] = sanitize_text_field($input['google_recaptcha_secret_key'] ?? '');
 
         return $out;
     }
@@ -296,65 +263,6 @@ trait PRMP_Admin_Settings {
             checked(1, (int)$opt['disable_admin_bar'], false),
             esc_html__('Dölj admin-bar på frontend för blockerade roller', 'sh-review-members')
         );
-    }
-
-    public static function field_captcha() : void {
-        $opt = self::get_options();
-        $provider = $opt['captcha_provider'] ?? 'native';
-
-        echo '<p><label>' . esc_html__('Metod', 'sh-review-members') . ' ';
-        echo '<select name="' . esc_attr(self::OPT_KEY) . '[captcha_provider]">';
-        $opts = [
-            'none'       => __('Ingen', 'sh-review-members'),
-            'native'     => __('Native (Honeypot + Tid)', 'sh-review-members'),
-            'cloudflare' => __('Cloudflare Turnstile', 'sh-review-members'),
-            'google'     => __('Google reCAPTCHA v2', 'sh-review-members'),
-        ];
-        foreach ($opts as $k => $label) {
-            printf('<option value="%s" %s>%s</option>', esc_attr($k), selected($provider, $k, false), esc_html($label));
-        }
-        echo '</select></label></p>';
-
-        echo '<div style="margin-left:20px; border-left:2px solid #ddd; padding-left:15px; margin-top:10px;">';
-
-        echo '<p><strong>Cloudflare Turnstile</strong></p>';
-        echo '<p><label>' . esc_html__('Site Key', 'sh-review-members') . '<br />';
-        echo '<input type="text" name="' . esc_attr(self::OPT_KEY) . '[cf_site_key]" value="' . esc_attr($opt['cf_site_key'] ?? '') . '" class="regular-text"></label></p>';
-
-        echo '<p><label>' . esc_html__('Secret Key', 'sh-review-members') . '<br />';
-        echo '<input type="password" name="' . esc_attr(self::OPT_KEY) . '[cf_secret_key]" value="' . esc_attr($opt['cf_secret_key'] ?? '') . '" class="regular-text"></label></p>';
-
-        echo '<hr>';
-
-        echo '<p><strong>Google reCAPTCHA v2 (Checkbox)</strong></p>';
-        echo '<p><label>' . esc_html__('Site Key', 'sh-review-members') . '<br />';
-        echo '<input type="text" name="' . esc_attr(self::OPT_KEY) . '[google_recaptcha_site_key]" value="' . esc_attr($opt['google_recaptcha_site_key'] ?? '') . '" class="regular-text"></label></p>';
-
-        echo '<p><label>' . esc_html__('Secret Key', 'sh-review-members') . '<br />';
-        echo '<input type="password" name="' . esc_attr(self::OPT_KEY) . '[google_recaptcha_secret_key]" value="' . esc_attr($opt['google_recaptcha_secret_key'] ?? '') . '" class="regular-text"></label></p>';
-
-        echo '</div>';
-    }
-
-    public static function field_social_login() : void {
-        $opt = self::get_options();
-
-        echo '<p><strong>Google</strong></p>';
-        echo '<p><label>' . esc_html__('Client ID', 'sh-review-members') . '<br />';
-        echo '<input type="text" name="' . esc_attr(self::OPT_KEY) . '[google_client_id]" value="' . esc_attr($opt['google_client_id'] ?? '') . '" class="regular-text"></label></p>';
-
-        echo '<p><label>' . esc_html__('Client Secret', 'sh-review-members') . '<br />';
-        echo '<input type="password" name="' . esc_attr(self::OPT_KEY) . '[google_client_secret]" value="' . esc_attr($opt['google_client_secret'] ?? '') . '" class="regular-text"></label></p>';
-
-        echo '<p><strong>WordPress.com</strong></p>';
-        echo '<p><label>' . esc_html__('Client ID', 'sh-review-members') . '<br />';
-        echo '<input type="text" name="' . esc_attr(self::OPT_KEY) . '[wordpress_client_id]" value="' . esc_attr($opt['wordpress_client_id'] ?? '') . '" class="regular-text"></label></p>';
-
-        echo '<p><label>' . esc_html__('Client Secret', 'sh-review-members') . '<br />';
-        echo '<input type="password" name="' . esc_attr(self::OPT_KEY) . '[wordpress_client_secret]" value="' . esc_attr($opt['wordpress_client_secret'] ?? '') . '" class="regular-text"></label></p>';
-
-        $redirect_uri = home_url('/');
-        echo '<p class="description">' . sprintf(esc_html__('Redirect URI att ange hos leverantören: %s', 'sh-review-members'), '<code>' . esc_html($redirect_uri) . '</code>') . '</p>';
     }
 
     public static function field_dashboard() : void {
