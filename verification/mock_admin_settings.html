@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mock Admin Settings</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; background: #f1f1f1; }
+        .wrap { background: #fff; padding: 20px; border: 1px solid #ccc; max-width: 800px; margin: 0 auto; }
+        label { display: block; margin-bottom: 5px; }
+        input[type="text"], input[type="password"], input[type="number"], select { border: 1px solid #8c8f94; padding: 5px; width: 300px; }
+        input[type="checkbox"] { margin-right: 5px; }
+        p { margin: 10px 0; }
+        hr { margin: 20px 0; border: 0; border-top: 1px solid #ddd; }
+        h1 { margin-top: 0; }
+    </style>
+</head>
+<body>
+
+<div class="wrap">
+    <h1>Pixel Review — Member Pages</h1>
+
+    <!-- Security Section Mock -->
+    <h2>Säkerhet</h2>
+
+    <p><strong>CAPTCHA</strong></p>
+    <select name="sh_review_members_pages[captcha_provider]" id="prmp_captcha_select">
+        <option value="">Ingen</option>
+        <option value="turnstile">Cloudflare Turnstile</option>
+        <option value="recaptcha_v3">Google reCAPTCHA v3</option>
+    </select>
+
+    <div id="prmp_captcha_turnstile_opts" style="display:none; margin-top:10px; padding:10px; background:#f0f0f1; border:1px solid #ccc;">
+        <p><strong>Cloudflare Turnstile Settings</strong></p>
+        <p><label>Site Key<br /><input type="text" name="sh_review_members_pages[turnstile_site_key]" class="regular-text" /></label></p>
+        <p><label>Secret Key<br /><input type="password" name="sh_review_members_pages[turnstile_secret_key]" class="regular-text" /></label></p>
+    </div>
+
+    <div id="prmp_captcha_recaptcha_opts" style="display:none; margin-top:10px; padding:10px; background:#f0f0f1; border:1px solid #ccc;">
+        <p><strong>Google reCAPTCHA v3 Settings</strong></p>
+        <p><label>Site Key<br /><input type="text" name="sh_review_members_pages[recaptcha_site_key]" class="regular-text" /></label></p>
+        <p><label>Secret Key<br /><input type="password" name="sh_review_members_pages[recaptcha_secret_key]" class="regular-text" /></label></p>
+    </div>
+
+    <hr />
+    <p><strong>Rate Limiting</strong></p>
+    <label><input type="checkbox" name="sh_review_members_pages[enable_rate_limit]" id="prmp_rate_limit_check" value="1"> Aktivera begränsning av inloggningsförsök</label>
+
+    <div id="prmp_rate_limit_opts" style="display:none; margin-top:10px; padding-left:20px;">
+        <p><label>Max antal försök (per 30 minuter)<br /><input type="number" min="1" max="100" name="sh_review_members_pages[max_login_attempts]" value="5" class="small-text" /></label></p>
+    </div>
+
+    <!-- Social Login Section Mock -->
+    <h2>Social Login</h2>
+
+    <p><strong>Google</strong></p>
+    <label><input type="checkbox" name="sh_review_members_pages[social_login_google]" id="prmp_sl_google_check" value="1"> Aktivera Google-inloggning</label>
+
+    <div id="prmp_sl_google_opts" style="display:none; margin-top:10px; padding-left:20px;">
+        <p><label>Client ID<br /><input type="text" name="sh_review_members_pages[google_client_id]" class="regular-text" /></label></p>
+        <p><label>Client Secret<br /><input type="password" name="sh_review_members_pages[google_client_secret]" class="regular-text" /></label></p>
+    </div>
+
+    <hr />
+    <p><strong>WordPress.com</strong></p>
+    <label><input type="checkbox" name="sh_review_members_pages[social_login_wordpress]" id="prmp_sl_wp_check" value="1"> Aktivera WordPress.com-inloggning</label>
+
+    <div id="prmp_sl_wp_opts" style="display:none; margin-top:10px; padding-left:20px;">
+        <p><label>Client ID<br /><input type="text" name="sh_review_members_pages[wordpress_client_id]" class="regular-text" /></label></p>
+        <p><label>Client Secret<br /><input type="password" name="sh_review_members_pages[wordpress_client_secret]" class="regular-text" /></label></p>
+    </div>
+
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    function toggleVisibility(checkboxId, targetId) {
+        var checkbox = document.getElementById(checkboxId);
+        var target = document.getElementById(targetId);
+        if (!checkbox || !target) return;
+
+        function update() {
+            target.style.display = checkbox.checked ? 'block' : 'none';
+        }
+        checkbox.addEventListener('change', update);
+        update();
+    }
+
+    function toggleSelectVisibility(selectId, targetMap) {
+        var select = document.getElementById(selectId);
+        if (!select) return;
+
+        function update() {
+            var val = select.value;
+            for (var key in targetMap) {
+                 var el = document.getElementById(targetMap[key]);
+                 if (el) el.style.display = 'none';
+            }
+            if (targetMap[val]) {
+                var active = document.getElementById(targetMap[val]);
+                if (active) active.style.display = 'block';
+            }
+        }
+        select.addEventListener('change', update);
+        update();
+    }
+
+    toggleVisibility('prmp_rate_limit_check', 'prmp_rate_limit_opts');
+    toggleVisibility('prmp_sl_google_check', 'prmp_sl_google_opts');
+    toggleVisibility('prmp_sl_wp_check', 'prmp_sl_wp_opts');
+
+    toggleSelectVisibility('prmp_captcha_select', {
+        'turnstile': 'prmp_captcha_turnstile_opts',
+        'recaptcha_v3': 'prmp_captcha_recaptcha_opts'
+    });
+});
+</script>
+
+</body>
+</html>

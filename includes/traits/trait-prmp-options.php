@@ -25,6 +25,24 @@ trait PRMP_Options {
             'blocked_roles' => ['subscriber', 'customer'],
             'disable_admin_bar' => 1,
 
+            // Security
+            'captcha_provider' => '', // turnstile|recaptcha_v3
+            'turnstile_site_key' => '',
+            'turnstile_secret_key' => '',
+            'recaptcha_site_key' => '',
+            'recaptcha_secret_key' => '',
+            'enable_rate_limit' => 0,
+            'max_login_attempts' => 5,
+
+            // Social Login
+            'social_login_google' => 0,
+            'google_client_id' => '',
+            'google_client_secret' => '',
+
+            'social_login_wordpress' => 0,
+            'wordpress_client_id' => '',
+            'wordpress_client_secret' => '',
+
             // Dashboard content
             'dashboard_post_types' => ['post'],
             'dashboard_posts_per_page' => 20,

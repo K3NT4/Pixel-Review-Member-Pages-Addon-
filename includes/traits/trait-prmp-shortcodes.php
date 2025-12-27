@@ -34,8 +34,14 @@ trait PRMP_Shortcodes {
 
         echo '<p><label><input type="checkbox" name="pr_remember" value="1"> ' . esc_html__('Kom ihåg mig', 'sh-review-members') . '</label></p>';
 
+        // CAPTCHA
+        echo self::render_captcha();
+
         echo '<p><button type="submit" name="pr_login_submit" class="pr-button">' . esc_html__('Logga in', 'sh-review-members') . '</button></p>';
         echo '</form>';
+
+        // Social Login
+        echo self::render_social_login_buttons();
 
         if ($register_url && get_option('users_can_register')) {
             echo '<p class="pr-muted">' . esc_html__('Har du inget konto?', 'sh-review-members') . ' <a href="' . esc_url($register_url) . '">' . esc_html__('Registrera dig här', 'sh-review-members') . '</a></p>';
@@ -80,8 +86,14 @@ trait PRMP_Shortcodes {
         echo '<p><label>' . esc_html__('Upprepa lösenord', 'sh-review-members') . '<br />';
         echo '<input type="password" name="pr_user_pass2" autocomplete="new-password" required></label></p>';
 
+        // CAPTCHA
+        echo self::render_captcha();
+
         echo '<p><button type="submit" name="pr_register_submit" class="pr-button">' . esc_html__('Registrera', 'sh-review-members') . '</button></p>';
         echo '</form>';
+
+        // Social Login
+        echo self::render_social_login_buttons();
 
         if ($login_url) {
             echo '<p class="pr-muted">' . esc_html__('Har du redan ett konto?', 'sh-review-members') . ' <a href="' . esc_url($login_url) . '">' . esc_html__('Logga in', 'sh-review-members') . '</a></p>';
@@ -465,5 +477,98 @@ trait PRMP_Shortcodes {
 
         echo '</div>';
         return (string)ob_get_clean();
+    }
+
+    /**
+     * Render CAPTCHA widget if enabled.
+     */
+    protected static function render_captcha() : string {
+        $opt = self::get_options();
+        $provider = $opt['captcha_provider'] ?? '';
+
+        if ($provider === 'turnstile') {
+            $site_key = $opt['turnstile_site_key'] ?? '';
+            if (!$site_key) return '';
+
+            return sprintf(
+                '<div class="cf-turnstile" data-sitekey="%s"></div><script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>',
+                esc_attr($site_key)
+            );
+        }
+
+        if ($provider === 'recaptcha_v3') {
+            $site_key = $opt['recaptcha_site_key'] ?? '';
+            if (!$site_key) return '';
+
+            // v3 is invisible, usually bound to a button or just loaded.
+            // We'll load the script and add a hidden field that JS populates, or simpler: just the script.
+            // For simplicity in this non-interactive context, we'll output the script header.
+            // Note: v3 usually requires JS integration to execute `grecaptcha.execute`.
+            // For this task, we'll assume a basic integration where we append the token to the form.
+            // But to keep it simple and robust without complex JS files, we'll use a hidden input populated on submit.
+            $script = '
+            <script src="https://www.google.com/recaptcha/api.js?render=' . esc_attr($site_key) . '"></script>
+            <script>
+            document.addEventListener("submit", function(e) {
+                if (e.target.classList.contains("pr-form")) {
+                    e.preventDefault();
+                    grecaptcha.ready(function() {
+                        grecaptcha.execute("' . esc_attr($site_key) . '", {action: "submit"}).then(function(token) {
+                            var input = document.createElement("input");
+                            input.type = "hidden";
+                            input.name = "g-recaptcha-response";
+                            input.value = token;
+                            e.target.appendChild(input);
+                            e.target.submit();
+                        });
+                    });
+                }
+            });
+            </script>';
+            return $script;
+        }
+
+        return '';
+    }
+
+    /**
+     * Render Social Login buttons if enabled.
+     */
+    protected static function render_social_login_buttons() : string {
+        $opt = self::get_options();
+        $google = !empty($opt['social_login_google']);
+        $wp = !empty($opt['social_login_wordpress']);
+
+        if (!$google && !$wp) return '';
+
+        $out = '<div class="pr-social-login">';
+        $out .= '<p class="pr-separator"><span>' . esc_html__('Eller', 'sh-review-members') . '</span></p>';
+
+        if ($google) {
+            $url = self::get_social_login_url('google');
+            if ($url) {
+                $out .= '<a class="pr-button pr-button--google" href="' . esc_url($url) . '">' . esc_html__('Logga in med Google', 'sh-review-members') . '</a>';
+            }
+        }
+
+        if ($wp) {
+            $url = self::get_social_login_url('wordpress');
+            if ($url) {
+                $out .= '<a class="pr-button pr-button--wordpress" href="' . esc_url($url) . '">' . esc_html__('Logga in med WordPress.com', 'sh-review-members') . '</a>';
+            }
+        }
+
+        $out .= '</div>';
+
+        // Add some basic styles inline or assume css file
+        $out .= '<style>
+        .pr-separator { text-align: center; border-bottom: 1px solid #eee; height: 12px; margin: 20px 0; }
+        .pr-separator span { background: #fff; padding: 0 10px; color: #777; font-size: 14px; }
+        .pr-social-login .pr-button { margin-bottom: 10px; width: 100%; justify-content: center; text-align: center; }
+        .pr-button--google { background: #db4437; color: #fff; border-color: #db4437; }
+        .pr-button--wordpress { background: #0087be; color: #fff; border-color: #0087be; }
+        </style>';
+
+        return $out;
     }
 }

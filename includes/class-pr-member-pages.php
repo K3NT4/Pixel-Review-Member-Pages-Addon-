@@ -24,6 +24,7 @@ require_once __DIR__ . '/traits/trait-prmp-flash.php';
 require_once __DIR__ . '/traits/trait-prmp-actions.php';
 require_once __DIR__ . '/traits/trait-prmp-shortcodes.php';
 require_once __DIR__ . '/traits/trait-prmp-pages.php';
+require_once __DIR__ . '/traits/trait-prmp-social-login.php';
 
 class PR_Member_Pages {
 
@@ -38,6 +39,7 @@ class PR_Member_Pages {
     use PRMP_Actions;
     use PRMP_Shortcodes;
     use PRMP_Pages;
+    use PRMP_Social_Login;
 
     public static function init() : void {
         // Assets
@@ -54,6 +56,9 @@ class PR_Member_Pages {
         // Form handlers
         add_action('init', [__CLASS__, 'handle_actions']);
         add_action('login_init', [__CLASS__, 'maybe_redirect_wp_login']);
+
+        // Social Login
+        self::init_social_login();
 
         // Admin restrictions for members
         add_action('admin_init', [__CLASS__, 'maybe_block_wp_admin']);
