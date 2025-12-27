@@ -49,6 +49,11 @@ trait PRMP_Actions {
                     self::handle_register_submit();
                     return;
                 case 'profile':
+                    // Check for privacy actions inside the profile form
+                    if (!empty($_POST['pr_privacy_action'])) {
+                        self::handle_privacy_request();
+                        return;
+                    }
                     self::handle_profile_submit();
                     return;
                 default:
@@ -228,6 +233,59 @@ trait PRMP_Actions {
         self::set_flash('success', __('Profile has been updated.', 'sh-review-members'));
 
         // Redirect to avoid resubmission.
+        wp_safe_redirect(self::page_url('profile') ?: self::current_url());
+        exit;
+    }
+
+    /**
+     * Handle GDPR/Privacy requests from the profile form.
+     */
+    protected static function handle_privacy_request() : void {
+        if (!is_user_logged_in()) {
+            self::set_flash('error', __('You must be logged in.', 'sh-review-members'));
+            return;
+        }
+
+        if (empty($_POST['_wpnonce']) || !wp_verify_nonce(sanitize_text_field($_POST['_wpnonce']), 'pr_profile')) {
+            self::set_flash('error', __('Invalid security token. Please try again.', 'sh-review-members'));
+            return;
+        }
+
+        $action = sanitize_key($_POST['pr_privacy_action']);
+        $opt = self::get_options();
+        $user = wp_get_current_user();
+
+        // Check if feature is enabled
+        if ($action === 'export_personal_data' && empty($opt['enable_data_export'])) {
+            self::set_flash('error', __('Data export is not enabled.', 'sh-review-members'));
+            return;
+        }
+        if ($action === 'remove_personal_data' && empty($opt['enable_data_deletion'])) {
+            self::set_flash('error', __('Account deletion is not enabled.', 'sh-review-members'));
+            return;
+        }
+
+        if (!in_array($action, ['export_personal_data', 'remove_personal_data'], true)) {
+            return;
+        }
+
+        // Create the request using WordPress Core function
+        $request_id = wp_create_user_request($user->user_email, $action);
+
+        if (is_wp_error($request_id)) {
+            self::set_flash('error', $request_id->get_error_message());
+        } else {
+            // Automatically confirm the request since the user is logged in and initiating it themselves.
+            // (Optional, but smoother UX. Otherwise they get an email to confirm the request first).
+            // However, for security, standard flow is: User requests -> Email sent -> User confirms -> Admin approves.
+            // To mimic standard behavior we just notify them.
+
+            // Send the confirmation email
+            wp_send_user_request_confirmation_email($request_id);
+
+            self::set_flash('success', __('A confirmation email has been sent to your address. Please click the link in the email to confirm your request.', 'sh-review-members'));
+        }
+
         wp_safe_redirect(self::page_url('profile') ?: self::current_url());
         exit;
     }

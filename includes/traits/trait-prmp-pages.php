@@ -14,34 +14,34 @@ trait PRMP_Pages {
 
         $spec = [
             'login' => [
-                'title' => __('Logga in', 'sh-review-members'),
+                'title' => __('Log In', 'sh-review-members'),
                 'content' => '[pr_login]',
-                'slug' => 'logga-in',
+                'slug' => 'login',
             ],
             'register' => [
-                'title' => __('Registrera', 'sh-review-members'),
+                'title' => __('Register', 'sh-review-members'),
                 'content' => '[pr_register]',
-                'slug' => 'registrera',
+                'slug' => 'register',
             ],
             'dashboard' => [
-                'title' => __('Mina sidor', 'sh-review-members'),
+                'title' => __('My Pages', 'sh-review-members'),
                 'content' => '[pr_dashboard]',
-                'slug' => 'mina-sidor',
+                'slug' => 'my-pages',
             ],
             'profile' => [
-                'title' => __('Min profil', 'sh-review-members'),
+                'title' => __('My Profile', 'sh-review-members'),
                 'content' => '[pr_profile]',
-                'slug' => 'min-profil',
+                'slug' => 'my-profile',
             ],
             'logout' => [
-                'title' => __('Logga ut', 'sh-review-members'),
+                'title' => __('Log Out', 'sh-review-members'),
                 'content' => '[pr_logout]',
-                'slug' => 'logga-ut',
+                'slug' => 'logout',
             ],
             'post_edit' => [
-                'title' => __('Redigera/Skapa inlägg', 'sh-review-members'),
+                'title' => __('Edit/Create Post', 'sh-review-members'),
                 'content' => '[pr_post_edit]',
-                'slug' => 'redigera-inlagg',
+                'slug' => 'edit-post',
             ],
         ];
 

@@ -38,7 +38,7 @@ trait PRMP_Admin_Settings {
 
         add_settings_field(
             'enabled',
-            __('Aktivera funktion', 'sh-review-members'),
+            __('Enable Feature', 'sh-review-members'),
             [__CLASS__, 'field_enabled'],
             'sh-review-member-pages',
             'sh_review_members_main'
@@ -46,7 +46,7 @@ trait PRMP_Admin_Settings {
 
         add_settings_field(
             'pages',
-            __('Sidor & shortcodes', 'sh-review-members'),
+            __('Pages & Shortcodes', 'sh-review-members'),
             [__CLASS__, 'field_pages'],
             'sh-review-member-pages',
             'sh_review_members_main'
@@ -54,7 +54,7 @@ trait PRMP_Admin_Settings {
 
         add_settings_field(
             'admin_block',
-            __('Begränsa wp-admin', 'sh-review-members'),
+            __('Restrict wp-admin', 'sh-review-members'),
             [__CLASS__, 'field_admin_block'],
             'sh-review-member-pages',
             'sh_review_members_main'
@@ -62,8 +62,16 @@ trait PRMP_Admin_Settings {
 
         add_settings_field(
             'security',
-            __('Säkerhet', 'sh-review-members'),
+            __('Security', 'sh-review-members'),
             [__CLASS__, 'field_security'],
+            'sh-review-member-pages',
+            'sh_review_members_main'
+        );
+
+        add_settings_field(
+            'privacy',
+            __('Privacy & GDPR', 'sh-review-members'),
+            [__CLASS__, 'field_privacy'],
             'sh-review-member-pages',
             'sh_review_members_main'
         );
@@ -112,6 +120,10 @@ trait PRMP_Admin_Settings {
         $out['recaptcha_secret_key'] = sanitize_text_field($input['recaptcha_secret_key'] ?? '');
         $out['enable_rate_limit'] = !empty($input['enable_rate_limit']) ? 1 : 0;
         $out['max_login_attempts'] = absint($input['max_login_attempts'] ?? 5);
+
+        // Privacy
+        $out['enable_data_deletion'] = !empty($input['enable_data_deletion']) ? 1 : 0;
+        $out['enable_data_export'] = !empty($input['enable_data_export']) ? 1 : 0;
 
         // Social Login
         $out['social_login_google'] = !empty($input['social_login_google']) ? 1 : 0;
@@ -240,7 +252,7 @@ trait PRMP_Admin_Settings {
             '<label style="display:block;margin-top:10px;"><input type="checkbox" name="%1$s[create_pages_on_activate]" value="1" %2$s> %3$s</label>',
             esc_attr(self::OPT_KEY),
             checked(1, (int)$opt['create_pages_on_activate'], false),
-            esc_html__('Skapa standard-sidor vid aktivering', 'sh-review-members')
+            esc_html__('Create standard pages on activation', 'sh-review-members')
         );
 
         printf(
@@ -275,7 +287,7 @@ trait PRMP_Admin_Settings {
             echo '<td><strong>' . esc_html($row['label']) . '</strong></td>';
             echo '<td>';
             printf('<select name="%s[page_ids][%s]">', esc_attr(self::OPT_KEY), esc_attr($key));
-            echo '<option value="0">' . esc_html__('— Välj —', 'sh-review-members') . '</option>';
+            echo '<option value="0">' . esc_html__('— Select —', 'sh-review-members') . '</option>';
             foreach ($pages as $p) {
                 printf(
                     '<option value="%d" %s>%s%s</option>',
@@ -391,7 +403,7 @@ trait PRMP_Admin_Settings {
             '<label><input type="checkbox" name="%1$s[enable_rate_limit]" id="prmp_rate_limit_check" value="1" %2$s> %3$s</label>',
             esc_attr(self::OPT_KEY),
             checked(1, (int)$opt['enable_rate_limit'], false),
-            esc_html__('Aktivera begränsning av inloggningsförsök', 'sh-review-members')
+            esc_html__('Enable rate limiting', 'sh-review-members')
         );
 
         echo '<div id="prmp_rate_limit_opts" style="display:none; margin-top:10px; padding-left:20px;">';
@@ -401,6 +413,27 @@ trait PRMP_Admin_Settings {
             esc_attr($opt['max_login_attempts'])
         );
         echo '</div>';
+    }
+
+    public static function field_privacy() : void {
+        $opt = self::get_options();
+
+        echo '<p><strong>' . esc_html__('GDPR & Data Rights', 'sh-review-members') . '</strong></p>';
+        echo '<p class="description">' . esc_html__('These settings allow users to request data export or deletion from their profile page. These requests trigger the standard WordPress privacy workflow (Tools > Export Personal Data / Erase Personal Data).', 'sh-review-members') . '</p>';
+
+        printf(
+            '<label style="display:block;margin-top:10px;"><input type="checkbox" name="%1$s[enable_data_export]" value="1" %2$s> %3$s</label>',
+            esc_attr(self::OPT_KEY),
+            checked(1, (int)($opt['enable_data_export'] ?? 0), false),
+            esc_html__('Enable Data Export Request', 'sh-review-members')
+        );
+
+        printf(
+            '<label style="display:block;margin-top:10px;"><input type="checkbox" name="%1$s[enable_data_deletion]" value="1" %2$s> %3$s</label>',
+            esc_attr(self::OPT_KEY),
+            checked(1, (int)($opt['enable_data_deletion'] ?? 0), false),
+            esc_html__('Enable Account Deletion Request', 'sh-review-members')
+        );
     }
 
     public static function field_social_login() : void {
