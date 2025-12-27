@@ -23,6 +23,7 @@ require_once __DIR__ . '/traits/trait-prmp-admin-settings.php';
 require_once __DIR__ . '/traits/trait-prmp-flash.php';
 require_once __DIR__ . '/traits/trait-prmp-actions.php';
 require_once __DIR__ . '/traits/trait-prmp-social-login.php';
+require_once __DIR__ . '/traits/trait-prmp-captcha.php';
 require_once __DIR__ . '/traits/trait-prmp-shortcodes.php';
 require_once __DIR__ . '/traits/trait-prmp-pages.php';
 
@@ -38,12 +39,15 @@ class PR_Member_Pages {
     use PRMP_Flash;
     use PRMP_Actions;
     use PRMP_Social_Login;
+    use PRMP_Captcha;
     use PRMP_Shortcodes;
     use PRMP_Pages;
 
     public static function init() : void {
         // Social Login
         self::init_social_login();
+        // Captcha
+        self::init_captcha();
         // Assets
         add_action('wp_enqueue_scripts', [__CLASS__, 'enqueue_assets']);
 

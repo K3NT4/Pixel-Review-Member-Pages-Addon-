@@ -28,8 +28,7 @@ trait PRMP_Shortcodes {
         wp_nonce_field('pr_login');
 
         // Bot protection
-        echo '<input type="text" name="pr_hp" value="" style="display:none !important;" tabindex="-1" autocomplete="off">';
-        echo '<input type="hidden" name="pr_ts" value="' . time() . '">';
+        self::render_captcha();
 
         echo '<p><label>' . esc_html__('Användarnamn eller e-post', 'sh-review-members') . '<br />';
         echo '<input type="text" name="pr_user_login" autocomplete="username" required></label></p>';
@@ -93,8 +92,7 @@ trait PRMP_Shortcodes {
         wp_nonce_field('pr_register');
 
         // Bot protection
-        echo '<input type="text" name="pr_hp" value="" style="display:none !important;" tabindex="-1" autocomplete="off">';
-        echo '<input type="hidden" name="pr_ts" value="' . time() . '">';
+        self::render_captcha();
 
         echo '<p><label>' . esc_html__('Användarnamn', 'sh-review-members') . '<br />';
         echo '<input type="text" name="pr_user_login" autocomplete="username" required></label></p>';
