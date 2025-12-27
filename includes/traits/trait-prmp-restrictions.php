@@ -17,9 +17,19 @@ trait PRMP_Restrictions {
             return;
         }
 
+        // Don't interfere with interim login (modal).
+        if (!empty($_REQUEST['interim-login'])) {
+            return;
+        }
+
+        // Don't interfere with the "Check email" confirmation screen.
+        if (isset($_GET['checkemail'])) {
+            return;
+        }
+
         $action = isset($_REQUEST['action']) ? sanitize_key((string)$_REQUEST['action']) : '';
         // Don't interfere with reset flows or post password protected.
-        $allow = ['lostpassword', 'retrievepassword', 'resetpass', 'rp', 'postpass', 'confirmaction'];
+        $allow = ['lostpassword', 'retrievepassword', 'resetpass', 'rp', 'postpass', 'confirmaction', 'logout'];
         if ($action && in_array($action, $allow, true)) {
             return;
         }
