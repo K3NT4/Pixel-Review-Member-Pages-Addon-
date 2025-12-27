@@ -3,7 +3,7 @@
  * Plugin Name: Pixel Review — Member Pages (Addon)
  * Plugin URI: https://spelhubben.se/plugins/pixel-review
  * Description: Adds branded front-end member pages (login, register, profile, dashboard) for Pixel Review sites.
- * Version: 1.0.0
+ * Version: 1.1.1
  * Author: Spel Hubben
  * Author URI: https://spelhubben.se
  * Text Domain: sh-review-members

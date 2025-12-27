@@ -35,23 +35,29 @@ trait PRMP_Actions {
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') return;
 
-        // Login submit
-        if (!empty($_POST['pr_login_submit'])) {
-            self::handle_login_submit();
-            return;
+        // Preferred routing: hidden form identifier (works even when users submit via Enter key).
+        $form = isset($_POST['pr_form']) ? sanitize_key((string)wp_unslash($_POST['pr_form'])) : '';
+        if ($form) {
+            switch ($form) {
+                case 'login':
+                    self::handle_login_submit();
+                    return;
+                case 'register':
+                    self::handle_register_submit();
+                    return;
+                case 'profile':
+                    self::handle_profile_submit();
+                    return;
+                default:
+                    // Fall through to legacy button-name checks.
+                    break;
+            }
         }
 
-        // Register submit
-        if (!empty($_POST['pr_register_submit'])) {
-            self::handle_register_submit();
-            return;
-        }
-
-        // Profile submit
-        if (!empty($_POST['pr_profile_submit'])) {
-            self::handle_profile_submit();
-            return;
-        }
+        // Legacy routing (button name).
+        if (!empty($_POST['pr_login_submit'])) { self::handle_login_submit(); return; }
+        if (!empty($_POST['pr_register_submit'])) { self::handle_register_submit(); return; }
+        if (!empty($_POST['pr_profile_submit'])) { self::handle_profile_submit(); return; }
 
         // Logout via POST
         if (!empty($_POST['pr_logout_submit'])) {

@@ -24,6 +24,7 @@ trait PRMP_Shortcodes {
         echo self::render_flash();
         echo '<h2>' . esc_html__('Logga in', 'sh-review-members') . '</h2>';
         echo '<form method="post" class="pr-form">';
+        echo '<input type="hidden" name="pr_form" value="login">';
         wp_nonce_field('pr_login');
         echo '<p><label>' . esc_html__('Användarnamn eller e-post', 'sh-review-members') . '<br />';
         echo '<input type="text" name="pr_user_login" autocomplete="username" required></label></p>';
@@ -64,6 +65,7 @@ trait PRMP_Shortcodes {
         echo self::render_flash();
         echo '<h2>' . esc_html__('Skapa konto', 'sh-review-members') . '</h2>';
         echo '<form method="post" class="pr-form">';
+        echo '<input type="hidden" name="pr_form" value="register">';
         wp_nonce_field('pr_register');
 
         echo '<p><label>' . esc_html__('Användarnamn', 'sh-review-members') . '<br />';
@@ -141,6 +143,7 @@ trait PRMP_Shortcodes {
         echo '</div>';
 
         echo '<form method="post" class="pr-form">';
+        echo '<input type="hidden" name="pr_form" value="profile">';
         wp_nonce_field('pr_profile');
 
         echo '<div class="pr-grid">';
