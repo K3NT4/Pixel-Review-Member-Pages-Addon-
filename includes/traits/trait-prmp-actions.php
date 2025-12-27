@@ -281,6 +281,9 @@ trait PRMP_Actions {
             // To mimic standard behavior we just notify them.
 
             // Send the confirmation email
+            if (!function_exists('wp_send_user_request_confirmation_email')) {
+                require_once ABSPATH . 'wp-admin/includes/user.php';
+            }
             wp_send_user_request_confirmation_email($request_id);
 
             self::set_flash('success', __('A confirmation email has been sent to your address. Please click the link in the email to confirm your request.', 'sh-review-members'));
