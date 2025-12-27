@@ -67,6 +67,14 @@ trait PRMP_Admin_Settings {
             'sh-review-member-pages',
             'sh_review_members_main'
         );
+
+        add_settings_field(
+            'social_login',
+            __('Social Inloggning', 'sh-review-members'),
+            [__CLASS__, 'field_social_login'],
+            'sh-review-member-pages',
+            'sh_review_members_main'
+        );
     }
 
     public static function sanitize_options($input) : array {
@@ -108,6 +116,12 @@ trait PRMP_Admin_Settings {
 
         // Admin editor links
         $out['allow_frontend_create'] = !empty($input['allow_frontend_create']) ? 1 : 0;
+
+        // Social Login
+        $out['google_client_id'] = sanitize_text_field($input['google_client_id'] ?? '');
+        $out['google_client_secret'] = sanitize_text_field($input['google_client_secret'] ?? '');
+        $out['wordpress_client_id'] = sanitize_text_field($input['wordpress_client_id'] ?? '');
+        $out['wordpress_client_secret'] = sanitize_text_field($input['wordpress_client_secret'] ?? '');
 
         return $out;
     }
@@ -263,6 +277,27 @@ trait PRMP_Admin_Settings {
             checked(1, (int)$opt['disable_admin_bar'], false),
             esc_html__('Dölj admin-bar på frontend för blockerade roller', 'sh-review-members')
         );
+    }
+
+    public static function field_social_login() : void {
+        $opt = self::get_options();
+
+        echo '<p><strong>Google</strong></p>';
+        echo '<p><label>' . esc_html__('Client ID', 'sh-review-members') . '<br />';
+        echo '<input type="text" name="' . esc_attr(self::OPT_KEY) . '[google_client_id]" value="' . esc_attr($opt['google_client_id'] ?? '') . '" class="regular-text"></label></p>';
+
+        echo '<p><label>' . esc_html__('Client Secret', 'sh-review-members') . '<br />';
+        echo '<input type="password" name="' . esc_attr(self::OPT_KEY) . '[google_client_secret]" value="' . esc_attr($opt['google_client_secret'] ?? '') . '" class="regular-text"></label></p>';
+
+        echo '<p><strong>WordPress.com</strong></p>';
+        echo '<p><label>' . esc_html__('Client ID', 'sh-review-members') . '<br />';
+        echo '<input type="text" name="' . esc_attr(self::OPT_KEY) . '[wordpress_client_id]" value="' . esc_attr($opt['wordpress_client_id'] ?? '') . '" class="regular-text"></label></p>';
+
+        echo '<p><label>' . esc_html__('Client Secret', 'sh-review-members') . '<br />';
+        echo '<input type="password" name="' . esc_attr(self::OPT_KEY) . '[wordpress_client_secret]" value="' . esc_attr($opt['wordpress_client_secret'] ?? '') . '" class="regular-text"></label></p>';
+
+        $redirect_uri = home_url('/');
+        echo '<p class="description">' . sprintf(esc_html__('Redirect URI att ange hos leverantören: %s', 'sh-review-members'), '<code>' . esc_html($redirect_uri) . '</code>') . '</p>';
     }
 
     public static function field_dashboard() : void {

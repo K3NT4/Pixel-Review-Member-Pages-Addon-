@@ -79,6 +79,20 @@ trait PRMP_Actions {
             return;
         }
 
+        // Bot check: Honeypot
+        if (!empty($_POST['pr_hp'])) {
+            // Silently fail or generic error.
+            self::set_flash('error', __('Otillåten åtgärd.', 'sh-review-members'));
+            return;
+        }
+        // Bot check: Time trap (optional for login, but good for brute force scripts)
+        // If login is submitted faster than 0.5s or slower than 24h, it's fishy.
+        $ts = (int)($_POST['pr_ts'] ?? 0);
+        if (time() - $ts < 1) {
+             self::set_flash('error', __('Försök igen långsammare.', 'sh-review-members'));
+             return;
+        }
+
         $login = sanitize_text_field($_POST['pr_user_login'] ?? '');
         $pass  = (string)($_POST['pr_user_pass'] ?? '');
         $remember = !empty($_POST['pr_remember']);
@@ -103,6 +117,18 @@ trait PRMP_Actions {
         if (empty($_POST['_wpnonce']) || !wp_verify_nonce(sanitize_text_field($_POST['_wpnonce']), 'pr_register')) {
             self::set_flash('error', __('Ogiltig säkerhetstoken. Försök igen.', 'sh-review-members'));
             return;
+        }
+
+        // Bot check: Honeypot
+        if (!empty($_POST['pr_hp'])) {
+            self::set_flash('error', __('Otillåten åtgärd.', 'sh-review-members'));
+            return;
+        }
+        // Bot check: Time trap (min 2 seconds)
+        $ts = (int)($_POST['pr_ts'] ?? 0);
+        if (time() - $ts < 2) {
+             self::set_flash('error', __('Du fyllde i formuläret för snabbt. Är du en robot?', 'sh-review-members'));
+             return;
         }
 
         if (!get_option('users_can_register')) {
