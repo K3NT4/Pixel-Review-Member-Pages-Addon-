@@ -79,6 +79,13 @@ trait PRMP_Actions {
             return;
         }
 
+        // Captcha verification
+        $captcha = self::verify_captcha();
+        if (is_wp_error($captcha)) {
+            self::set_flash('error', $captcha->get_error_message());
+            return;
+        }
+
         $login = sanitize_text_field($_POST['pr_user_login'] ?? '');
         $pass  = (string)($_POST['pr_user_pass'] ?? '');
         $remember = !empty($_POST['pr_remember']);
@@ -102,6 +109,13 @@ trait PRMP_Actions {
     protected static function handle_register_submit() : void {
         if (empty($_POST['_wpnonce']) || !wp_verify_nonce(sanitize_text_field($_POST['_wpnonce']), 'pr_register')) {
             self::set_flash('error', __('Ogiltig säkerhetstoken. Försök igen.', 'sh-review-members'));
+            return;
+        }
+
+        // Captcha verification
+        $captcha = self::verify_captcha();
+        if (is_wp_error($captcha)) {
+            self::set_flash('error', $captcha->get_error_message());
             return;
         }
 
