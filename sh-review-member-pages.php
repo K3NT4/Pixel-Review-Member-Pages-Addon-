@@ -8,7 +8,7 @@
  * Author URI: https://spelhubben.se
  * Text Domain: sh-review-members
  * Domain Path: /languages
- * Requires at least: 6.8.3
+ * Requires at least: 6.0
  * Requires PHP: 8.0
  * License: GPL-2.0+
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -20,7 +20,7 @@ if (!defined('ABSPATH')) { exit; }
 define('SH_REVIEW_MEMBERS_FILE', __FILE__);
 define('SH_REVIEW_MEMBERS_DIR', plugin_dir_path(__FILE__));
 define('SH_REVIEW_MEMBERS_URL', plugin_dir_url(__FILE__));
-define('SH_REVIEW_MEMBERS_VERSION', '1.0.0');
+define('SH_REVIEW_MEMBERS_VERSION', '1.1.1');
 
 require_once SH_REVIEW_MEMBERS_DIR . 'includes/class-pr-member-pages.php';
 

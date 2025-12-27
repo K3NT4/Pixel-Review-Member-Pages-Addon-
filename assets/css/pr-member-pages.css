@@ -5,12 +5,15 @@
 
 .pr-card{max-width:860px;margin:24px auto;padding:20px;border:1px solid rgba(0,0,0,.08);border-radius:12px;background:#fff}
 .pr-card h2,.pr-card h3{margin-top:0}
+
 .pr-form input[type=text],
 .pr-form input[type=password],
 .pr-form input[type=email],
 .pr-form textarea,
-.pr-form select{width:100%;max-width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid rgba(0,0,0,.15);border-radius:10px}
+.pr-form select,
+.pr-form input[type=date]{width:100%;max-width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid rgba(0,0,0,.15);border-radius:10px}
 .pr-form textarea{min-height:140px}
+
 .pr-grid{display:grid;grid-template-columns:1fr;gap:12px}
 @media (min-width:760px){.pr-grid{grid-template-columns:1fr 1fr}}
 
@@ -28,7 +31,7 @@
 .pr-dashboard__actions{display:flex;flex-wrap:wrap;gap:10px}
 
 .pr-table-wrap{overflow:auto;border:1px solid rgba(0,0,0,.08);border-radius:12px}
-.pr-table{width:100%;border-collapse:collapse;min-width:680px}
+.pr-table{width:100%;border-collapse:collapse;min-width:760px}
 .pr-table th,.pr-table td{padding:10px 12px;border-bottom:1px solid rgba(0,0,0,.06);text-align:left;vertical-align:top}
 .pr-table thead th{background:rgba(0,0,0,.03)}
 
@@ -37,3 +40,11 @@
 .pr-pagination .current{font-weight:700}
 
 .pr-link{text-decoration:underline}
+
+.pr-details{margin:14px 0;padding:12px;border:1px solid rgba(0,0,0,.08);border-radius:12px;background:rgba(0,0,0,.015)}
+.pr-details summary{cursor:pointer;font-weight:700}
+.pr-details__content{margin-top:12px}
+
+/* Profile avatar */
+.pr-profile__avatar{display:flex;gap:14px;align-items:center;margin:10px 0 18px 0}
+.pr-profile__avatar-img img{border-radius:999px}
