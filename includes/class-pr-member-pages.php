@@ -71,9 +71,19 @@ class PR_Member_Pages {
         $opt = self::get_options();
         if (empty($opt['enabled'])) return;
 
-        $css = SH_REVIEW_MEMBERS_DIR . 'assets/css/pr-member-pages.css';
-        $ver = SH_REVIEW_MEMBERS_VERSION . '.' . (file_exists($css) ? filemtime($css) : time());
-        wp_enqueue_style('sh-review-members', SH_REVIEW_MEMBERS_URL . 'assets/css/pr-member-pages.css', [], $ver);
+        $css_url = SH_REVIEW_MEMBERS_URL . 'assets/css/pr-member-pages.css';
+        $ver = SH_REVIEW_MEMBERS_VERSION;
+
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            $css_path = SH_REVIEW_MEMBERS_DIR . 'assets/css/pr-member-pages.css';
+            if (file_exists($css_path)) {
+                $ver .= '.' . filemtime($css_path);
+            } else {
+                $ver .= '.' . time();
+            }
+        }
+
+        wp_enqueue_style('sh-review-members', $css_url, [], $ver);
     }
 
     /* =========================================================
