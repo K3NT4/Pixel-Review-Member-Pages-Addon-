@@ -361,7 +361,9 @@ trait PRMP_Shortcodes {
                 echo '<td>';
                 if (current_user_can('edit_post', $pid)) {
                     $edit_admin = self::wp_admin_edit_post_url((int)$pid);
-                    echo '<a class="pr-link" href="' . esc_url($edit_admin) . '">' . esc_html__('Redigera', 'sh-review-members') . '</a>';
+                    $title = get_the_title($pid);
+                    $edit_aria_label = sprintf(__('Redigera "%s"', 'sh-review-members'), $title);
+                    echo '<a class="pr-link" href="' . esc_url($edit_admin) . '" aria-label="' . esc_attr($edit_aria_label) . '">' . esc_html__('Redigera', 'sh-review-members') . '</a>';
                 } else {
                     echo '<span class="pr-muted">—</span>';
                 }
