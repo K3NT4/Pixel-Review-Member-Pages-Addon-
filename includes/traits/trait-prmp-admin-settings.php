@@ -315,24 +315,40 @@ trait PRMP_Admin_Settings {
         }
         echo '</select></label></p>';
 
-        echo '<div style="margin-left:20px; border-left:2px solid #ddd; padding-left:15px; margin-top:10px;">';
-
-        echo '<div id="sh-prmp-captcha-cloudflare" style="display:none;">';
-        echo '<p><strong>Cloudflare Turnstile</strong></p>';
-        echo '<p><label>' . esc_html__('Site Key', 'sh-review-members') . '<br />';
-        echo '<input type="text" name="' . esc_attr(self::OPT_KEY) . '[cf_site_key]" value="' . esc_attr($opt['cf_site_key'] ?? '') . '" class="regular-text"></label></p>';
-
-        echo '<p><label>' . esc_html__('Secret Key', 'sh-review-members') . '<br />';
-        echo '<input type="password" name="' . esc_attr(self::OPT_KEY) . '[cf_secret_key]" value="' . esc_attr($opt['cf_secret_key'] ?? '') . '" class="regular-text"></label></p>';
+        // Native description
+        echo '<div id="sh-prmp-captcha-native" style="display:none;" class="description">';
+        echo esc_html__('Använder osynliga fält (honeypot) och tidsmätning för att stoppa bottar utan att störa användaren.', 'sh-review-members');
         echo '</div>';
 
-        echo '<div id="sh-prmp-captcha-google" style="display:none;">';
-        echo '<p><strong>Google reCAPTCHA v2 (Checkbox)</strong></p>';
+        // Container for API settings
+        echo '<div style="margin-left:2px; margin-top:15px; padding-left:0;">';
+
+        // Cloudflare
+        echo '<div id="sh-prmp-captcha-cloudflare" style="display:none;">';
+        echo '<div class="card" style="max-width:100%; padding:15px; margin:0;">';
+        echo '<h3>Cloudflare Turnstile</h3>';
+        echo '<p class="description">' . sprintf(__('Hämta dina nycklar på %s.', 'sh-review-members'), '<a href="https://dash.cloudflare.com/" target="_blank">Cloudflare Dashboard</a>') . '</p>';
+
         echo '<p><label>' . esc_html__('Site Key', 'sh-review-members') . '<br />';
-        echo '<input type="text" name="' . esc_attr(self::OPT_KEY) . '[google_recaptcha_site_key]" value="' . esc_attr($opt['google_recaptcha_site_key'] ?? '') . '" class="regular-text"></label></p>';
+        echo '<input type="text" name="' . esc_attr(self::OPT_KEY) . '[cf_site_key]" value="' . esc_attr($opt['cf_site_key'] ?? '') . '" class="regular-text code"></label></p>';
 
         echo '<p><label>' . esc_html__('Secret Key', 'sh-review-members') . '<br />';
-        echo '<input type="password" name="' . esc_attr(self::OPT_KEY) . '[google_recaptcha_secret_key]" value="' . esc_attr($opt['google_recaptcha_secret_key'] ?? '') . '" class="regular-text"></label></p>';
+        echo '<input type="password" name="' . esc_attr(self::OPT_KEY) . '[cf_secret_key]" value="' . esc_attr($opt['cf_secret_key'] ?? '') . '" class="regular-text code"></label></p>';
+        echo '</div>';
+        echo '</div>';
+
+        // Google
+        echo '<div id="sh-prmp-captcha-google" style="display:none;">';
+        echo '<div class="card" style="max-width:100%; padding:15px; margin:0;">';
+        echo '<h3>Google reCAPTCHA v2 (Checkbox)</h3>';
+        echo '<p class="description">' . sprintf(__('Hämta dina nycklar på %s.', 'sh-review-members'), '<a href="https://www.google.com/recaptcha/admin" target="_blank">Google reCAPTCHA Admin</a>') . '</p>';
+
+        echo '<p><label>' . esc_html__('Site Key', 'sh-review-members') . '<br />';
+        echo '<input type="text" name="' . esc_attr(self::OPT_KEY) . '[google_recaptcha_site_key]" value="' . esc_attr($opt['google_recaptcha_site_key'] ?? '') . '" class="regular-text code"></label></p>';
+
+        echo '<p><label>' . esc_html__('Secret Key', 'sh-review-members') . '<br />';
+        echo '<input type="password" name="' . esc_attr(self::OPT_KEY) . '[google_recaptcha_secret_key]" value="' . esc_attr($opt['google_recaptcha_secret_key'] ?? '') . '" class="regular-text code"></label></p>';
+        echo '</div>';
         echo '</div>';
 
         echo '</div>';
@@ -341,13 +357,15 @@ trait PRMP_Admin_Settings {
         <script>
         document.addEventListener('DOMContentLoaded', function() {
             var select = document.getElementById('sh-prmp-captcha-provider');
+            var native = document.getElementById('sh-prmp-captcha-native');
             var cf = document.getElementById('sh-prmp-captcha-cloudflare');
             var google = document.getElementById('sh-prmp-captcha-google');
 
             function update() {
                 var val = select.value;
-                cf.style.display = (val === 'cloudflare') ? 'block' : 'none';
-                google.style.display = (val === 'google') ? 'block' : 'none';
+                if (native) native.style.display = (val === 'native') ? 'block' : 'none';
+                if (cf) cf.style.display = (val === 'cloudflare') ? 'block' : 'none';
+                if (google) google.style.display = (val === 'google') ? 'block' : 'none';
             }
             if (select) {
                 select.addEventListener('change', update);
