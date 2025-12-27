@@ -303,7 +303,7 @@ trait PRMP_Admin_Settings {
         $provider = $opt['captcha_provider'] ?? 'native';
 
         echo '<p><label>' . esc_html__('Metod', 'sh-review-members') . ' ';
-        echo '<select name="' . esc_attr(self::OPT_KEY) . '[captcha_provider]">';
+        echo '<select name="' . esc_attr(self::OPT_KEY) . '[captcha_provider]" id="sh-prmp-captcha-provider">';
         $opts = [
             'none'       => __('Ingen', 'sh-review-members'),
             'native'     => __('Native (Honeypot + Tid)', 'sh-review-members'),
@@ -317,23 +317,45 @@ trait PRMP_Admin_Settings {
 
         echo '<div style="margin-left:20px; border-left:2px solid #ddd; padding-left:15px; margin-top:10px;">';
 
+        echo '<div id="sh-prmp-captcha-cloudflare" style="display:none;">';
         echo '<p><strong>Cloudflare Turnstile</strong></p>';
         echo '<p><label>' . esc_html__('Site Key', 'sh-review-members') . '<br />';
         echo '<input type="text" name="' . esc_attr(self::OPT_KEY) . '[cf_site_key]" value="' . esc_attr($opt['cf_site_key'] ?? '') . '" class="regular-text"></label></p>';
 
         echo '<p><label>' . esc_html__('Secret Key', 'sh-review-members') . '<br />';
         echo '<input type="password" name="' . esc_attr(self::OPT_KEY) . '[cf_secret_key]" value="' . esc_attr($opt['cf_secret_key'] ?? '') . '" class="regular-text"></label></p>';
+        echo '</div>';
 
-        echo '<hr>';
-
+        echo '<div id="sh-prmp-captcha-google" style="display:none;">';
         echo '<p><strong>Google reCAPTCHA v2 (Checkbox)</strong></p>';
         echo '<p><label>' . esc_html__('Site Key', 'sh-review-members') . '<br />';
         echo '<input type="text" name="' . esc_attr(self::OPT_KEY) . '[google_recaptcha_site_key]" value="' . esc_attr($opt['google_recaptcha_site_key'] ?? '') . '" class="regular-text"></label></p>';
 
         echo '<p><label>' . esc_html__('Secret Key', 'sh-review-members') . '<br />';
         echo '<input type="password" name="' . esc_attr(self::OPT_KEY) . '[google_recaptcha_secret_key]" value="' . esc_attr($opt['google_recaptcha_secret_key'] ?? '') . '" class="regular-text"></label></p>';
+        echo '</div>';
 
         echo '</div>';
+
+        ?>
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var select = document.getElementById('sh-prmp-captcha-provider');
+            var cf = document.getElementById('sh-prmp-captcha-cloudflare');
+            var google = document.getElementById('sh-prmp-captcha-google');
+
+            function update() {
+                var val = select.value;
+                cf.style.display = (val === 'cloudflare') ? 'block' : 'none';
+                google.style.display = (val === 'google') ? 'block' : 'none';
+            }
+            if (select) {
+                select.addEventListener('change', update);
+                update();
+            }
+        });
+        </script>
+        <?php
     }
 
     public static function field_social_login() : void {
