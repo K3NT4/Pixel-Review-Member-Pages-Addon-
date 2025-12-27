@@ -33,7 +33,7 @@ add_action('plugins_loaded', function () {
         add_action('admin_notices', function () {
             if (!current_user_can('activate_plugins')) return;
             echo '<div class="notice notice-error"><p>';
-            echo esc_html__('Pixel Review — Member Pages kräver att huvudpluginet "Pixel Review" är aktiverat.', 'sh-review-members');
+            echo esc_html__('Pixel Review — Member Pages requires the main plugin "Pixel Review" to be enabled.', 'sh-review-members');
             echo '</p></div>';
         });
         return;

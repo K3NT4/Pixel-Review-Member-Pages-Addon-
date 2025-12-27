@@ -1,0 +1,617 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Pixel Review — Member Pages (Addon)\n"
+"POT-Creation-Date: 2025-12-27 13:02+0100\n"
+"PO-Revision-Date: 2025-12-27 13:02+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"X-Generator: Poedit 3.8\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
+"X-Poedit-WPHeader: sh-review-member-pages.php\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: "
+"__;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.min.js\n"
+
+#: includes/traits/trait-prmp-actions.php:78
+msgid "För många inloggningsförsök. Var god vänta en stund."
+msgstr ""
+
+#: includes/traits/trait-prmp-actions.php:83
+#: includes/traits/trait-prmp-actions.php:116
+#: includes/traits/trait-prmp-actions.php:177
+msgid "Ogiltig säkerhetstoken. Försök igen."
+msgstr ""
+
+#: includes/traits/trait-prmp-actions.php:88
+#: includes/traits/trait-prmp-actions.php:121
+msgid "Verifiering misslyckades (CAPTCHA). Försök igen."
+msgstr ""
+
+#: includes/traits/trait-prmp-actions.php:126
+#: includes/traits/trait-prmp-shortcodes.php:64
+msgid "Registrering är avstängd på denna webbplats."
+msgstr ""
+
+#: includes/traits/trait-prmp-actions.php:136
+msgid "Fyll i användarnamn, e-post och lösenord."
+msgstr ""
+
+#: includes/traits/trait-prmp-actions.php:140
+#: includes/traits/trait-prmp-actions.php:192
+msgid "Ogiltig e-postadress."
+msgstr ""
+
+#: includes/traits/trait-prmp-actions.php:144
+msgid "Lösenorden matchar inte."
+msgstr ""
+
+#: includes/traits/trait-prmp-actions.php:148
+msgid "Användarnamnet är upptaget."
+msgstr ""
+
+#: includes/traits/trait-prmp-actions.php:152
+msgid "E-postadressen används redan."
+msgstr ""
+
+#: includes/traits/trait-prmp-actions.php:172
+msgid "Du måste vara inloggad för att uppdatera din profil."
+msgstr ""
+
+#: includes/traits/trait-prmp-actions.php:197
+msgid "De nya lösenorden matchar inte."
+msgstr ""
+
+#: includes/traits/trait-prmp-actions.php:228
+msgid "Profilen har uppdaterats."
+msgstr ""
+
+#: includes/traits/trait-prmp-admin-settings.php:15
+#: includes/traits/trait-prmp-admin-settings.php:16
+#: includes/traits/trait-prmp-admin-settings.php:32
+msgid "Member Pages"
+msgstr ""
+
+#: includes/traits/trait-prmp-admin-settings.php:34
+msgid ""
+"Konfigurera front-end inloggning/registrering och “Mina sidor” utan att "
+"medlemmar behöver se wp-admin."
+msgstr ""
+
+#: includes/traits/trait-prmp-admin-settings.php:41
+msgid "Aktivera funktion"
+msgstr ""
+
+#: includes/traits/trait-prmp-admin-settings.php:49
+msgid "Sidor & shortcodes"
+msgstr ""
+
+#: includes/traits/trait-prmp-admin-settings.php:57
+msgid "Begränsa wp-admin"
+msgstr ""
+
+#: includes/traits/trait-prmp-admin-settings.php:65
+msgid "Säkerhet"
+msgstr ""
+
+#: includes/traits/trait-prmp-admin-settings.php:73
+msgid "Social Login"
+msgstr ""
+
+#: includes/traits/trait-prmp-admin-settings.php:81
+msgid "Dashboard"
+msgstr ""
+
+#: includes/traits/trait-prmp-admin-settings.php:155
+msgid "Sidor skapade/uppdaterade."
+msgstr ""
+
+#: includes/traits/trait-prmp-admin-settings.php:159
+msgid "Pixel Review — Member Pages"
+msgstr ""
+
+#: includes/traits/trait-prmp-admin-settings.php:168
+msgid "Snabbåtgärd"
+msgstr ""
+
+#: includes/traits/trait-prmp-admin-settings.php:169
+msgid "Skapa (eller uppdatera) standard-sidorna med rätt shortcodes."
+msgstr ""
+
+#: includes/traits/trait-prmp-admin-settings.php:173
+msgid "Skapa standard-sidor"
+msgstr ""
+
+#: includes/traits/trait-prmp-admin-settings.php:176
+msgid "Shortcodes du kan använda manuellt:"
+msgstr ""
+
+#: includes/traits/trait-prmp-admin-settings.php:235
+msgid "Aktivera member pages på frontend"
+msgstr ""
+
+#: includes/traits/trait-prmp-admin-settings.php:237
+msgid ""
+"När avstängt kommer shortcodes fortsatt finnas, men admin-blockering och "
+"redirects görs inte."
+msgstr ""
+
+#: includes/traits/trait-prmp-admin-settings.php:243
+msgid "Skapa standard-sidor vid aktivering"
+msgstr ""
+
+#: includes/traits/trait-prmp-admin-settings.php:250
+msgid "Skicka wp-login.php till den snygga login-sidan"
+msgstr ""
+
+#: includes/traits/trait-prmp-admin-settings.php:252
+msgid "Detta påverkar inte lösenordsåterställning (lost password/reset)."
+msgstr ""
+
+#: includes/traits/trait-prmp-admin-settings.php:260
+msgid "Funktion"
+msgstr ""
+
+#: includes/traits/trait-prmp-admin-settings.php:260
+msgid "Sida"
+msgstr ""
+
+#: includes/traits/trait-prmp-admin-settings.php:260
+msgid "Shortcode"
+msgstr ""
+
+#: includes/traits/trait-prmp-admin-settings.php:264
+#: includes/traits/trait-prmp-pages.php:17
+#: includes/traits/trait-prmp-shortcodes.php:25
+#: includes/traits/trait-prmp-shortcodes.php:40
+#: includes/traits/trait-prmp-shortcodes.php:99
+#: includes/traits/trait-prmp-shortcodes.php:112
+#: includes/traits/trait-prmp-shortcodes.php:136
+#: includes/traits/trait-prmp-shortcodes.php:248
+#: includes/traits/trait-prmp-shortcodes.php:426
+msgid "Logga in"
+msgstr ""
+
+#: includes/traits/trait-prmp-admin-settings.php:265
+msgid "Registrering"
+msgstr ""
+
+#: includes/traits/trait-prmp-admin-settings.php:266
+#: includes/traits/trait-prmp-admin-settings.php:302
+#: includes/traits/trait-prmp-pages.php:27
+#: includes/traits/trait-prmp-shortcodes.php:296
+msgid "Mina sidor"
+msgstr ""
+
+#: includes/traits/trait-prmp-admin-settings.php:267
+#: includes/traits/trait-prmp-admin-settings.php:303
+msgid "Profil"
+msgstr ""
+
+#: includes/traits/trait-prmp-admin-settings.php:268
+#: includes/traits/trait-prmp-pages.php:37
+#: includes/traits/trait-prmp-shortcodes.php:123
+#: includes/traits/trait-prmp-shortcodes.php:125
+#: includes/traits/trait-prmp-shortcodes.php:319
+msgid "Logga ut"
+msgstr ""
+
+#: includes/traits/trait-prmp-admin-settings.php:269
+#: includes/traits/trait-prmp-pages.php:42
+msgid "Redigera/Skapa inlägg"
+msgstr ""
+
+#: includes/traits/trait-prmp-admin-settings.php:278
+msgid "— Välj —"
+msgstr ""
+
+#: includes/traits/trait-prmp-admin-settings.php:296
+msgid ""
+"Tips: Sätt “Mina sidor” (dashboard) som landningssida efter inloggning för "
+"bäst UX."
+msgstr ""
+
+#: includes/traits/trait-prmp-admin-settings.php:299
+msgid "Redirect efter inloggning:"
+msgstr ""
+
+#: includes/traits/trait-prmp-admin-settings.php:304
+msgid "Startsida"
+msgstr ""
+
+#: includes/traits/trait-prmp-admin-settings.php:321
+msgid "Blockera wp-admin för valda roller"
+msgstr ""
+
+#: includes/traits/trait-prmp-admin-settings.php:324
+msgid ""
+"Rekommendation: blockera Subscriber/Customer så de aldrig ser adminpanelen "
+"(förutom när de redigerar/skapaar innehåll)."
+msgstr ""
+
+#: includes/traits/trait-prmp-admin-settings.php:327
+msgid "Blockerade roller:"
+msgstr ""
+
+#: includes/traits/trait-prmp-admin-settings.php:344
+msgid "Dölj admin-bar på frontend för blockerade roller"
+msgstr ""
+
+#: includes/traits/trait-prmp-admin-settings.php:351
+msgid "CAPTCHA"
+msgstr ""
+
+#: includes/traits/trait-prmp-admin-settings.php:356
+msgid "Ingen"
+msgstr ""
+
+#: includes/traits/trait-prmp-admin-settings.php:395
+msgid "Aktivera begränsning av inloggningsförsök"
+msgstr ""
+
+#: includes/traits/trait-prmp-admin-settings.php:415
+msgid "Aktivera Google-inloggning"
+msgstr ""
+
+#: includes/traits/trait-prmp-admin-settings.php:437
+msgid "Aktivera WordPress.com-inloggning"
+msgstr ""
+
+#: includes/traits/trait-prmp-admin-settings.php:458
+msgid "Post types som visas i “Mina sidor”:"
+msgstr ""
+
+#: includes/traits/trait-prmp-admin-settings.php:471
+msgid "Antal inlägg per sida:"
+msgstr ""
+
+#: includes/traits/trait-prmp-admin-settings.php:480
+msgid "Pixel Review-koppling"
+msgstr ""
+
+#: includes/traits/trait-prmp-admin-settings.php:486
+msgid "Visa endast inlägg som har Pixel Review-meta (t.ex. betyg)"
+msgstr ""
+
+#: includes/traits/trait-prmp-admin-settings.php:493
+msgid "Visa Pixel Review-fält i listan (betyg, typ, recensionsdatum)"
+msgstr ""
+
+#: includes/traits/trait-prmp-admin-settings.php:497
+msgid "Editor-länkar"
+msgstr ""
+
+#: includes/traits/trait-prmp-admin-settings.php:503
+msgid ""
+"Visa “Skapa nytt inlägg” och “Skapa recension” (öppnar WordPress editorn)"
+msgstr ""
+
+#: includes/traits/trait-prmp-pages.php:22
+#: includes/traits/trait-prmp-shortcodes.php:92
+msgid "Registrera"
+msgstr ""
+
+#: includes/traits/trait-prmp-pages.php:32
+#: includes/traits/trait-prmp-shortcodes.php:145
+msgid "Min profil"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:17
+#: includes/traits/trait-prmp-shortcodes.php:60
+msgid "Du är redan inloggad."
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:17
+#: includes/traits/trait-prmp-shortcodes.php:60
+msgid "Gå till Mina sidor"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:29
+msgid "Användarnamn eller e-post"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:32
+#: includes/traits/trait-prmp-shortcodes.php:83
+msgid "Lösenord"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:35
+msgid "Kom ihåg mig"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:47
+msgid "Har du inget konto?"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:47
+msgid "Registrera dig här"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:72
+msgid "Skapa konto"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:77
+msgid "Användarnamn"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:80
+#: includes/traits/trait-prmp-shortcodes.php:166
+msgid "E-post"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:86
+msgid "Upprepa lösenord"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:99
+msgid "Har du redan ett konto?"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:112
+msgid "Du är inte inloggad."
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:124
+msgid "Klicka på knappen nedan för att logga ut."
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:136
+msgid "Du måste logga in för att se din profil."
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:151
+msgid "Profilbild"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:152
+msgid "Profilbilden hämtas från Gravatar (baserat på din e-post)."
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:153
+msgid "Ändra profilbild på Gravatar"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:163
+msgid "Visningsnamn"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:169
+msgid "Förnamn"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:172
+msgid "Efternamn"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:177
+msgid "Bio"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:182
+msgid "Pixel Review – författarprofil"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:184
+msgid ""
+"Dessa fält används av Pixel Review på författarsidor och kan även visas i "
+"teman/moduler som läser Pixel Review-meta."
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:187
+#: includes/traits/trait-prmp-shortcodes.php:330
+msgid "Titel"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:190
+msgid "Plats"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:193
+msgid "Tagline"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:196
+msgid "Favoritspel"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:201
+msgid "Webbplats"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:204
+msgid "X/Twitter"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:207
+msgid "Twitch"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:210
+msgid "YouTube"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:215
+msgid "Discord"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:218
+msgid "Bakgrundsbild (URL)"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:226
+msgid "Byt lösenord"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:228
+msgid "Nytt lösenord"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:231
+msgid "Upprepa nytt lösenord"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:235
+msgid "Spara profil"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:248
+msgid "Du måste logga in för att se Mina sidor."
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:297
+#, php-format
+msgid "Inloggad som %s"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:306
+#: includes/traits/trait-prmp-shortcodes.php:472
+msgid "Skapa nytt inlägg"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:311
+#: includes/traits/trait-prmp-shortcodes.php:475
+msgid "Skapa recension"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:316
+msgid "Redigera profil"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:324
+msgid "Mina artiklar"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:333
+msgid "Betyg"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:336
+msgid "Typ"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:339
+msgid "Recensionsdatum"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:342
+msgid "Status"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:343
+msgid "Datum"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:344
+msgid "Åtgärd"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:366
+msgid "Produkt"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:366
+msgid "Spel"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:380
+#, php-format
+msgid "Redigera \"%s\""
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:381
+msgid "Redigera"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:405
+msgid "Sidnavigering"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:410
+msgid "Inga inlägg hittades."
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:412
+msgid ""
+"Notis: Filter är aktivt (endast inlägg med Pixel Review-meta). Stäng av i "
+"inställningarna om du vill se alla."
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:426
+msgid "Du måste logga in."
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:466
+msgid "Redigering"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:467
+msgid "Redigering och skapande sker i WordPress editorn."
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:469
+msgid "Tillbaka till Mina sidor"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:545
+msgid "Eller"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:550
+msgid "Logga in med Google"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:557
+msgid "Logga in med WordPress.com"
+msgstr ""
+
+#: includes/traits/trait-prmp-social-login.php:68
+msgid "Kunde inte verifiera inloggning med Google."
+msgstr ""
+
+#: includes/traits/trait-prmp-social-login.php:78
+msgid "Kunde inte verifiera inloggning med WordPress.com."
+msgstr ""
+
+#: includes/traits/trait-prmp-social-login.php:90
+msgid "Kunde inte hämta e-postadress från leverantören."
+msgstr ""
+
+#: includes/traits/trait-prmp-social-login.php:101
+msgid "Registrering är avstängd."
+msgstr ""
+
+#: sh-review-member-pages.php:36
+msgid ""
+"Pixel Review — Member Pages kräver att huvudpluginet \"Pixel Review\" är "
+"aktiverat."
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "Pixel Review — Member Pages (Addon)"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "https://spelhubben.se/plugins/pixel-review"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid ""
+"Adds branded front-end member pages (login, register, profile, dashboard) "
+"for Pixel Review sites."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Spel Hubben"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "https://spelhubben.se"
+msgstr ""

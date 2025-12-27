@@ -65,7 +65,7 @@ trait PRMP_Social_Login {
         if ($provider === 'google') {
              $data = self::verify_google_token($code);
              if (!$data) {
-                 self::set_flash('error', __('Kunde inte verifiera inloggning med Google.', 'sh-review-members'));
+                 self::set_flash('error', __('Could not verify login with Google.', 'sh-review-members'));
                  wp_safe_redirect(self::page_url('login'));
                  exit;
              }
@@ -75,7 +75,7 @@ trait PRMP_Social_Login {
         } elseif ($provider === 'wordpress') {
              $data = self::verify_wordpress_token($code);
              if (!$data) {
-                 self::set_flash('error', __('Kunde inte verifiera inloggning med WordPress.com.', 'sh-review-members'));
+                 self::set_flash('error', __('Could not verify login with WordPress.com.', 'sh-review-members'));
                  wp_safe_redirect(self::page_url('login'));
                  exit;
              }
@@ -87,7 +87,7 @@ trait PRMP_Social_Login {
         }
 
         if (!$user_email) {
-            self::set_flash('error', __('Kunde inte hämta e-postadress från leverantören.', 'sh-review-members'));
+            self::set_flash('error', __('Could not retrieve email address from the provider.', 'sh-review-members'));
             wp_safe_redirect(self::page_url('login'));
             exit;
         }
@@ -98,7 +98,7 @@ trait PRMP_Social_Login {
         if (!$user) {
             // Registration
             if (!get_option('users_can_register')) {
-                self::set_flash('error', __('Registrering är avstängd.', 'sh-review-members'));
+                self::set_flash('error', __('Registration is disabled.', 'sh-review-members'));
                 wp_safe_redirect(self::page_url('login'));
                 exit;
             }
