@@ -14,7 +14,7 @@ trait PRMP_Shortcodes {
 
         if (is_user_logged_in()) {
             $url = self::redirect_after_login();
-            return '<div class="pr-card">' . self::render_flash() . '<p>' . esc_html__('Du är redan inloggad.', 'sh-review-members') . '</p><p><a class="pr-button" href="' . esc_url($url) . '">' . esc_html__('Gå till Mina sidor', 'sh-review-members') . '</a></p></div>';
+            return '<div class="pr-card">' . self::render_flash() . '<p>' . esc_html__('You are already logged in.', 'sh-review-members') . '</p><p><a class="pr-button" href="' . esc_url($url) . '">' . esc_html__('Go to My Pages', 'sh-review-members') . '</a></p></div>';
         }
 
         $register_url = self::page_url('register');
@@ -185,16 +185,16 @@ trait PRMP_Shortcodes {
 
         echo '<div class="pr-grid">';
         echo '<p><label>' . esc_html__('Title', 'sh-review-members') . '<br />';
-        echo '<input type="text" name="pr_author_title" value="' . esc_attr($author_meta['title'] ?? '') . '" placeholder="Editor"></label></p>';
+        echo '<input type="text" name="pr_author_title" value="' . esc_attr($author_meta['title'] ?? '') . '" placeholder="' . esc_attr__('Editor', 'sh-review-members') . '"></label></p>';
 
         echo '<p><label>' . esc_html__('Location', 'sh-review-members') . '<br />';
-        echo '<input type="text" name="pr_author_location" value="' . esc_attr($author_meta['location'] ?? '') . '" placeholder="Stockholm"></label></p>';
+        echo '<input type="text" name="pr_author_location" value="' . esc_attr($author_meta['location'] ?? '') . '" placeholder="' . esc_attr__('Stockholm', 'sh-review-members') . '"></label></p>';
 
         echo '<p><label>' . esc_html__('Tagline', 'sh-review-members') . '<br />';
-        echo '<input type="text" name="pr_author_tagline" value="' . esc_attr($author_meta['tagline'] ?? '') . '" placeholder="Writes about games and hardware"></label></p>';
+        echo '<input type="text" name="pr_author_tagline" value="' . esc_attr($author_meta['tagline'] ?? '') . '" placeholder="' . esc_attr__('Writes about games and hardware', 'sh-review-members') . '"></label></p>';
 
         echo '<p><label>' . esc_html__('Favorite Games', 'sh-review-members') . '<br />';
-        echo '<input type="text" name="pr_author_favorite_games" value="' . esc_attr($author_meta['favorite_games'] ?? '') . '" placeholder="Elden Ring, ..."></label></p>';
+        echo '<input type="text" name="pr_author_favorite_games" value="' . esc_attr($author_meta['favorite_games'] ?? '') . '" placeholder="' . esc_attr__('Elden Ring, ...', 'sh-review-members') . '"></label></p>';
         echo '</div>';
 
         echo '<div class="pr-grid">';
@@ -215,7 +215,7 @@ trait PRMP_Shortcodes {
         echo '<p><label>' . esc_html__('Discord', 'sh-review-members') . '<br />';
         echo '<input type="url" name="pr_author_discord" value="' . esc_attr($author_meta['discord'] ?? '') . '" placeholder="https://discord.gg/... "></label></p>';
 
-        echo '<p><label>' . esc_html__('Bakgrundsbild (URL)', 'sh-review-members') . '<br />';
+        echo '<p><label>' . esc_html__('Background image (URL)', 'sh-review-members') . '<br />';
         echo '<input type="url" name="pr_author_bg_url" value="' . esc_attr($author_meta['bg_url'] ?? '') . '" placeholder="https://..."></label></p>';
         echo '</div>';
 
@@ -232,6 +232,29 @@ trait PRMP_Shortcodes {
         echo '<input type="password" name="pr_new_pass2" autocomplete="new-password"></label></p>';
         echo '</div>';
 
+        // Privacy / GDPR
+        if (!empty($opt['enable_data_deletion']) || !empty($opt['enable_data_export'])) {
+            echo '<hr class="pr-hr" />';
+            echo '<h3>' . esc_html__('Privacy & Data', 'sh-review-members') . '</h3>';
+            echo '<div class="pr-grid">';
+
+            if (!empty($opt['enable_data_export'])) {
+                echo '<div>';
+                echo '<p>' . esc_html__('Request a copy of your personal data.', 'sh-review-members') . '</p>';
+                echo '<button type="submit" name="pr_privacy_action" value="export_personal_data" class="pr-button pr-button--secondary">' . esc_html__('Request Data Export', 'sh-review-members') . '</button>';
+                echo '</div>';
+            }
+
+            if (!empty($opt['enable_data_deletion'])) {
+                echo '<div>';
+                echo '<p>' . esc_html__('Request deletion of your account and personal data.', 'sh-review-members') . '</p>';
+                echo '<button type="submit" name="pr_privacy_action" value="remove_personal_data" class="pr-button pr-button--danger" onclick="return confirm(\'' . esc_js(__('Are you sure you want to request account deletion? This action cannot be undone.', 'sh-review-members')) . '\');">' . esc_html__('Request Account Deletion', 'sh-review-members') . '</button>';
+                echo '</div>';
+            }
+
+            echo '</div>';
+        }
+
         echo '<p><button type="submit" name="pr_profile_submit" class="pr-button">' . esc_html__('Save Profile', 'sh-review-members') . '</button></p>';
         echo '</form>';
 
@@ -245,7 +268,7 @@ trait PRMP_Shortcodes {
 
         if (!is_user_logged_in()) {
             $login = self::page_url('login') ?: wp_login_url(self::current_url());
-            return '<div class="pr-card">' . self::render_flash() . '<p>' . esc_html__('You must log in to view My Pages.', 'sh-review-members') . '</p><p><a class="pr-button" href="' . esc_url($login) . '">' . esc_html__('Log In', 'sh-review-members') . '</a></p></div>';
+            return '<div class="pr-card">' . self::render_flash() . '<p>' . esc_html__('You must log in to view My Pages.', 'sh-review-members') . '</p><p><a class="pr-button" href="' . esc_url($login) . '">' . esc_html__('Log in', 'sh-review-members') . '</a></p></div>';
         }
 
         $user = wp_get_current_user();
@@ -316,7 +339,7 @@ trait PRMP_Shortcodes {
             echo '<a class="pr-button pr-button--secondary" href="' . esc_url($profile_url) . '">' . esc_html__('Edit Profile', 'sh-review-members') . '</a>';
         }
         if ($logout_url) {
-            echo '<a class="pr-button pr-button--secondary" href="' . esc_url($logout_url) . '">' . esc_html__('Log Out', 'sh-review-members') . '</a>';
+            echo '<a class="pr-button pr-button--secondary" href="' . esc_url($logout_url) . '">' . esc_html__('Log out', 'sh-review-members') . '</a>';
         }
         echo '</div>';
         echo '</div>';
@@ -402,7 +425,7 @@ trait PRMP_Shortcodes {
                 'next_text' => '»',
             ]);
             if ($links) {
-                echo '<nav class="pr-pagination" aria-label="' . esc_attr__('Sidnavigering', 'sh-review-members') . '">' . $links . '</nav>';
+                echo '<nav class="pr-pagination" aria-label="' . esc_attr__('Page navigation', 'sh-review-members') . '">' . $links . '</nav>';
             }
 
             wp_reset_postdata();
@@ -542,7 +565,7 @@ trait PRMP_Shortcodes {
         if (!$google && !$wp) return '';
 
         $out = '<div class="pr-social-login">';
-        $out .= '<p class="pr-separator"><span>' . esc_html__('Eller', 'sh-review-members') . '</span></p>';
+        $out .= '<p class="pr-separator"><span>' . esc_html__('Or', 'sh-review-members') . '</span></p>';
 
         if ($google) {
             $url = self::get_social_login_url('google');
