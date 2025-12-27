@@ -1,0 +1,39 @@
+/* Pixel Review — Member Pages (Addon)
+   Minimal, theme-friendly styling.
+   This should not fight the active theme; it only provides basic spacing.
+*/
+
+.pr-card{max-width:860px;margin:24px auto;padding:20px;border:1px solid rgba(0,0,0,.08);border-radius:12px;background:#fff}
+.pr-card h2,.pr-card h3{margin-top:0}
+.pr-form input[type=text],
+.pr-form input[type=password],
+.pr-form input[type=email],
+.pr-form textarea,
+.pr-form select{width:100%;max-width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid rgba(0,0,0,.15);border-radius:10px}
+.pr-form textarea{min-height:140px}
+.pr-grid{display:grid;grid-template-columns:1fr;gap:12px}
+@media (min-width:760px){.pr-grid{grid-template-columns:1fr 1fr}}
+
+.pr-button{display:inline-block;padding:10px 14px;border-radius:10px;border:1px solid rgba(0,0,0,.15);text-decoration:none;font-weight:600;cursor:pointer}
+.pr-button--secondary{opacity:.9}
+
+.pr-muted{opacity:.75}
+.pr-hr{margin:18px 0;border:0;border-top:1px solid rgba(0,0,0,.08)}
+
+.pr-notice{padding:10px 12px;border-radius:10px;margin:0 0 14px 0}
+.pr-notice--success{border:1px solid rgba(0,128,0,.25);background:rgba(0,128,0,.06)}
+.pr-notice--error{border:1px solid rgba(200,0,0,.25);background:rgba(200,0,0,.06)}
+
+.pr-dashboard__header{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;margin-bottom:10px}
+.pr-dashboard__actions{display:flex;flex-wrap:wrap;gap:10px}
+
+.pr-table-wrap{overflow:auto;border:1px solid rgba(0,0,0,.08);border-radius:12px}
+.pr-table{width:100%;border-collapse:collapse;min-width:680px}
+.pr-table th,.pr-table td{padding:10px 12px;border-bottom:1px solid rgba(0,0,0,.06);text-align:left;vertical-align:top}
+.pr-table thead th{background:rgba(0,0,0,.03)}
+
+.pr-pagination ul{display:flex;flex-wrap:wrap;gap:6px;list-style:none;padding:0;margin:16px 0 0 0}
+.pr-pagination a,.pr-pagination span{display:inline-block;padding:6px 10px;border:1px solid rgba(0,0,0,.12);border-radius:10px;text-decoration:none}
+.pr-pagination .current{font-weight:700}
+
+.pr-link{text-decoration:underline}
