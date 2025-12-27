@@ -74,8 +74,18 @@ trait PRMP_Actions {
     }
 
     protected static function handle_login_submit() : void {
+        if (self::check_rate_limit()) {
+            self::set_flash('error', __('För många inloggningsförsök. Var god vänta en stund.', 'sh-review-members'));
+            return;
+        }
+
         if (empty($_POST['_wpnonce']) || !wp_verify_nonce(sanitize_text_field($_POST['_wpnonce']), 'pr_login')) {
             self::set_flash('error', __('Ogiltig säkerhetstoken. Försök igen.', 'sh-review-members'));
+            return;
+        }
+
+        if (!self::verify_captcha()) {
+            self::set_flash('error', __('Verifiering misslyckades (CAPTCHA). Försök igen.', 'sh-review-members'));
             return;
         }
 
@@ -91,10 +101,12 @@ trait PRMP_Actions {
 
         $user = wp_signon($creds, is_ssl());
         if (is_wp_error($user)) {
+            self::increment_failed_attempts();
             self::set_flash('error', $user->get_error_message());
             return;
         }
 
+        self::clear_rate_limit_attempts();
         wp_safe_redirect(self::redirect_after_login());
         exit;
     }
@@ -102,6 +114,11 @@ trait PRMP_Actions {
     protected static function handle_register_submit() : void {
         if (empty($_POST['_wpnonce']) || !wp_verify_nonce(sanitize_text_field($_POST['_wpnonce']), 'pr_register')) {
             self::set_flash('error', __('Ogiltig säkerhetstoken. Försök igen.', 'sh-review-members'));
+            return;
+        }
+
+        if (!self::verify_captcha()) {
+            self::set_flash('error', __('Verifiering misslyckades (CAPTCHA). Försök igen.', 'sh-review-members'));
             return;
         }
 
@@ -213,5 +230,97 @@ trait PRMP_Actions {
         // Redirect to avoid resubmission.
         wp_safe_redirect(self::page_url('profile') ?: self::current_url());
         exit;
+    }
+
+    /**
+     * Check if the current IP is rate-limited.
+     * Returns true if blocked.
+     */
+    protected static function check_rate_limit() : bool {
+        $opt = self::get_options();
+        if (empty($opt['enable_rate_limit'])) return false;
+
+        $ip = $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1';
+        $key = 'prmp_login_fails_' . md5($ip);
+        $fails = (int)get_transient($key);
+
+        $limit = max(3, absint($opt['max_login_attempts'] ?? 5));
+
+        return $fails >= $limit;
+    }
+
+    /**
+     * Increment failed attempts counter.
+     */
+    protected static function increment_failed_attempts() : void {
+        $opt = self::get_options();
+        if (empty($opt['enable_rate_limit'])) return;
+
+        $ip = $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1';
+        $key = 'prmp_login_fails_' . md5($ip);
+        $fails = (int)get_transient($key);
+
+        set_transient($key, $fails + 1, 30 * MINUTE_IN_SECONDS);
+    }
+
+    /**
+     * Clear rate limit on successful login.
+     */
+    protected static function clear_rate_limit_attempts() : void {
+        $opt = self::get_options();
+        if (empty($opt['enable_rate_limit'])) return;
+
+        $ip = $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1';
+        $key = 'prmp_login_fails_' . md5($ip);
+        delete_transient($key);
+    }
+
+    /**
+     * Verify CAPTCHA token.
+     */
+    protected static function verify_captcha() : bool {
+        $opt = self::get_options();
+        $provider = $opt['captcha_provider'] ?? '';
+
+        $secret = '';
+        if ($provider === 'turnstile') {
+             $secret = $opt['turnstile_secret_key'] ?? '';
+        } elseif ($provider === 'recaptcha_v3') {
+             $secret = $opt['recaptcha_secret_key'] ?? '';
+        }
+
+        if (!$provider || !$secret) return true; // Pass if not configured.
+
+        $token = '';
+        if ($provider === 'turnstile') {
+            $token = $_POST['cf-turnstile-response'] ?? '';
+        } elseif ($provider === 'recaptcha_v3') {
+            $token = $_POST['g-recaptcha-response'] ?? '';
+        }
+
+        if (!$token) return false;
+
+        $verify_url = '';
+        if ($provider === 'turnstile') {
+            $verify_url = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
+        } elseif ($provider === 'recaptcha_v3') {
+            $verify_url = 'https://www.google.com/recaptcha/api/siteverify';
+        }
+
+        $response = wp_remote_post($verify_url, [
+            'body' => [
+                'secret' => $secret,
+                'response' => $token,
+                'remoteip' => $_SERVER['REMOTE_ADDR'] ?? ''
+            ]
+        ]);
+
+        if (is_wp_error($response)) return false;
+
+        $body = json_decode(wp_remote_retrieve_body($response), true);
+
+        // For reCAPTCHA v3, we should also check the score, but for now success=true is the baseline.
+        // Turnstile also returns success=true.
+        return !empty($body['success']);
     }
 }

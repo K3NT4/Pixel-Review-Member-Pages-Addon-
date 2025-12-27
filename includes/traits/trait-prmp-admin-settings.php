@@ -61,6 +61,22 @@ trait PRMP_Admin_Settings {
         );
 
         add_settings_field(
+            'security',
+            __('Säkerhet', 'sh-review-members'),
+            [__CLASS__, 'field_security'],
+            'sh-review-member-pages',
+            'sh_review_members_main'
+        );
+
+        add_settings_field(
+            'social_login',
+            __('Social Login', 'sh-review-members'),
+            [__CLASS__, 'field_social_login'],
+            'sh-review-member-pages',
+            'sh_review_members_main'
+        );
+
+        add_settings_field(
             'dashboard',
             __('Dashboard', 'sh-review-members'),
             [__CLASS__, 'field_dashboard'],
@@ -87,6 +103,24 @@ trait PRMP_Admin_Settings {
         $roles = (array)($input['blocked_roles'] ?? []);
         $roles = array_values(array_filter(array_map('sanitize_text_field', $roles)));
         $out['blocked_roles'] = $roles;
+
+        // Security
+        $out['captcha_provider'] = sanitize_key($input['captcha_provider'] ?? '');
+        $out['turnstile_site_key'] = sanitize_text_field($input['turnstile_site_key'] ?? '');
+        $out['turnstile_secret_key'] = sanitize_text_field($input['turnstile_secret_key'] ?? '');
+        $out['recaptcha_site_key'] = sanitize_text_field($input['recaptcha_site_key'] ?? '');
+        $out['recaptcha_secret_key'] = sanitize_text_field($input['recaptcha_secret_key'] ?? '');
+        $out['enable_rate_limit'] = !empty($input['enable_rate_limit']) ? 1 : 0;
+        $out['max_login_attempts'] = absint($input['max_login_attempts'] ?? 5);
+
+        // Social Login
+        $out['social_login_google'] = !empty($input['social_login_google']) ? 1 : 0;
+        $out['google_client_id'] = sanitize_text_field($input['google_client_id'] ?? '');
+        $out['google_client_secret'] = sanitize_text_field($input['google_client_secret'] ?? '');
+
+        $out['social_login_wordpress'] = !empty($input['social_login_wordpress']) ? 1 : 0;
+        $out['wordpress_client_id'] = sanitize_text_field($input['wordpress_client_id'] ?? '');
+        $out['wordpress_client_secret'] = sanitize_text_field($input['wordpress_client_secret'] ?? '');
 
         // Page IDs
         if (isset($input['page_ids']) && is_array($input['page_ids'])) {
@@ -142,6 +176,52 @@ trait PRMP_Admin_Settings {
         echo '<p style="margin-top:16px;">' . esc_html__('Shortcodes du kan använda manuellt:', 'sh-review-members') . '</p>';
         echo '<code>[pr_login]</code> <code>[pr_register]</code> <code>[pr_profile]</code> <code>[pr_dashboard]</code> <code>[pr_logout]</code> <code>[pr_post_edit]</code>';
 
+        // Add Javascript for conditional logic
+        ?>
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            function toggleVisibility(checkboxId, targetId) {
+                var checkbox = document.getElementById(checkboxId);
+                var target = document.getElementById(targetId);
+                if (!checkbox || !target) return;
+
+                function update() {
+                    target.style.display = checkbox.checked ? 'block' : 'none';
+                }
+                checkbox.addEventListener('change', update);
+                update();
+            }
+
+            function toggleSelectVisibility(selectId, targetMap) {
+                var select = document.getElementById(selectId);
+                if (!select) return;
+
+                function update() {
+                    var val = select.value;
+                    for (var key in targetMap) {
+                         var el = document.getElementById(targetMap[key]);
+                         if (el) el.style.display = 'none';
+                    }
+                    if (targetMap[val]) {
+                        var active = document.getElementById(targetMap[val]);
+                        if (active) active.style.display = 'block';
+                    }
+                }
+                select.addEventListener('change', update);
+                update();
+            }
+
+            toggleVisibility('prmp_rate_limit_check', 'prmp_rate_limit_opts');
+            toggleVisibility('prmp_sl_google_check', 'prmp_sl_google_opts');
+            toggleVisibility('prmp_sl_wp_check', 'prmp_sl_wp_opts');
+
+            toggleSelectVisibility('prmp_captcha_select', {
+                'turnstile': 'prmp_captcha_turnstile_opts',
+                'recaptcha_v3': 'prmp_captcha_recaptcha_opts'
+            });
+        });
+        </script>
+        <?php
         echo '</div>';
     }
 
@@ -263,6 +343,112 @@ trait PRMP_Admin_Settings {
             checked(1, (int)$opt['disable_admin_bar'], false),
             esc_html__('Dölj admin-bar på frontend för blockerade roller', 'sh-review-members')
         );
+    }
+
+    public static function field_security() : void {
+        $opt = self::get_options();
+
+        echo '<p><strong>' . esc_html__('CAPTCHA', 'sh-review-members') . '</strong></p>';
+        printf(
+            '<select name="%s[captcha_provider]" id="prmp_captcha_select">',
+            esc_attr(self::OPT_KEY)
+        );
+        echo '<option value="">' . esc_html__('Ingen', 'sh-review-members') . '</option>';
+        printf('<option value="turnstile" %s>%s</option>', selected($opt['captcha_provider'], 'turnstile', false), 'Cloudflare Turnstile');
+        printf('<option value="recaptcha_v3" %s>%s</option>', selected($opt['captcha_provider'], 'recaptcha_v3', false), 'Google reCAPTCHA v3');
+        echo '</select>';
+
+        echo '<div id="prmp_captcha_turnstile_opts" style="display:none; margin-top:10px; padding:10px; background:#f0f0f1; border:1px solid #ccc;">';
+        echo '<p><strong>Cloudflare Turnstile Settings</strong></p>';
+        printf(
+            '<p><label>Site Key<br /><input type="text" name="%1$s[turnstile_site_key]" value="%2$s" class="regular-text" /></label></p>',
+            esc_attr(self::OPT_KEY),
+            esc_attr($opt['turnstile_site_key'])
+        );
+        printf(
+            '<p><label>Secret Key<br /><input type="password" name="%1$s[turnstile_secret_key]" value="%2$s" class="regular-text" /></label></p>',
+            esc_attr(self::OPT_KEY),
+            esc_attr($opt['turnstile_secret_key'])
+        );
+        echo '</div>';
+
+        echo '<div id="prmp_captcha_recaptcha_opts" style="display:none; margin-top:10px; padding:10px; background:#f0f0f1; border:1px solid #ccc;">';
+        echo '<p><strong>Google reCAPTCHA v3 Settings</strong></p>';
+        printf(
+            '<p><label>Site Key<br /><input type="text" name="%1$s[recaptcha_site_key]" value="%2$s" class="regular-text" /></label></p>',
+            esc_attr(self::OPT_KEY),
+            esc_attr($opt['recaptcha_site_key'])
+        );
+        printf(
+            '<p><label>Secret Key<br /><input type="password" name="%1$s[recaptcha_secret_key]" value="%2$s" class="regular-text" /></label></p>',
+            esc_attr(self::OPT_KEY),
+            esc_attr($opt['recaptcha_secret_key'])
+        );
+        echo '</div>';
+
+        echo '<hr />';
+        echo '<p><strong>Rate Limiting</strong></p>';
+        printf(
+            '<label><input type="checkbox" name="%1$s[enable_rate_limit]" id="prmp_rate_limit_check" value="1" %2$s> %3$s</label>',
+            esc_attr(self::OPT_KEY),
+            checked(1, (int)$opt['enable_rate_limit'], false),
+            esc_html__('Aktivera begränsning av inloggningsförsök', 'sh-review-members')
+        );
+
+        echo '<div id="prmp_rate_limit_opts" style="display:none; margin-top:10px; padding-left:20px;">';
+        printf(
+            '<p><label>Max antal försök (per 30 minuter)<br /><input type="number" min="1" max="100" name="%1$s[max_login_attempts]" value="%2$s" class="small-text" /></label></p>',
+            esc_attr(self::OPT_KEY),
+            esc_attr($opt['max_login_attempts'])
+        );
+        echo '</div>';
+    }
+
+    public static function field_social_login() : void {
+        $opt = self::get_options();
+
+        echo '<p><strong>Google</strong></p>';
+        printf(
+            '<label><input type="checkbox" name="%1$s[social_login_google]" id="prmp_sl_google_check" value="1" %2$s> %3$s</label>',
+            esc_attr(self::OPT_KEY),
+            checked(1, (int)$opt['social_login_google'], false),
+            esc_html__('Aktivera Google-inloggning', 'sh-review-members')
+        );
+
+        echo '<div id="prmp_sl_google_opts" style="display:none; margin-top:10px; padding-left:20px;">';
+        printf(
+            '<p><label>Client ID<br /><input type="text" name="%1$s[google_client_id]" value="%2$s" class="regular-text" /></label></p>',
+            esc_attr(self::OPT_KEY),
+            esc_attr($opt['google_client_id'])
+        );
+        printf(
+            '<p><label>Client Secret<br /><input type="password" name="%1$s[google_client_secret]" value="%2$s" class="regular-text" /></label></p>',
+            esc_attr(self::OPT_KEY),
+            esc_attr($opt['google_client_secret'])
+        );
+        echo '</div>';
+
+        echo '<hr />';
+        echo '<p><strong>WordPress.com</strong></p>';
+        printf(
+            '<label><input type="checkbox" name="%1$s[social_login_wordpress]" id="prmp_sl_wp_check" value="1" %2$s> %3$s</label>',
+            esc_attr(self::OPT_KEY),
+            checked(1, (int)$opt['social_login_wordpress'], false),
+            esc_html__('Aktivera WordPress.com-inloggning', 'sh-review-members')
+        );
+
+        echo '<div id="prmp_sl_wp_opts" style="display:none; margin-top:10px; padding-left:20px;">';
+        printf(
+            '<p><label>Client ID<br /><input type="text" name="%1$s[wordpress_client_id]" value="%2$s" class="regular-text" /></label></p>',
+            esc_attr(self::OPT_KEY),
+            esc_attr($opt['wordpress_client_id'])
+        );
+        printf(
+            '<p><label>Client Secret<br /><input type="password" name="%1$s[wordpress_client_secret]" value="%2$s" class="regular-text" /></label></p>',
+            esc_attr(self::OPT_KEY),
+            esc_attr($opt['wordpress_client_secret'])
+        );
+        echo '</div>';
     }
 
     public static function field_dashboard() : void {
