@@ -247,7 +247,6 @@ trait PRMP_Shortcodes {
 
     protected static function render_privacy_section(WP_User $user) : string {
         $opt = self::get_options();
-        if (empty($opt['enable_privacy'])) return '';
 
         $export_on = !empty($opt['enable_data_export']);
         $delete_on = !empty($opt['enable_data_deletion']);
