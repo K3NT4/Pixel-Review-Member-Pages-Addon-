@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Pixel Review — Member Pages (Addon)\n"
-"POT-Creation-Date: 2025-12-28 17:52+0100\n"
+"POT-Creation-Date: 2025-12-28 21:07+0100\n"
 "PO-Revision-Date: 2025-12-27 13:02+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -20,81 +20,81 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.min.js\n"
 
-#: includes/traits/trait-prmp-actions.php:42
-#: includes/traits/trait-prmp-actions.php:81
-#: includes/traits/trait-prmp-actions.php:140
-#: includes/traits/trait-prmp-actions.php:197
+#: includes/traits/trait-prmp-actions.php:45
+#: includes/traits/trait-prmp-actions.php:84
+#: includes/traits/trait-prmp-actions.php:143
+#: includes/traits/trait-prmp-actions.php:210
 msgid "Invalid security token. Please try again."
 msgstr ""
 
-#: includes/traits/trait-prmp-actions.php:50
-#: includes/traits/trait-prmp-actions.php:97
+#: includes/traits/trait-prmp-actions.php:53
+#: includes/traits/trait-prmp-actions.php:100
 msgid "Please fill in all fields."
 msgstr ""
 
-#: includes/traits/trait-prmp-actions.php:55
+#: includes/traits/trait-prmp-actions.php:58
 msgid "Too many login attempts. Please wait and try again."
 msgstr ""
 
-#: includes/traits/trait-prmp-actions.php:87
+#: includes/traits/trait-prmp-actions.php:90
 #: includes/traits/trait-prmp-social-login.php:101
 msgid "Registration is disabled."
 msgstr ""
 
-#: includes/traits/trait-prmp-actions.php:102
+#: includes/traits/trait-prmp-actions.php:105
 msgid "Please provide a valid email address."
 msgstr ""
 
-#: includes/traits/trait-prmp-actions.php:107
-#: includes/traits/trait-prmp-actions.php:173
+#: includes/traits/trait-prmp-actions.php:110
+#: includes/traits/trait-prmp-actions.php:186
 msgid "Passwords do not match."
 msgstr ""
 
-#: includes/traits/trait-prmp-actions.php:112
+#: includes/traits/trait-prmp-actions.php:115
 msgid "Username already exists."
 msgstr ""
 
-#: includes/traits/trait-prmp-actions.php:117
+#: includes/traits/trait-prmp-actions.php:120
 msgid "Email already exists."
 msgstr ""
 
-#: includes/traits/trait-prmp-actions.php:127
+#: includes/traits/trait-prmp-actions.php:130
 msgid "Account created. Please log in."
 msgstr ""
 
-#: includes/traits/trait-prmp-actions.php:135
-#: includes/traits/trait-prmp-actions.php:192
+#: includes/traits/trait-prmp-actions.php:138
+#: includes/traits/trait-prmp-actions.php:205
 #: includes/traits/trait-prmp-shortcodes.php:190
 msgid "You must be logged in."
 msgstr ""
 
-#: includes/traits/trait-prmp-actions.php:146
+#: includes/traits/trait-prmp-actions.php:149
 msgid "User not found."
 msgstr ""
 
-#: includes/traits/trait-prmp-actions.php:177
+#: includes/traits/trait-prmp-actions.php:190
 msgid "Password must be at least 8 characters."
 msgstr ""
 
-#: includes/traits/trait-prmp-actions.php:185
+#: includes/traits/trait-prmp-actions.php:198
 msgid "Profile updated."
 msgstr ""
 
-#: includes/traits/trait-prmp-actions.php:206
+#: includes/traits/trait-prmp-actions.php:219
 msgid "Data export is not enabled."
 msgstr ""
 
-#: includes/traits/trait-prmp-actions.php:210
+#: includes/traits/trait-prmp-actions.php:223
 msgid "Account deletion is not enabled."
 msgstr ""
 
-#: includes/traits/trait-prmp-actions.php:226
+#: includes/traits/trait-prmp-actions.php:239
 msgid ""
 "A confirmation email has been sent to your address. Please click the link "
 "in the email to confirm your request."
 msgstr ""
 
-#: includes/traits/trait-prmp-actions.php:228
+#: includes/traits/trait-prmp-actions.php:241
 msgid ""
 "Your request has been created. If you do not receive a confirmation "
 "email, please contact the site administrator."
@@ -102,134 +102,162 @@ msgstr ""
 
 #: includes/traits/trait-prmp-admin-settings.php:15
 #: includes/traits/trait-prmp-admin-settings.php:16
-#: includes/traits/trait-prmp-admin-settings.php:33
-#: includes/traits/trait-prmp-admin-settings.php:258
+#: includes/traits/trait-prmp-admin-settings.php:497
 msgid "Member Pages"
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:35
-msgid ""
-"Configure front-end login/registration and “My Pages” without members "
-"needing to see wp-admin."
+#: includes/traits/trait-prmp-admin-settings.php:34
+msgid "General Settings"
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:42
+#: includes/traits/trait-prmp-admin-settings.php:37
+msgid "Configure core settings."
+msgstr ""
+
+#: includes/traits/trait-prmp-admin-settings.php:44
 msgid "Enable Feature"
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:50
+#: includes/traits/trait-prmp-admin-settings.php:52
 msgid "Pages & Shortcodes"
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:58
+#: includes/traits/trait-prmp-admin-settings.php:61
+#: includes/traits/trait-prmp-admin-settings.php:229
+msgid "Access Control"
+msgstr ""
+
+#: includes/traits/trait-prmp-admin-settings.php:70
 msgid "Restrict wp-admin"
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:66
+#: includes/traits/trait-prmp-admin-settings.php:79
+#: includes/traits/trait-prmp-admin-settings.php:230
 msgid "Security"
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:74
+#: includes/traits/trait-prmp-admin-settings.php:88
+msgid "Security Options"
+msgstr ""
+
+#: includes/traits/trait-prmp-admin-settings.php:97
+#: includes/traits/trait-prmp-admin-settings.php:231
 #: includes/traits/trait-prmp-shortcodes.php:257
 msgid "Privacy & GDPR"
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:82
+#: includes/traits/trait-prmp-admin-settings.php:106
+msgid "GDPR Settings"
+msgstr ""
+
+#: includes/traits/trait-prmp-admin-settings.php:115
+#: includes/traits/trait-prmp-admin-settings.php:232
 msgid "Social Login"
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:90
+#: includes/traits/trait-prmp-admin-settings.php:124
+msgid "Providers"
+msgstr ""
+
+#: includes/traits/trait-prmp-admin-settings.php:133
+#: includes/traits/trait-prmp-admin-settings.php:233
 #: includes/traits/trait-prmp-shortcodes.php:128
 msgid "Dashboard"
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:168
+#: includes/traits/trait-prmp-admin-settings.php:142
+msgid "Dashboard Content"
+msgstr ""
+
+#: includes/traits/trait-prmp-admin-settings.php:220
 msgid "Pages created/updated."
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:172
+#: includes/traits/trait-prmp-admin-settings.php:224
 msgid "Pixel Review — Member Pages"
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:181
+#: includes/traits/trait-prmp-admin-settings.php:228
+msgid "General & Pages"
+msgstr ""
+
+#: includes/traits/trait-prmp-admin-settings.php:270
 msgid "Quick Action"
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:182
-msgid "Create (or update) the standard pages with the correct shortcodes."
+#: includes/traits/trait-prmp-admin-settings.php:271
+msgid ""
+"Create missing standard pages with the correct shortcodes. (Will not "
+"overwrite existing pages)"
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:186
-msgid "Create standard pages"
+#: includes/traits/trait-prmp-admin-settings.php:275
+msgid "Create missing pages"
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:189
+#: includes/traits/trait-prmp-admin-settings.php:278
 msgid "Shortcodes you can use manually:"
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:245
+#: includes/traits/trait-prmp-admin-settings.php:484
 msgid "Pixel Review — Add-ons"
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:246
+#: includes/traits/trait-prmp-admin-settings.php:485
 msgid "Manage extensions for Pixel Review."
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:250
+#: includes/traits/trait-prmp-admin-settings.php:489
 msgid "Add-on"
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:251
+#: includes/traits/trait-prmp-admin-settings.php:490
 msgid "Status"
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:252
+#: includes/traits/trait-prmp-admin-settings.php:491
 msgid "Version"
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:259
+#: includes/traits/trait-prmp-admin-settings.php:498
 msgid "Front-end login, registration, and user profiles."
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:260
+#: includes/traits/trait-prmp-admin-settings.php:499
 msgid "Installed"
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:285
+#: includes/traits/trait-prmp-admin-settings.php:524
 msgid "Enable member pages on the frontend"
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:287
+#: includes/traits/trait-prmp-admin-settings.php:526
 msgid ""
 "When disabled, shortcodes will still be available, but admin blocking and "
 "redirects will not be performed."
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:293
-msgid "Create standard pages on activation"
-msgstr ""
-
-#: includes/traits/trait-prmp-admin-settings.php:300
+#: includes/traits/trait-prmp-admin-settings.php:532
 msgid "Redirect wp-login.php to the nice login page"
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:302
+#: includes/traits/trait-prmp-admin-settings.php:534
 msgid "This does not affect password reset (lost password/reset)."
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:310
+#: includes/traits/trait-prmp-admin-settings.php:542
 msgid "Function"
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:310
+#: includes/traits/trait-prmp-admin-settings.php:542
 msgid "Page"
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:310
+#: includes/traits/trait-prmp-admin-settings.php:542
 msgid "Shortcode"
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:314
+#: includes/traits/trait-prmp-admin-settings.php:546
 #: includes/traits/trait-prmp-shortcodes.php:25
 #: includes/traits/trait-prmp-shortcodes.php:34
 #: includes/traits/trait-prmp-shortcodes.php:106
@@ -237,137 +265,137 @@ msgstr ""
 msgid "Log in"
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:315
+#: includes/traits/trait-prmp-admin-settings.php:547
 #: includes/traits/trait-prmp-pages.php:22
 #: includes/traits/trait-prmp-shortcodes.php:85
 msgid "Register"
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:316
+#: includes/traits/trait-prmp-admin-settings.php:548
 #: includes/traits/trait-prmp-pages.php:27
 msgid "My Pages"
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:317
-#: includes/traits/trait-prmp-admin-settings.php:353
+#: includes/traits/trait-prmp-admin-settings.php:549
+#: includes/traits/trait-prmp-admin-settings.php:585
 msgid "Profile"
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:318
+#: includes/traits/trait-prmp-admin-settings.php:550
 #: includes/traits/trait-prmp-shortcodes.php:129
 #: includes/traits/trait-prmp-shortcodes.php:210
 msgid "Log out"
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:319
+#: includes/traits/trait-prmp-admin-settings.php:551
 #: includes/traits/trait-prmp-pages.php:42
 msgid "Edit/Create Post"
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:328
+#: includes/traits/trait-prmp-admin-settings.php:560
 msgid "— Select —"
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:346
+#: includes/traits/trait-prmp-admin-settings.php:578
 msgid ""
 "Tip: Set “My Pages” (dashboard) as the landing page after login for best "
 "UX."
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:349
+#: includes/traits/trait-prmp-admin-settings.php:581
 msgid "Redirect after login:"
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:352
+#: includes/traits/trait-prmp-admin-settings.php:584
 msgid "My pages"
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:354
+#: includes/traits/trait-prmp-admin-settings.php:586
 msgid "Home"
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:371
+#: includes/traits/trait-prmp-admin-settings.php:603
 msgid "Block wp-admin for selected roles"
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:374
+#: includes/traits/trait-prmp-admin-settings.php:606
 msgid ""
 "Recommendation: block Subscriber/Customer so they never see the admin "
 "panel (except when editing/creating content)."
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:376
+#: includes/traits/trait-prmp-admin-settings.php:608
 msgid "Blocked roles:"
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:393
+#: includes/traits/trait-prmp-admin-settings.php:625
 msgid "Hide admin bar on frontend for blocked roles"
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:400
+#: includes/traits/trait-prmp-admin-settings.php:632
 msgid "CAPTCHA"
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:405
+#: includes/traits/trait-prmp-admin-settings.php:637
 msgid "None"
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:444
+#: includes/traits/trait-prmp-admin-settings.php:676
 msgid "Enable rate limiting"
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:459
+#: includes/traits/trait-prmp-admin-settings.php:691
 msgid "GDPR & Data Rights"
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:460
+#: includes/traits/trait-prmp-admin-settings.php:692
 msgid ""
 "These settings allow users to request data export or deletion from their "
 "profile page. These requests trigger the standard WordPress privacy "
 "workflow (Tools > Export Personal Data / Erase Personal Data)."
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:466
+#: includes/traits/trait-prmp-admin-settings.php:698
 msgid "Enable Data Export Request"
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:473
+#: includes/traits/trait-prmp-admin-settings.php:705
 msgid "Enable Account Deletion Request"
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:485
+#: includes/traits/trait-prmp-admin-settings.php:717
 msgid "Enable Google login"
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:507
+#: includes/traits/trait-prmp-admin-settings.php:739
 msgid "Enable WordPress.com login"
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:528
+#: includes/traits/trait-prmp-admin-settings.php:760
 msgid "Post types shown in “My Pages”:"
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:541
+#: includes/traits/trait-prmp-admin-settings.php:773
 msgid "Number of posts per page:"
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:550
+#: includes/traits/trait-prmp-admin-settings.php:782
 msgid "Pixel Review connection"
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:556
+#: includes/traits/trait-prmp-admin-settings.php:788
 msgid "Show only posts that have Pixel Review meta (e.g. rating)"
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:563
+#: includes/traits/trait-prmp-admin-settings.php:795
 msgid "Show Pixel Review fields in the list (rating, type, review date)"
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:567
+#: includes/traits/trait-prmp-admin-settings.php:799
 msgid "Editor links"
 msgstr ""
 
-#: includes/traits/trait-prmp-admin-settings.php:572
+#: includes/traits/trait-prmp-admin-settings.php:804
 msgid ""
 "Show “Create new post” and “Create review” (opens the WordPress editor)"
 msgstr ""
