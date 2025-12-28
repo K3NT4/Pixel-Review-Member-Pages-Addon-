@@ -4,33 +4,12 @@ if (!defined('ABSPATH')) { exit; }
 
 trait PRMP_Actions {
 
-    /* =========================================================
-     * Actions (POST handling)
-     * ======================================================= */
-
     public static function handle_actions() : void {
         $opt = self::get_options();
         if (empty($opt['enabled'])) return;
 
-        // Friendly redirects when already logged in.
-        if (is_user_logged_in() && self::is_login_related_page()) {
-            $obj_id = get_queried_object_id();
-            $login_id = absint($opt['page_ids']['login'] ?? 0);
-            $register_id = absint($opt['page_ids']['register'] ?? 0);
-            if ($obj_id && in_array($obj_id, [$login_id, $register_id], true)) {
-                wp_safe_redirect(self::redirect_after_login());
-                exit;
-            }
-        }
-
-        // Logout action (GET)
         if (!empty($_GET['pr_action']) && $_GET['pr_action'] === 'logout') {
-            // Nonce check if present (recommended). If missing, allow only for logged-in users.
-            if (is_user_logged_in()) {
-                if (!empty($_GET['_wpnonce']) && wp_verify_nonce(sanitize_text_field($_GET['_wpnonce']), 'pr_logout')) {
-                    wp_logout();
-                }
-            }
+            wp_logout();
             $login = self::page_url('login') ?: home_url('/');
             wp_safe_redirect($login);
             exit;
@@ -38,70 +17,49 @@ trait PRMP_Actions {
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') return;
 
-        // Preferred routing: hidden form identifier (works even when users submit via Enter key).
-        $form = isset($_POST['pr_form']) ? sanitize_key((string)wp_unslash($_POST['pr_form'])) : '';
-        if ($form) {
-            switch ($form) {
-                case 'login':
-                    self::handle_login_submit();
-                    return;
-                case 'register':
-                    self::handle_register_submit();
-                    return;
-                case 'profile':
-                    // Check for privacy actions inside the profile form
-                    if (!empty($_POST['pr_privacy_action'])) {
-                        self::handle_privacy_request();
-                        return;
-                    }
-                    self::handle_profile_submit();
-                    return;
-                default:
-                    // Fall through to legacy button-name checks.
-                    break;
-            }
-        }
-
-        // Legacy routing (button name).
-        if (!empty($_POST['pr_login_submit'])) { self::handle_login_submit(); return; }
-        if (!empty($_POST['pr_register_submit'])) { self::handle_register_submit(); return; }
-        if (!empty($_POST['pr_profile_submit'])) { self::handle_profile_submit(); return; }
-
-        // Logout via POST
-        if (!empty($_POST['pr_logout_submit'])) {
-            if (!empty($_POST['_wpnonce']) && wp_verify_nonce(sanitize_text_field($_POST['_wpnonce']), 'pr_logout')) {
-                wp_logout();
-            }
-            $login = self::page_url('login') ?: home_url('/');
-            wp_safe_redirect($login);
-            exit;
-        }
-    }
-
-    protected static function handle_login_submit() : void {
-        if (self::check_rate_limit()) {
-            self::set_flash('error', __('Too many login attempts. Please wait a moment.', 'sh-review-members'));
+        if (!empty($_POST['pr_login_submit'])) {
+            self::handle_login();
             return;
         }
 
+        if (!empty($_POST['pr_register_submit'])) {
+            self::handle_register();
+            return;
+        }
+
+        if (!empty($_POST['pr_profile_submit']) || !empty($_POST['pr_privacy_action'])) {
+            if (!empty($_POST['pr_privacy_action'])) {
+                self::handle_privacy_request();
+                return;
+            }
+            self::handle_profile_update();
+            return;
+        }
+    }
+
+    protected static function handle_login() : void {
         if (empty($_POST['_wpnonce']) || !wp_verify_nonce(sanitize_text_field($_POST['_wpnonce']), 'pr_login')) {
             self::set_flash('error', __('Invalid security token. Please try again.', 'sh-review-members'));
             return;
         }
 
-        if (!self::verify_captcha()) {
-            self::set_flash('error', __('CAPTCHA verification failed. Please try again.', 'sh-review-members'));
+        $username = sanitize_text_field($_POST['log'] ?? '');
+        $password = (string)($_POST['pwd'] ?? '');
+
+        if (!$username || !$password) {
+            self::set_flash('error', __('Please fill in all fields.', 'sh-review-members'));
             return;
         }
 
-        $login = sanitize_text_field($_POST['pr_user_login'] ?? '');
-        $pass  = (string)($_POST['pr_user_pass'] ?? '');
-        $remember = !empty($_POST['pr_remember']);
+        if (self::check_rate_limit()) {
+            self::set_flash('error', __('Too many login attempts. Please wait and try again.', 'sh-review-members'));
+            return;
+        }
 
         $creds = [
-            'user_login'    => $login,
-            'user_password' => $pass,
-            'remember'      => $remember,
+            'user_login'    => $username,
+            'user_password' => $password,
+            'remember'      => !empty($_POST['rememberme']),
         ];
 
         $user = wp_signon($creds, is_ssl());
@@ -112,49 +70,51 @@ trait PRMP_Actions {
         }
 
         self::clear_rate_limit_attempts();
-        wp_safe_redirect(self::redirect_after_login());
+
+        $redirect = self::page_url('dashboard') ?: home_url('/');
+        wp_safe_redirect($redirect);
         exit;
     }
 
-    protected static function handle_register_submit() : void {
+    protected static function handle_register() : void {
         if (empty($_POST['_wpnonce']) || !wp_verify_nonce(sanitize_text_field($_POST['_wpnonce']), 'pr_register')) {
             self::set_flash('error', __('Invalid security token. Please try again.', 'sh-review-members'));
             return;
         }
 
-        if (!self::verify_captcha()) {
-            self::set_flash('error', __('CAPTCHA verification failed. Please try again.', 'sh-review-members'));
+        $opt = self::get_options();
+        if (empty($opt['allow_register'])) {
+            self::set_flash('error', __('Registration is disabled.', 'sh-review-members'));
             return;
         }
 
-        if (!get_option('users_can_register')) {
-            self::set_flash('error', __('Registration is disabled on this site.', 'sh-review-members'));
+        $email    = sanitize_email($_POST['user_email'] ?? '');
+        $username = sanitize_user($_POST['user_login'] ?? '');
+        $pass1    = (string)($_POST['pass1'] ?? '');
+        $pass2    = (string)($_POST['pass2'] ?? '');
+
+        if (!$email || !$username || !$pass1 || !$pass2) {
+            self::set_flash('error', __('Please fill in all fields.', 'sh-review-members'));
             return;
         }
 
-        $username = sanitize_user($_POST['pr_user_login'] ?? '', true);
-        $email    = sanitize_email($_POST['pr_user_email'] ?? '');
-        $pass1    = (string)($_POST['pr_user_pass'] ?? '');
-        $pass2    = (string)($_POST['pr_user_pass2'] ?? '');
-
-        if (empty($username) || empty($email) || empty($pass1)) {
-            self::set_flash('error', __('Please fill in username, email, and password.', 'sh-review-members'));
-            return;
-        }
         if (!is_email($email)) {
-            self::set_flash('error', __('Invalid email address.', 'sh-review-members'));
+            self::set_flash('error', __('Please provide a valid email address.', 'sh-review-members'));
             return;
         }
+
         if ($pass1 !== $pass2) {
             self::set_flash('error', __('Passwords do not match.', 'sh-review-members'));
             return;
         }
+
         if (username_exists($username)) {
-            self::set_flash('error', __('Username is already taken.', 'sh-review-members'));
+            self::set_flash('error', __('Username already exists.', 'sh-review-members'));
             return;
         }
+
         if (email_exists($email)) {
-            self::set_flash('error', __('Email address is already in use.', 'sh-review-members'));
+            self::set_flash('error', __('Email already exists.', 'sh-review-members'));
             return;
         }
 
@@ -164,17 +124,15 @@ trait PRMP_Actions {
             return;
         }
 
-        // Auto-login after successful registration.
-        wp_set_current_user($user_id);
-        wp_set_auth_cookie($user_id, true);
-
-        wp_safe_redirect(self::redirect_after_login());
+        self::set_flash('success', __('Account created. Please log in.', 'sh-review-members'));
+        $login = self::page_url('login') ?: wp_login_url();
+        wp_safe_redirect($login);
         exit;
     }
 
-    protected static function handle_profile_submit() : void {
+    protected static function handle_profile_update() : void {
         if (!is_user_logged_in()) {
-            self::set_flash('error', __('You must be logged in to update your profile.', 'sh-review-members'));
+            self::set_flash('error', __('You must be logged in.', 'sh-review-members'));
             return;
         }
 
@@ -184,62 +142,51 @@ trait PRMP_Actions {
         }
 
         $user = wp_get_current_user();
+        if (!$user || !$user->ID) {
+            self::set_flash('error', __('User not found.', 'sh-review-members'));
+            return;
+        }
 
         $display_name = sanitize_text_field($_POST['pr_display_name'] ?? '');
-        $first_name   = sanitize_text_field($_POST['pr_first_name'] ?? '');
-        $last_name    = sanitize_text_field($_POST['pr_last_name'] ?? '');
-        $email        = sanitize_email($_POST['pr_user_email'] ?? '');
+        $bio          = wp_kses_post((string)($_POST['pr_bio'] ?? ''));
 
-        $pass1 = (string)($_POST['pr_new_pass'] ?? '');
-        $pass2 = (string)($_POST['pr_new_pass2'] ?? '');
-
-        if ($email && !is_email($email)) {
-            self::set_flash('error', __('Invalid email address.', 'sh-review-members'));
-            return;
-        }
-
-        if (($pass1 || $pass2) && $pass1 !== $pass2) {
-            self::set_flash('error', __('New passwords do not match.', 'sh-review-members'));
-            return;
-        }
-
-        $userdata = [
+        $update = [
             'ID'           => $user->ID,
             'display_name' => $display_name ?: $user->display_name,
-            'first_name'   => $first_name,
-            'last_name'    => $last_name,
-            'user_email'   => $email ?: $user->user_email,
+            'description'  => $bio,
         ];
 
-        if ($pass1) {
-            $userdata['user_pass'] = $pass1;
-        }
-
-        $res = wp_update_user($userdata);
+        $res = wp_update_user($update);
         if (is_wp_error($res)) {
             self::set_flash('error', $res->get_error_message());
             return;
         }
 
-        // If password changed, refresh auth cookie.
-        if ($pass1) {
+        if (method_exists(__CLASS__, 'sync_author_profile_from_profile_form')) {
+            self::sync_author_profile_from_profile_form($user->ID);
+        }
+
+        $pass1 = (string)($_POST['pr_new_pass'] ?? '');
+        $pass2 = (string)($_POST['pr_new_pass2'] ?? '');
+        if ($pass1 || $pass2) {
+            if ($pass1 !== $pass2) {
+                self::set_flash('error', __('Passwords do not match.', 'sh-review-members'));
+                return;
+            }
+            if (strlen($pass1) < 8) {
+                self::set_flash('error', __('Password must be at least 8 characters.', 'sh-review-members'));
+                return;
+            }
+            wp_set_password($pass1, $user->ID);
+            wp_set_current_user($user->ID);
             wp_set_auth_cookie($user->ID, true);
         }
 
-        // Keep Pixel Review author fields in sync with WordPress biographical info.
-        // This will also save "sh_author_long_bio" and mirror its text to user description.
-        self::prmp_save_author_profile_from_post((int)$user->ID);
-
-        self::set_flash('success', __('Profile has been updated.', 'sh-review-members'));
-
-        // Redirect to avoid resubmission.
+        self::set_flash('success', __('Profile updated.', 'sh-review-members'));
         wp_safe_redirect(self::page_url('profile') ?: self::current_url());
         exit;
     }
 
-    /**
-     * Handle GDPR/Privacy requests from the profile form.
-     */
     protected static function handle_privacy_request() : void {
         if (!is_user_logged_in()) {
             self::set_flash('error', __('You must be logged in.', 'sh-review-members'));
@@ -251,11 +198,10 @@ trait PRMP_Actions {
             return;
         }
 
-        $action = sanitize_key($_POST['pr_privacy_action']);
+        $action = sanitize_key($_POST['pr_privacy_action'] ?? '');
         $opt = self::get_options();
         $user = wp_get_current_user();
 
-        // Check if feature is enabled
         if ($action === 'export_personal_data' && empty($opt['enable_data_export'])) {
             self::set_flash('error', __('Data export is not enabled.', 'sh-review-members'));
             return;
@@ -269,34 +215,48 @@ trait PRMP_Actions {
             return;
         }
 
-        // Create the request using WordPress Core function
         $request_id = wp_create_user_request($user->user_email, $action);
 
         if (is_wp_error($request_id)) {
             self::set_flash('error', $request_id->get_error_message());
         } else {
-            // Automatically confirm the request since the user is logged in and initiating it themselves.
-            // (Optional, but smoother UX. Otherwise they get an email to confirm the request first).
-            // However, for security, standard flow is: User requests -> Email sent -> User confirms -> Admin approves.
-            // To mimic standard behavior we just notify them.
+            $sent = self::prmp_send_privacy_confirmation_email((int) $request_id);
 
-            // Send the confirmation email
-            if (!function_exists('wp_send_user_request_confirmation_email')) {
-                require_once ABSPATH . 'wp-admin/includes/user.php';
+            if ($sent) {
+                self::set_flash('success', __('A confirmation email has been sent to your address. Please click the link in the email to confirm your request.', 'sh-review-members'));
+            } else {
+                self::set_flash('success', __('Your request has been created. If you do not receive a confirmation email, please contact the site administrator.', 'sh-review-members'));
             }
-            wp_send_user_request_confirmation_email($request_id);
-
-            self::set_flash('success', __('A confirmation email has been sent to your address. Please click the link in the email to confirm your request.', 'sh-review-members'));
         }
 
         wp_safe_redirect(self::page_url('profile') ?: self::current_url());
         exit;
     }
 
-    /**
-     * Check if the current IP is rate-limited.
-     * Returns true if blocked.
-     */
+    protected static function prmp_send_privacy_confirmation_email(int $request_id) : bool {
+        if ($request_id <= 0) return false;
+
+        if (function_exists('wp_send_user_request')) {
+            $res = wp_send_user_request((string) $request_id);
+            return !is_wp_error($res);
+        }
+
+        if (!function_exists('wp_send_user_request_confirmation_email')) {
+            $inc_user = ABSPATH . 'wp-admin/includes/user.php';
+            $inc_priv = ABSPATH . 'wp-admin/includes/privacy.php';
+
+            if (is_readable($inc_user)) require_once $inc_user;
+            if (is_readable($inc_priv)) require_once $inc_priv;
+        }
+
+        if (function_exists('wp_send_user_request_confirmation_email')) {
+            wp_send_user_request_confirmation_email($request_id);
+            return true;
+        }
+
+        return false;
+    }
+
     protected static function check_rate_limit() : bool {
         $opt = self::get_options();
         if (empty($opt['enable_rate_limit'])) return false;
@@ -310,9 +270,6 @@ trait PRMP_Actions {
         return $fails >= $limit;
     }
 
-    /**
-     * Increment failed attempts counter.
-     */
     protected static function increment_failed_attempts() : void {
         $opt = self::get_options();
         if (empty($opt['enable_rate_limit'])) return;
@@ -324,9 +281,6 @@ trait PRMP_Actions {
         set_transient($key, $fails + 1, 30 * MINUTE_IN_SECONDS);
     }
 
-    /**
-     * Clear rate limit on successful login.
-     */
     protected static function clear_rate_limit_attempts() : void {
         $opt = self::get_options();
         if (empty($opt['enable_rate_limit'])) return;
@@ -334,54 +288,5 @@ trait PRMP_Actions {
         $ip = $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1';
         $key = 'prmp_login_fails_' . md5($ip);
         delete_transient($key);
-    }
-
-    /**
-     * Verify CAPTCHA token.
-     */
-    protected static function verify_captcha() : bool {
-        $opt = self::get_options();
-        $provider = $opt['captcha_provider'] ?? '';
-
-        $secret = '';
-        if ($provider === 'turnstile') {
-             $secret = $opt['turnstile_secret_key'] ?? '';
-        } elseif ($provider === 'recaptcha_v3') {
-             $secret = $opt['recaptcha_secret_key'] ?? '';
-        }
-
-        if (!$provider || !$secret) return true; // Pass if not configured.
-
-        $token = '';
-        if ($provider === 'turnstile') {
-            $token = $_POST['cf-turnstile-response'] ?? '';
-        } elseif ($provider === 'recaptcha_v3') {
-            $token = $_POST['g-recaptcha-response'] ?? '';
-        }
-
-        if (!$token) return false;
-
-        $verify_url = '';
-        if ($provider === 'turnstile') {
-            $verify_url = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
-        } elseif ($provider === 'recaptcha_v3') {
-            $verify_url = 'https://www.google.com/recaptcha/api/siteverify';
-        }
-
-        $response = wp_remote_post($verify_url, [
-            'body' => [
-                'secret' => $secret,
-                'response' => $token,
-                'remoteip' => $_SERVER['REMOTE_ADDR'] ?? ''
-            ]
-        ]);
-
-        if (is_wp_error($response)) return false;
-
-        $body = json_decode(wp_remote_retrieve_body($response), true);
-
-        // For reCAPTCHA v3, we should also check the score, but for now success=true is the baseline.
-        // Turnstile also returns success=true.
-        return !empty($body['success']);
     }
 }

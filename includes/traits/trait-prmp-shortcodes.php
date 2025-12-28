@@ -14,117 +14,87 @@ trait PRMP_Shortcodes {
 
         if (is_user_logged_in()) {
             $url = self::redirect_after_login();
-            return '<div class="pr-card">' . self::render_flash() . '<p>' . esc_html__('You are already logged in.', 'sh-review-members') . '</p><p><a class="pr-button" href="' . esc_url($url) . '">' . esc_html__('Go to My Pages', 'sh-review-members') . '</a></p></div>';
+            return '<div class="sh-card pr-card">' . self::render_flash() . '<p>' . esc_html__('You are already logged in.', 'sh-review-members') . ' <a class="pr-link" href="' . esc_url($url) . '">' . esc_html__('Go to My Pages', 'sh-review-members') . '</a></p></div>';
         }
 
         $register_url = self::page_url('register');
 
         ob_start();
-        echo '<div class="pr-card pr-card--auth">';
+        echo '<div class="sh-card pr-card pr-card--auth">';
         echo self::render_flash();
         echo '<h2>' . esc_html__('Log in', 'sh-review-members') . '</h2>';
         echo '<form method="post" class="pr-form">';
         echo '<input type="hidden" name="pr_form" value="login">';
         wp_nonce_field('pr_login');
-        echo '<p><label>' . esc_html__('Username or Email', 'sh-review-members') . '<br />';
-        echo '<input type="text" name="pr_user_login" autocomplete="username" required></label></p>';
-
-        echo '<p><label>' . esc_html__('Password', 'sh-review-members') . '<br />';
-        echo '<input type="password" name="pr_user_pass" autocomplete="current-password" required></label></p>';
-
-        echo '<p><label><input type="checkbox" name="pr_remember" value="1"> ' . esc_html__('Remember me', 'sh-review-members') . '</label></p>';
-
-        // CAPTCHA
-        echo self::render_captcha();
-
-        echo '<p><button type="submit" name="pr_login_submit" class="pr-button">' . esc_html__('Log in', 'sh-review-members') . '</button></p>';
+        echo '<p><label>' . esc_html__('Username or Email', 'sh-review-members') . '<br>';
+        echo '<input type="text" name="log" autocomplete="username"></label></p>';
+        echo '<p><label>' . esc_html__('Password', 'sh-review-members') . '<br>';
+        echo '<input type="password" name="pwd" autocomplete="current-password"></label></p>';
+        echo '<p><label><input type="checkbox" name="rememberme" value="1"> ' . esc_html__('Remember me', 'sh-review-members') . '</label></p>';
+        echo '<p><button type="submit" class="pr-button pr-button--wordpress">' . esc_html__('Log in', 'sh-review-members') . '</button></p>';
         echo '</form>';
 
-        // Social Login
-        echo self::render_social_login_buttons();
-
-        if ($register_url && get_option('users_can_register')) {
-            echo '<p class="pr-muted">' . esc_html__('Don\'t have an account?', 'sh-review-members') . ' <a href="' . esc_url($register_url) . '">' . esc_html__('Register here', 'sh-review-members') . '</a></p>';
+        if (!empty($opt['allow_register']) && $register_url) {
+            echo '<div class="pr-separator"><span class="pr-muted">' . esc_html__('or', 'sh-review-members') . '</span></div>';
+            echo '<p class="pr-muted">' . esc_html__('No account yet?', 'sh-review-members') . ' <a class="pr-link" href="' . esc_url($register_url) . '">' . esc_html__('Register here', 'sh-review-members') . '</a></p>';
         }
 
+        // Social login buttons (optional)
+        echo self::render_social_login_buttons();
+
         echo '</div>';
-        return (string)ob_get_clean();
+        return ob_get_clean();
     }
 
     public static function sc_register($atts = []) : string {
         $opt = self::get_options();
         if (empty($opt['enabled'])) return '';
+        if (empty($opt['allow_register'])) return '';
 
         if (is_user_logged_in()) {
             $url = self::redirect_after_login();
-            return '<div class="pr-card">' . self::render_flash() . '<p>' . esc_html__('You are already logged in.', 'sh-review-members') . '</p><p><a class="pr-button" href="' . esc_url($url) . '">' . esc_html__('Go to My Pages', 'sh-review-members') . '</a></p></div>';
-        }
-
-        if (!get_option('users_can_register')) {
-            return '<div class="pr-card">' . self::render_flash() . '<p>' . esc_html__('Registration is disabled on this site.', 'sh-review-members') . '</p></div>';
+            return '<div class="sh-card pr-card">' . self::render_flash() . '<p>' . esc_html__('You are already logged in.', 'sh-review-members') . ' <a class="pr-link" href="' . esc_url($url) . '">' . esc_html__('Go to My Pages', 'sh-review-members') . '</a></p></div>';
         }
 
         $login_url = self::page_url('login');
 
         ob_start();
-        echo '<div class="pr-card pr-card--auth">';
+        echo '<div class="sh-card pr-card pr-card--auth">';
         echo self::render_flash();
-        echo '<h2>' . esc_html__('Create Account', 'sh-review-members') . '</h2>';
+        echo '<h2>' . esc_html__('Create an account', 'sh-review-members') . '</h2>';
         echo '<form method="post" class="pr-form">';
         echo '<input type="hidden" name="pr_form" value="register">';
         wp_nonce_field('pr_register');
 
-        echo '<p><label>' . esc_html__('Username', 'sh-review-members') . '<br />';
-        echo '<input type="text" name="pr_user_login" autocomplete="username" required></label></p>';
+        echo '<div class="pr-grid">';
+        echo '<p><label>' . esc_html__('Username', 'sh-review-members') . '<br>';
+        echo '<input type="text" name="user_login" autocomplete="username"></label></p>';
 
-        echo '<p><label>' . esc_html__('Email', 'sh-review-members') . '<br />';
-        echo '<input type="email" name="pr_user_email" autocomplete="email" required></label></p>';
+        echo '<p><label>' . esc_html__('Email', 'sh-review-members') . '<br>';
+        echo '<input type="email" name="user_email" autocomplete="email"></label></p>';
+        echo '</div>';
 
-        echo '<p><label>' . esc_html__('Password', 'sh-review-members') . '<br />';
-        echo '<input type="password" name="pr_user_pass" autocomplete="new-password" required></label></p>';
+        echo '<div class="pr-grid">';
+        echo '<p><label>' . esc_html__('Password', 'sh-review-members') . '<br>';
+        echo '<input type="password" name="pass1" autocomplete="new-password"></label></p>';
 
-        echo '<p><label>' . esc_html__('Repeat Password', 'sh-review-members') . '<br />';
-        echo '<input type="password" name="pr_user_pass2" autocomplete="new-password" required></label></p>';
+        echo '<p><label>' . esc_html__('Repeat password', 'sh-review-members') . '<br>';
+        echo '<input type="password" name="pass2" autocomplete="new-password"></label></p>';
+        echo '</div>';
 
-        // CAPTCHA
-        echo self::render_captcha();
-
-        echo '<p><button type="submit" name="pr_register_submit" class="pr-button">' . esc_html__('Register', 'sh-review-members') . '</button></p>';
+        echo '<p><button type="submit" class="pr-button">' . esc_html__('Register', 'sh-review-members') . '</button></p>';
         echo '</form>';
 
-        // Social Login
+        if ($login_url) {
+            echo '<div class="pr-separator"><span class="pr-muted">' . esc_html__('or', 'sh-review-members') . '</span></div>';
+            echo '<p class="pr-muted">' . esc_html__('Already have an account?', 'sh-review-members') . ' <a class="pr-link" href="' . esc_url($login_url) . '">' . esc_html__('Log in here', 'sh-review-members') . '</a></p>';
+        }
+
+        // Social login buttons (optional)
         echo self::render_social_login_buttons();
 
-        if ($login_url) {
-            echo '<p class="pr-muted">' . esc_html__('Already have an account?', 'sh-review-members') . ' <a href="' . esc_url($login_url) . '">' . esc_html__('Log in', 'sh-review-members') . '</a></p>';
-        }
-
         echo '</div>';
-        return (string)ob_get_clean();
-    }
-
-    public static function sc_logout($atts = []) : string {
-        $opt = self::get_options();
-        if (empty($opt['enabled'])) return '';
-
-        if (!is_user_logged_in()) {
-            $login = self::page_url('login') ?: home_url('/');
-            return '<div class="pr-card">' . self::render_flash() . '<p>' . esc_html__('You are not logged in.', 'sh-review-members') . '</p><p><a class="pr-button" href="' . esc_url($login) . '">' . esc_html__('Log in', 'sh-review-members') . '</a></p></div>';
-        }
-
-        $action_url = add_query_arg([
-            'pr_action' => 'logout',
-            '_wpnonce'  => wp_create_nonce('pr_logout'),
-        ], self::current_url());
-
-        ob_start();
-        echo '<div class="pr-card">';
-        echo self::render_flash();
-        echo '<h2>' . esc_html__('Log out', 'sh-review-members') . '</h2>';
-        echo '<p>' . esc_html__('Click the button below to log out.', 'sh-review-members') . '</p>';
-        echo '<p><a class="pr-button" href="' . esc_url($action_url) . '">' . esc_html__('Log out', 'sh-review-members') . '</a></p>';
-        echo '</div>';
-        return (string)ob_get_clean();
+        return ob_get_clean();
     }
 
     public static function sc_profile($atts = []) : string {
@@ -132,134 +102,83 @@ trait PRMP_Shortcodes {
         if (empty($opt['enabled'])) return '';
 
         if (!is_user_logged_in()) {
-            $login = self::page_url('login') ?: wp_login_url(self::current_url());
-            return '<div class="pr-card">' . self::render_flash() . '<p>' . esc_html__('You must log in to view your profile.', 'sh-review-members') . '</p><p><a class="pr-button" href="' . esc_url($login) . '">' . esc_html__('Log in', 'sh-review-members') . '</a></p></div>';
+            $login_url = self::page_url('login') ?: wp_login_url(self::current_url());
+            return '<div class="sh-card pr-card">' . self::render_flash() . '<p>' . esc_html__('You must be logged in to view your profile.', 'sh-review-members') . ' <a class="pr-link" href="' . esc_url($login_url) . '">' . esc_html__('Log in', 'sh-review-members') . '</a></p></div>';
         }
 
         $user = wp_get_current_user();
-        $author_meta = self::prmp_get_author_profile_values((int)$user->ID);
+        if (!$user || !$user->ID) return '';
+
+        $dashboard_url = self::page_url('dashboard');
+        $logout_url = self::logout_url();
+
+        $avatar = get_avatar_url($user->ID, ['size' => 160]);
+        $display_name = $user->display_name ?: $user->user_login;
 
         ob_start();
-        echo '<div class="pr-card pr-card--profile">';
+        echo '<div class="sh-card pr-card pr-card--profile">';
         echo self::render_flash();
-        echo '<h2>' . esc_html__('My Profile', 'sh-review-members') . '</h2>';
 
-        // Avatar / Gravatar
+        echo '<div class="pr-dashboard__header">';
+        echo '<div>';
+        echo '<h2>' . esc_html__('My Profile', 'sh-review-members') . '</h2>';
+        echo '<p class="pr-muted">' . esc_html($display_name) . '</p>';
+        echo '</div>';
+        echo '<div class="pr-dashboard__actions">';
+        if ($dashboard_url) echo '<a class="pr-button pr-button--secondary" href="' . esc_url($dashboard_url) . '">' . esc_html__('Dashboard', 'sh-review-members') . '</a>';
+        if ($logout_url) echo '<a class="pr-button pr-button--secondary" href="' . esc_url($logout_url) . '">' . esc_html__('Log out', 'sh-review-members') . '</a>';
+        echo '</div>';
+        echo '</div>';
+
         echo '<div class="pr-profile__avatar">';
-        echo '<div class="pr-profile__avatar-img">' . get_avatar($user->ID, 96) . '</div>';
+        echo '<img class="pr-profile__avatar-img" src="' . esc_url($avatar) . '" alt="">';
         echo '<div class="pr-profile__avatar-text">';
-        echo '<strong>' . esc_html__('Profile Picture', 'sh-review-members') . '</strong><br />';
-        echo '<span class="pr-muted">' . esc_html__('The profile picture is fetched from Gravatar (based on your email).', 'sh-review-members') . '</span><br />';
-        echo '<a class="pr-link" href="' . esc_url('https://gravatar.com') . '" target="_blank" rel="noopener noreferrer">' . esc_html__('Change profile picture on Gravatar', 'sh-review-members') . '</a>';
+        echo '<div><strong>' . esc_html($display_name) . '</strong></div>';
+        echo '<div class="pr-muted">' . esc_html($user->user_email) . '</div>';
         echo '</div>';
         echo '</div>';
+
+        echo '<hr class="pr-hr">';
 
         echo '<form method="post" class="pr-form">';
-        echo '<input type="hidden" name="pr_form" value="profile">';
+        echo '<input type="hidden" name="pr_form" value="profile_update">';
         wp_nonce_field('pr_profile');
 
         echo '<div class="pr-grid">';
+        echo '<p><label>' . esc_html__('Display name', 'sh-review-members') . '<br>';
+        echo '<input type="text" name="display_name" value="' . esc_attr($user->display_name) . '"></label></p>';
 
-        echo '<p><label>' . esc_html__('Display Name', 'sh-review-members') . '<br />';
-        echo '<input type="text" name="pr_display_name" value="' . esc_attr($user->display_name) . '"></label></p>';
-
-        echo '<p><label>' . esc_html__('Email', 'sh-review-members') . '<br />';
-        echo '<input type="email" name="pr_user_email" value="' . esc_attr($user->user_email) . '"></label></p>';
-
-        echo '<p><label>' . esc_html__('First Name', 'sh-review-members') . '<br />';
-        echo '<input type="text" name="pr_first_name" value="' . esc_attr(get_user_meta($user->ID, 'first_name', true)) . '"></label></p>';
-
-        echo '<p><label>' . esc_html__('Last Name', 'sh-review-members') . '<br />';
-        echo '<input type="text" name="pr_last_name" value="' . esc_attr(get_user_meta($user->ID, 'last_name', true)) . '"></label></p>';
-
-        echo '</div>';
-
-        echo '<p><label>' . esc_html__('Bio', 'sh-review-members') . '<br />';
-        echo '<textarea name="pr_author_long_bio" rows="6">' . esc_textarea($author_meta['long_bio'] ?? '') . '</textarea></label></p>';
-
-        // Pixel Review author fields
-        echo '<details class="pr-details">';
-        echo '<summary>' . esc_html__('Pixel Review – author profile', 'sh-review-members') . '</summary>';
-        echo '<div class="pr-details__content">';
-        echo '<p class="pr-muted">' . esc_html__('These fields are used by Pixel Review on author pages and may also be displayed in themes/modules that read Pixel Review meta.', 'sh-review-members') . '</p>';
-
-        echo '<div class="pr-grid">';
-        echo '<p><label>' . esc_html__('Title', 'sh-review-members') . '<br />';
-        echo '<input type="text" name="pr_author_title" value="' . esc_attr($author_meta['title'] ?? '') . '" placeholder="' . esc_attr__('Editor', 'sh-review-members') . '"></label></p>';
-
-        echo '<p><label>' . esc_html__('Location', 'sh-review-members') . '<br />';
-        echo '<input type="text" name="pr_author_location" value="' . esc_attr($author_meta['location'] ?? '') . '" placeholder="' . esc_attr__('Stockholm', 'sh-review-members') . '"></label></p>';
-
-        echo '<p><label>' . esc_html__('Tagline', 'sh-review-members') . '<br />';
-        echo '<input type="text" name="pr_author_tagline" value="' . esc_attr($author_meta['tagline'] ?? '') . '" placeholder="' . esc_attr__('Writes about games and hardware', 'sh-review-members') . '"></label></p>';
-
-        echo '<p><label>' . esc_html__('Favorite Games', 'sh-review-members') . '<br />';
-        echo '<input type="text" name="pr_author_favorite_games" value="' . esc_attr($author_meta['favorite_games'] ?? '') . '" placeholder="' . esc_attr__('Elden Ring, ...', 'sh-review-members') . '"></label></p>';
+        echo '<p><label>' . esc_html__('Email', 'sh-review-members') . '<br>';
+        echo '<input type="email" value="' . esc_attr($user->user_email) . '" disabled></label></p>';
         echo '</div>';
 
         echo '<div class="pr-grid">';
-        echo '<p><label>' . esc_html__('Website', 'sh-review-members') . '<br />';
-        echo '<input type="url" name="pr_author_website" value="' . esc_attr($author_meta['website'] ?? '') . '" placeholder="https://..."></label></p>';
+        echo '<p><label>' . esc_html__('First name', 'sh-review-members') . '<br>';
+        echo '<input type="text" name="first_name" value="' . esc_attr(get_user_meta($user->ID, 'first_name', true)) . '"></label></p>';
 
-        echo '<p><label>' . esc_html__('X/Twitter', 'sh-review-members') . '<br />';
-        echo '<input type="url" name="pr_author_x" value="' . esc_attr($author_meta['x'] ?? '') . '" placeholder="https://x.com/... "></label></p>';
-
-        echo '<p><label>' . esc_html__('Twitch', 'sh-review-members') . '<br />';
-        echo '<input type="url" name="pr_author_twitch" value="' . esc_attr($author_meta['twitch'] ?? '') . '" placeholder="https://twitch.tv/... "></label></p>';
-
-        echo '<p><label>' . esc_html__('YouTube', 'sh-review-members') . '<br />';
-        echo '<input type="url" name="pr_author_youtube" value="' . esc_attr($author_meta['youtube'] ?? '') . '" placeholder="https://youtube.com/... "></label></p>';
+        echo '<p><label>' . esc_html__('Last name', 'sh-review-members') . '<br>';
+        echo '<input type="text" name="last_name" value="' . esc_attr(get_user_meta($user->ID, 'last_name', true)) . '"></label></p>';
         echo '</div>';
+
+        echo '<p><label>' . esc_html__('Bio', 'sh-review-members') . '<br>';
+        echo '<textarea name="description">' . esc_textarea(get_user_meta($user->ID, 'description', true)) . '</textarea></label></p>';
 
         echo '<div class="pr-grid">';
-        echo '<p><label>' . esc_html__('Discord', 'sh-review-members') . '<br />';
-        echo '<input type="url" name="pr_author_discord" value="' . esc_attr($author_meta['discord'] ?? '') . '" placeholder="https://discord.gg/... "></label></p>';
+        echo '<p><label>' . esc_html__('New password', 'sh-review-members') . '<br>';
+        echo '<input type="password" name="pass1" autocomplete="new-password"></label><small>' . esc_html__('Leave blank to keep current password.', 'sh-review-members') . '</small></p>';
 
-        echo '<p><label>' . esc_html__('Background image (URL)', 'sh-review-members') . '<br />';
-        echo '<input type="url" name="pr_author_bg_url" value="' . esc_attr($author_meta['bg_url'] ?? '') . '" placeholder="https://..."></label></p>';
+        echo '<p><label>' . esc_html__('Repeat new password', 'sh-review-members') . '<br>';
+        echo '<input type="password" name="pass2" autocomplete="new-password"></label></p>';
         echo '</div>';
 
-        echo '</div>';
-        echo '</details>';
-
-        echo '<hr class="pr-hr" />';
-        echo '<h3>' . esc_html__('Change Password', 'sh-review-members') . '</h3>';
-        echo '<div class="pr-grid">';
-        echo '<p><label>' . esc_html__('New Password', 'sh-review-members') . '<br />';
-        echo '<input type="password" name="pr_new_pass" autocomplete="new-password"></label></p>';
-
-        echo '<p><label>' . esc_html__('Repeat New Password', 'sh-review-members') . '<br />';
-        echo '<input type="password" name="pr_new_pass2" autocomplete="new-password"></label></p>';
-        echo '</div>';
-
-        // Privacy / GDPR
-        if (!empty($opt['enable_data_deletion']) || !empty($opt['enable_data_export'])) {
-            echo '<hr class="pr-hr" />';
-            echo '<h3>' . esc_html__('Privacy & Data', 'sh-review-members') . '</h3>';
-            echo '<div class="pr-grid">';
-
-            if (!empty($opt['enable_data_export'])) {
-                echo '<div>';
-                echo '<p>' . esc_html__('Request a copy of your personal data.', 'sh-review-members') . '</p>';
-                echo '<button type="submit" name="pr_privacy_action" value="export_personal_data" class="pr-button pr-button--secondary">' . esc_html__('Request Data Export', 'sh-review-members') . '</button>';
-                echo '</div>';
-            }
-
-            if (!empty($opt['enable_data_deletion'])) {
-                echo '<div>';
-                echo '<p>' . esc_html__('Request deletion of your account and personal data.', 'sh-review-members') . '</p>';
-                echo '<button type="submit" name="pr_privacy_action" value="remove_personal_data" class="pr-button pr-button--danger" onclick="return confirm(\'' . esc_js(__('Are you sure you want to request account deletion? This action cannot be undone.', 'sh-review-members')) . '\');">' . esc_html__('Request Account Deletion', 'sh-review-members') . '</button>';
-                echo '</div>';
-            }
-
-            echo '</div>';
-        }
-
-        echo '<p><button type="submit" name="pr_profile_submit" class="pr-button">' . esc_html__('Save Profile', 'sh-review-members') . '</button></p>';
+        echo '<p><button type="submit" class="pr-button">' . esc_html__('Save profile', 'sh-review-members') . '</button></p>';
         echo '</form>';
 
+        // Privacy & GDPR (optional)
+        echo self::render_privacy_section($user);
+
         echo '</div>';
-        return (string)ob_get_clean();
+        return ob_get_clean();
     }
 
     public static function sc_dashboard($atts = []) : string {
@@ -267,331 +186,111 @@ trait PRMP_Shortcodes {
         if (empty($opt['enabled'])) return '';
 
         if (!is_user_logged_in()) {
-            $login = self::page_url('login') ?: wp_login_url(self::current_url());
-            return '<div class="pr-card">' . self::render_flash() . '<p>' . esc_html__('You must log in to view My Pages.', 'sh-review-members') . '</p><p><a class="pr-button" href="' . esc_url($login) . '">' . esc_html__('Log in', 'sh-review-members') . '</a></p></div>';
+            $login_url = self::page_url('login') ?: wp_login_url(self::current_url());
+            return '<div class="sh-card pr-card">' . self::render_flash() . '<p>' . esc_html__('You must be logged in.', 'sh-review-members') . ' <a class="pr-link" href="' . esc_url($login_url) . '">' . esc_html__('Log in', 'sh-review-members') . '</a></p></div>';
         }
 
         $user = wp_get_current_user();
-        $post_types = self::dashboard_post_types();
-        $per_page = (int)($opt['dashboard_posts_per_page'] ?? 20);
-        $paged = max(1, absint(get_query_var('paged') ?: (get_query_var('page') ?: 1)));
-
-        $meta_query = [];
-        if (!empty($opt['dashboard_only_pixel_reviews'])) {
-            $score_key = self::meta_key('score');
-            if ($score_key) {
-                $meta_query[] = [
-                    'key' => $score_key,
-                    'compare' => 'EXISTS',
-                ];
-            }
-        }
-
-        // Always list only the logged-in user's own content.
-        $args = [
-            'post_type'      => $post_types,
-            'author'         => $user->ID,
-            'post_status'    => ['publish', 'pending', 'draft', 'future', 'private'],
-            'posts_per_page' => $per_page,
-            'paged'          => $paged,
-            'no_found_rows'  => false,
-        ];
-        if (!empty($meta_query)) {
-            $args['meta_query'] = $meta_query;
-        }
-
-        $q = new WP_Query($args);
+        if (!$user || !$user->ID) return '';
 
         $profile_url = self::page_url('profile');
-        $logout_url = self::page_url('logout');
-
-        $show_review_meta = !empty($opt['dashboard_show_review_meta']);
-        $score_key = $show_review_meta ? self::meta_key('score') : '';
-        $mode_key  = $show_review_meta ? self::meta_key('mode') : '';
-        $date_key  = $show_review_meta ? self::meta_key('pubdate') : '';
+        $logout_url = self::logout_url();
 
         ob_start();
-        echo '<div class="pr-card pr-card--dashboard">';
+        echo '<div class="sh-card pr-card pr-card--dashboard">';
         echo self::render_flash();
 
         echo '<div class="pr-dashboard__header">';
         echo '<div>';
-        echo '<h2>' . esc_html__('My pages', 'sh-review-members') . '</h2>';
-        echo '<p class="pr-muted">' . sprintf(esc_html__('Logged in as %s', 'sh-review-members'), '<strong>' . esc_html($user->display_name) . '</strong>') . '</p>';
+        echo '<h2>' . esc_html__('My Dashboard', 'sh-review-members') . '</h2>';
+        echo '<p class="pr-muted">' . esc_html(sprintf(__('Hello %s', 'sh-review-members'), $user->display_name ?: $user->user_login)) . '</p>';
         echo '</div>';
         echo '<div class="pr-dashboard__actions">';
-
-        // Open real WordPress editor for create actions.
-        if (self::can_show_create_actions()) {
-            $default_type = $post_types[0] ?? 'post';
-            $new_admin_url = self::wp_admin_new_post_url($default_type);
-
-            echo '<a class="pr-button" href="' . esc_url($new_admin_url) . '">' . esc_html__('Create New Post', 'sh-review-members') . '</a>';
-
-            // Pixel Review: create review (draft + redirect to editor)
-            $review_create = self::pixel_review_create_review_url();
-            if ($review_create) {
-                echo '<a class="pr-button" href="' . esc_url($review_create) . '">' . esc_html__('Create Review', 'sh-review-members') . '</a>';
-            }
-        }
-
-        if ($profile_url) {
-            echo '<a class="pr-button pr-button--secondary" href="' . esc_url($profile_url) . '">' . esc_html__('Edit Profile', 'sh-review-members') . '</a>';
-        }
-        if ($logout_url) {
-            echo '<a class="pr-button pr-button--secondary" href="' . esc_url($logout_url) . '">' . esc_html__('Log out', 'sh-review-members') . '</a>';
-        }
+        if ($profile_url) echo '<a class="pr-button pr-button--secondary" href="' . esc_url($profile_url) . '">' . esc_html__('Edit Profile', 'sh-review-members') . '</a>';
+        if ($logout_url) echo '<a class="pr-button pr-button--secondary" href="' . esc_url($logout_url) . '">' . esc_html__('Log out', 'sh-review-members') . '</a>';
         echo '</div>';
         echo '</div>';
 
-        echo '<h3>' . esc_html__('My Articles', 'sh-review-members') . '</h3>';
+        echo '<hr class="pr-hr">';
 
-        if ($q->have_posts()) {
-            echo '<div class="pr-table-wrap">';
-            echo '<table class="pr-table">';
-            echo '<thead><tr>';
-            echo '<th>' . esc_html__('Title', 'sh-review-members') . '</th>';
-
-            if ($show_review_meta && $score_key) {
-                echo '<th>' . esc_html__('Score', 'sh-review-members') . '</th>';
-            }
-            if ($show_review_meta && $mode_key) {
-                echo '<th>' . esc_html__('Type', 'sh-review-members') . '</th>';
-            }
-            if ($show_review_meta && $date_key) {
-                echo '<th>' . esc_html__('Review Date', 'sh-review-members') . '</th>';
-            }
-
-            echo '<th>' . esc_html__('Status', 'sh-review-members') . '</th>';
-            echo '<th>' . esc_html__('Date', 'sh-review-members') . '</th>';
-            echo '<th>' . esc_html__('Action', 'sh-review-members') . '</th>';
-            echo '</tr></thead><tbody>';
-
-            while ($q->have_posts()) {
-                $q->the_post();
-                $pid = get_the_ID();
-                $status = get_post_status($pid);
-                $date = get_the_date('Y-m-d');
-
-                $score = $score_key ? get_post_meta($pid, $score_key, true) : '';
-                $mode  = $mode_key ? (string)get_post_meta($pid, $mode_key, true) : '';
-                $rdate = $date_key ? (string)get_post_meta($pid, $date_key, true) : '';
-
-                echo '<tr>';
-                echo '<td><a href="' . esc_url(get_permalink($pid)) . '">' . esc_html(get_the_title()) . '</a></td>';
-
-                if ($show_review_meta && $score_key) {
-                    $score_out = ($score !== '') ? number_format((float)$score, 1, '.', '') : '—';
-                    echo '<td>' . esc_html($score_out) . '</td>';
-                }
-
-                if ($show_review_meta && $mode_key) {
-                    $mode_out = $mode === 'product' ? __('Product', 'sh-review-members') : ($mode === 'game' ? __('Game', 'sh-review-members') : '—');
-                    echo '<td>' . esc_html($mode_out) . '</td>';
-                }
-
-                if ($show_review_meta && $date_key) {
-                    echo '<td>' . esc_html($rdate ?: '—') . '</td>';
-                }
-
-                echo '<td>' . esc_html($status) . '</td>';
-                echo '<td>' . esc_html($date) . '</td>';
-                echo '<td>';
-                if (current_user_can('edit_post', $pid)) {
-                    $edit_admin = self::wp_admin_edit_post_url((int)$pid);
-                    $title = get_the_title($pid);
-                    $edit_aria_label = sprintf(__('Edit "%s"', 'sh-review-members'), $title);
-                    echo '<a class="pr-link" href="' . esc_url($edit_admin) . '" aria-label="' . esc_attr($edit_aria_label) . '">' . esc_html__('Edit', 'sh-review-members') . '</a>';
-                } else {
-                    echo '<span class="pr-muted">—</span>';
-                }
-                echo '</td>';
-                echo '</tr>';
-            }
-
-            echo '</tbody></table>';
-            echo '</div>';
-
-            // Pagination
-            $big = 999999999;
-            $base = str_replace($big, '%#%', esc_url(get_pagenum_link($big)));
-            $links = paginate_links([
-                'base'      => $base,
-                'format'    => '?paged=%#%',
-                'current'   => $paged,
-                'total'     => max(1, (int)$q->max_num_pages),
-                'type'      => 'list',
-                'prev_text' => '«',
-                'next_text' => '»',
-            ]);
-            if ($links) {
-                echo '<nav class="pr-pagination" aria-label="' . esc_attr__('Page navigation', 'sh-review-members') . '">' . $links . '</nav>';
-            }
-
-            wp_reset_postdata();
-        } else {
-            echo '<p class="pr-muted">' . esc_html__('No posts found.', 'sh-review-members') . '</p>';
-            if (!empty($opt['dashboard_only_pixel_reviews'])) {
-                echo '<p class="pr-muted">' . esc_html__('Note: Filter is active (only posts with Pixel Review meta). Disable in settings if you want to see all.', 'sh-review-members') . '</p>';
-            }
-        }
+        echo '<p class="pr-muted">' . esc_html__('This area can be extended with member-only content, saved lists, review drafts, etc.', 'sh-review-members') . '</p>';
 
         echo '</div>';
-        return (string)ob_get_clean();
+        return ob_get_clean();
     }
 
-    public static function sc_post_edit($atts = []) : string {
-        $opt = self::get_options();
-        if (empty($opt['enabled'])) return '';
+    /* =========================================================
+     * Rendering helpers (privacy/social)
+     * ======================================================= */
 
-        if (!is_user_logged_in()) {
-            $login = self::page_url('login') ?: wp_login_url(self::current_url());
-            return '<div class="pr-card">' . self::render_flash() . '<p>' . esc_html__('You must log in.', 'sh-review-members') . '</p><p><a class="pr-button" href="' . esc_url($login) . '">' . esc_html__('Log in', 'sh-review-members') . '</a></p></div>';
-        }
-
-        // If a post_id is provided, send to real WP editor.
-        $post_id = absint($_GET['post_id'] ?? 0);
-        if ($post_id && current_user_can('edit_post', $post_id)) {
-            wp_safe_redirect(self::wp_admin_edit_post_url($post_id));
-            exit;
-        }
-
-        // If action=new, send to real WP "new post"
-        $action = sanitize_key((string)($_GET['action'] ?? ''));
-        if ($action === 'new' && self::can_show_create_actions()) {
-            $default_type = self::dashboard_post_types()[0] ?? 'post';
-            wp_safe_redirect(self::wp_admin_new_post_url($default_type));
-            exit;
-        }
-
-        // If action=create-review, send to Pixel Review create flow (draft + editor)
-        if ($action === 'create-review' && self::can_show_create_actions()) {
-            $url = self::pixel_review_create_review_url();
-            if ($url) {
-                wp_safe_redirect($url);
-                exit;
-            }
-        }
-
-        // Otherwise: show a helper card.
-        $dash = self::page_url('dashboard') ?: home_url('/');
-        $new_admin = self::can_show_create_actions()
-            ? self::wp_admin_new_post_url(self::dashboard_post_types()[0] ?? 'post')
-            : '';
-
-        $review_create = self::can_show_create_actions()
-            ? self::pixel_review_create_review_url()
-            : '';
-
-        ob_start();
-        echo '<div class="pr-card">';
-        echo self::render_flash();
-        echo '<h2>' . esc_html__('Editing', 'sh-review-members') . '</h2>';
-        echo '<p class="pr-muted">' . esc_html__('Editing and creating is done in the WordPress editor.', 'sh-review-members') . '</p>';
-
-        echo '<p><a class="pr-button pr-button--secondary" href="' . esc_url($dash) . '">' . esc_html__('Back to My Pages', 'sh-review-members') . '</a></p>';
-
-        if ($new_admin) {
-            echo '<p><a class="pr-button" href="' . esc_url($new_admin) . '">' . esc_html__('Create New Post', 'sh-review-members') . '</a></p>';
-        }
-        if ($review_create) {
-            echo '<p><a class="pr-button" href="' . esc_url($review_create) . '">' . esc_html__('Create Review', 'sh-review-members') . '</a></p>';
-        }
-
-        echo '</div>';
-        return (string)ob_get_clean();
-    }
-
-    /**
-     * Render CAPTCHA widget if enabled.
-     */
-    protected static function render_captcha() : string {
-        $opt = self::get_options();
-        $provider = $opt['captcha_provider'] ?? '';
-
-        if ($provider === 'turnstile') {
-            $site_key = $opt['turnstile_site_key'] ?? '';
-            if (!$site_key) return '';
-
-            return sprintf(
-                '<div class="cf-turnstile" data-sitekey="%s"></div><script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>',
-                esc_attr($site_key)
-            );
-        }
-
-        if ($provider === 'recaptcha_v3') {
-            $site_key = $opt['recaptcha_site_key'] ?? '';
-            if (!$site_key) return '';
-
-            // v3 is invisible, usually bound to a button or just loaded.
-            // We'll load the script and add a hidden field that JS populates, or simpler: just the script.
-            // For simplicity in this non-interactive context, we'll output the script header.
-            // Note: v3 usually requires JS integration to execute `grecaptcha.execute`.
-            // For this task, we'll assume a basic integration where we append the token to the form.
-            // But to keep it simple and robust without complex JS files, we'll use a hidden input populated on submit.
-            $script = '
-            <script src="https://www.google.com/recaptcha/api.js?render=' . esc_attr($site_key) . '"></script>
-            <script>
-            document.addEventListener("submit", function(e) {
-                if (e.target.classList.contains("pr-form")) {
-                    e.preventDefault();
-                    grecaptcha.ready(function() {
-                        grecaptcha.execute("' . esc_attr($site_key) . '", {action: "submit"}).then(function(token) {
-                            var input = document.createElement("input");
-                            input.type = "hidden";
-                            input.name = "g-recaptcha-response";
-                            input.value = token;
-                            e.target.appendChild(input);
-                            e.target.submit();
-                        });
-                    });
-                }
-            });
-            </script>';
-            return $script;
-        }
-
-        return '';
-    }
-
-    /**
-     * Render Social Login buttons if enabled.
-     */
     protected static function render_social_login_buttons() : string {
         $opt = self::get_options();
-        $google = !empty($opt['social_login_google']);
-        $wp = !empty($opt['social_login_wordpress']);
+        if (empty($opt['enable_social_login'])) return '';
 
-        if (!$google && !$wp) return '';
+        ob_start();
+        echo '<div class="pr-social-login">';
+        echo '<div class="pr-separator"><span class="pr-muted">' . esc_html__('Social login', 'sh-review-members') . '</span></div>';
 
-        $out = '<div class="pr-social-login">';
-        $out .= '<p class="pr-separator"><span>' . esc_html__('Or', 'sh-review-members') . '</span></p>';
-
-        if ($google) {
-            $url = self::get_social_login_url('google');
-            if ($url) {
-                $out .= '<a class="pr-button pr-button--google" href="' . esc_url($url) . '">' . esc_html__('Sign in with Google', 'sh-review-members') . '</a>';
-            }
+        if (!empty($opt['enable_wp_social_login'])) {
+            $url = wp_login_url(self::redirect_after_login());
+            echo '<a class="pr-button pr-button--wordpress" href="' . esc_url($url) . '">' . esc_html__('Continue with WordPress', 'sh-review-members') . '</a>';
         }
 
-        if ($wp) {
-            $url = self::get_social_login_url('wordpress');
-            if ($url) {
-                $out .= '<a class="pr-button pr-button--wordpress" href="' . esc_url($url) . '">' . esc_html__('Sign in with WordPress.com', 'sh-review-members') . '</a>';
-            }
+        if (!empty($opt['enable_google_login'])) {
+            $url = self::google_login_url();
+            if ($url) echo '<a class="pr-button pr-button--google" href="' . esc_url($url) . '">' . esc_html__('Continue with Google', 'sh-review-members') . '</a>';
         }
 
-        $out .= '</div>';
+        echo '</div>';
+        return ob_get_clean();
+    }
 
-        // Add some basic styles inline or assume css file
-        $out .= '<style>
-        .pr-separator { text-align: center; border-bottom: 1px solid #eee; height: 12px; margin: 20px 0; }
-        .pr-separator span { background: #fff; padding: 0 10px; color: #777; font-size: 14px; }
-        .pr-social-login .pr-button { margin-bottom: 10px; width: 100%; justify-content: center; text-align: center; }
-        .pr-button--google { background: #db4437; color: #fff; border-color: #db4437; }
-        .pr-button--wordpress { background: #0087be; color: #fff; border-color: #0087be; }
-        </style>';
+    protected static function render_privacy_section(WP_User $user) : string {
+        $opt = self::get_options();
+        if (empty($opt['enable_privacy'])) return '';
 
-        return $out;
+        $export_on = !empty($opt['enable_data_export']);
+        $delete_on = !empty($opt['enable_data_deletion']);
+        if (!$export_on && !$delete_on) return '';
+
+        ob_start();
+        echo '<hr class="pr-hr">';
+        echo '<h3>' . esc_html__('Privacy & GDPR', 'sh-review-members') . '</h3>';
+        echo '<p class="pr-muted">' . esc_html__('You can request a copy of your personal data or request account deletion.', 'sh-review-members') . '</p>';
+
+        echo '<form method="post" class="pr-form">';
+        echo '<input type="hidden" name="pr_form" value="privacy_request">';
+        wp_nonce_field('pr_privacy');
+
+        echo '<div class="pr-dashboard__actions">';
+        if ($export_on) {
+            echo '<button type="submit" name="privacy_action" value="export_personal_data" class="pr-button pr-button--secondary">' . esc_html__('Request my data (export)', 'sh-review-members') . '</button>';
+        }
+        if ($delete_on) {
+            echo '<button type="submit" name="privacy_action" value="remove_personal_data" class="pr-button pr-button--danger" onclick="return confirm(\'' . esc_js(__('Are you sure? This starts the deletion request process.', 'sh-review-members')) . '\');">' . esc_html__('Request deletion', 'sh-review-members') . '</button>';
+        }
+        echo '</div>';
+
+        echo '</form>';
+
+        return ob_get_clean();
+    }
+
+    /* =========================================================
+     * Misc helpers
+     * ======================================================= */
+
+    protected static function logout_url() : string {
+        $profile = self::page_url('profile') ?: home_url('/');
+        return wp_nonce_url(add_query_arg(['pr_action' => 'logout'], $profile), 'pr_logout');
+    }
+
+    protected static function google_login_url() : string {
+        // Placeholder: your project already contains the working Google flow.
+        // Return empty string if disabled/unavailable.
+        if (method_exists(__CLASS__, 'get_google_login_url')) {
+            return (string) self::get_google_login_url();
+        }
+        return '';
     }
 }

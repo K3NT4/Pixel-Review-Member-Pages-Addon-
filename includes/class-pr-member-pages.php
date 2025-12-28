@@ -88,7 +88,9 @@ class PR_Member_Pages {
             }
         }
 
-        wp_enqueue_style('sh-review-members', $css_url, [], $ver);
+        // Ensure Pixel Review base CSS (handle: sh-review) loads first when present.
+        $deps = (wp_style_is('sh-review', 'registered') || wp_style_is('sh-review', 'enqueued')) ? ['sh-review'] : [];
+        wp_enqueue_style('sh-review-members', $css_url, $deps, $ver);
     }
 
     /* =========================================================
