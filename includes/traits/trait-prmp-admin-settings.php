@@ -19,15 +19,6 @@ trait PRMP_Admin_Settings {
             [__CLASS__, 'render_settings_page']
         );
 
-        // Add Add-ons menu to Pixel Review parent
-        add_submenu_page(
-            'sh-review',
-            __('Add-ons', 'sh-review-members'),
-            __('Add-ons', 'sh-review-members'),
-            'manage_options',
-            'sh-review-addons',
-            [__CLASS__, 'render_addons_page']
-        );
     }
 
     public static function register_settings() : void {
