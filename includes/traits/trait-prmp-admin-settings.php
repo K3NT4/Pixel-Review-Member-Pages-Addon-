@@ -216,7 +216,7 @@ trait PRMP_Admin_Settings {
 
         // Handle "Create pages" action.
         if (!empty($_POST['sh_review_members_create_pages']) && check_admin_referer('sh_review_members_create_pages')) {
-            self::maybe_create_pages(true);
+            self::maybe_create_pages(false);
             echo '<div class="notice notice-success"><p>' . esc_html__('Pages created/updated.', 'sh-review-members') . '</p></div>';
         }
 
@@ -268,11 +268,11 @@ trait PRMP_Admin_Settings {
         echo '<div id="prmp-tab-general-extra" class="prmp-tab-content" data-tab="general">';
         echo '<hr />';
         echo '<h2>' . esc_html__('Quick Action', 'sh-review-members') . '</h2>';
-        echo '<p>' . esc_html__('Create (or update) the standard pages with the correct shortcodes.', 'sh-review-members') . '</p>';
+        echo '<p>' . esc_html__('Create missing standard pages with the correct shortcodes. (Will not overwrite existing pages)', 'sh-review-members') . '</p>';
         echo '<form method="post">';
         wp_nonce_field('sh_review_members_create_pages');
         echo '<input type="hidden" name="sh_review_members_create_pages" value="1" />';
-        submit_button(__('Create standard pages', 'sh-review-members'), 'secondary', 'submit', false);
+        submit_button(__('Create missing pages', 'sh-review-members'), 'secondary', 'submit', false);
         echo '</form>';
 
         echo '<p style="margin-top:16px;">' . esc_html__('Shortcodes you can use manually:', 'sh-review-members') . '</p>';
@@ -359,35 +359,41 @@ trait PRMP_Admin_Settings {
                 // 2. Try Marker
                 var marker = document.querySelector('[data-section="' + markerId + '"]') || document.getElementById(markerId);
                 if (marker) {
-                    // The marker is inside the form.
-                    // The H2 for this section is usually the previous Sibling of the marker's container.
-                    // Or previous element in the form.
-
-                    // Simple approach: Get all H2s in form.
-                    // Get index of the H2 that corresponds to this marker.
-                    // The marker is inside the Description callback.
-                    // WP: do_settings_sections -> foreach section -> echo "<h2>title</h2>"; call callback; echo table;
-
-                    // So: H2 is immediately before the callback output.
-                    // The callback output contains our marker.
-
-                    // Find the container of the marker that is a direct child of the form?
-                    // Usually marker is wrapped in <p> or just text.
+                    // Find the top-level container of the marker within the form
                     var container = marker;
                     while (container && container.parentElement !== form) {
                         container = container.parentElement;
                     }
 
                     if (container) {
-                        els.push(container); // The description block
+                        // Find the preceding H2
+                        var current = container.previousElementSibling;
+                        while (current) {
+                            if (current.tagName === 'H2') {
+                                els.push(current);
+                                break;
+                            }
+                            // If we hit another table or form element, stop looking back?
+                            // Actually, WP structure is strictly sequential. H2 is immediately before the section content.
+                            // But there might be other elements.
+                            current = current.previousElementSibling;
+                        }
 
-                        // Previous Sibling = H2
-                        var prev = container.previousElementSibling;
-                        if (prev && prev.tagName === 'H2') els.push(prev);
+                        // Collect everything from the H2 (found above) down to the next H2 or end of form.
+                        // Wait, easier approach: find the H2 for this section.
+                        // The H2 is the one we just found.
+                        var startNode = els.length > 0 ? els[0] : container;
 
-                        // Next Sibling = Table
-                        var next = container.nextElementSibling;
-                        if (next && next.tagName === 'TABLE') els.push(next);
+                        // Now collect all siblings starting from startNode until we hit another H2 or script/submit
+                        var next = startNode;
+                        while (next) {
+                             if (next !== startNode && next.tagName === 'H2') break; // Next section
+                             if (next.classList.contains('submit')) break; // Submit button
+                             if (next.tagName === 'SCRIPT') break;
+
+                             if (!els.includes(next)) els.push(next);
+                             next = next.nextElementSibling;
+                        }
                     }
                 }
                 return els;
@@ -518,13 +524,6 @@ trait PRMP_Admin_Settings {
             esc_html__('Enable member pages on the frontend', 'sh-review-members')
         );
         echo '<p class="description">' . esc_html__('When disabled, shortcodes will still be available, but admin blocking and redirects will not be performed.', 'sh-review-members') . '</p>';
-
-        printf(
-            '<label style="display:block;margin-top:10px;"><input type="checkbox" name="%1$s[create_pages_on_activate]" value="1" %2$s> %3$s</label>',
-            esc_attr(self::OPT_KEY),
-            checked(1, (int)$opt['create_pages_on_activate'], false),
-            esc_html__('Create standard pages on activation', 'sh-review-members')
-        );
 
         printf(
             '<label style="display:block;margin-top:10px;"><input type="checkbox" name="%1$s[redirect_wp_login]" value="1" %2$s> %3$s</label>',

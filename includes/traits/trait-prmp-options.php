@@ -10,7 +10,7 @@ trait PRMP_Options {
     public static function defaults() : array {
         return [
             'enabled' => 1,
-            'create_pages_on_activate' => 1,
+            'create_pages_on_activate' => 0,
             'redirect_wp_login' => 1,
             'page_ids' => [
                 'login'     => 0,
