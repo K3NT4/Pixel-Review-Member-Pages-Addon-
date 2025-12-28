@@ -18,6 +18,16 @@ trait PRMP_Admin_Settings {
             'sh-review-member-pages',
             [__CLASS__, 'render_settings_page']
         );
+
+        // Add Add-ons menu to Pixel Review parent
+        add_submenu_page(
+            'sh-review',
+            __('Add-ons', 'sh-review-members'),
+            __('Add-ons', 'sh-review-members'),
+            'manage_options',
+            'sh-review-addons',
+            [__CLASS__, 'render_addons_page']
+        );
     }
 
     public static function register_settings() : void {
@@ -234,6 +244,43 @@ trait PRMP_Admin_Settings {
         });
         </script>
         <?php
+        echo '</div>';
+    }
+
+    public static function render_addons_page() : void {
+        if (!current_user_can('manage_options')) return;
+
+        echo '<div class="wrap">';
+        echo '<h1>' . esc_html__('Pixel Review — Add-ons', 'sh-review-members') . '</h1>';
+        echo '<p>' . esc_html__('Manage extensions for Pixel Review.', 'sh-review-members') . '</p>';
+
+        echo '<table class="widefat striped">';
+        echo '<thead><tr>';
+        echo '<th>' . esc_html__('Add-on', 'sh-review-members') . '</th>';
+        echo '<th>' . esc_html__('Status', 'sh-review-members') . '</th>';
+        echo '<th>' . esc_html__('Version', 'sh-review-members') . '</th>';
+        echo '</tr></thead>';
+        echo '<tbody>';
+
+        // Member Pages (this plugin)
+        echo '<tr>';
+        echo '<td><strong>' . esc_html__('Member Pages', 'sh-review-members') . '</strong><br>';
+        echo '<span class="description">' . esc_html__('Front-end login, registration, and user profiles.', 'sh-review-members') . '</span></td>';
+        echo '<td><span class="dashicons dashicons-yes" style="color:#16a34a;"></span> ' . esc_html__('Installed', 'sh-review-members') . '</td>';
+        echo '<td>' . esc_html(SH_REVIEW_MEMBERS_VERSION) . '</td>';
+        echo '</tr>';
+
+        // Placeholder for other potential addons
+        /*
+        echo '<tr>';
+        echo '<td><strong>' . esc_html__('Advanced Reviews', 'sh-review-members') . '</strong></td>';
+        echo '<td><span class="dashicons dashicons-minus" style="color:#ccc;"></span> ' . esc_html__('Not Installed', 'sh-review-members') . '</td>';
+        echo '<td>—</td>';
+        echo '</tr>';
+        */
+
+        echo '</tbody>';
+        echo '</table>';
         echo '</div>';
     }
 
