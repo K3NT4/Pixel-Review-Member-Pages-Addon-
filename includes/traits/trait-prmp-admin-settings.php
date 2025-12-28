@@ -28,11 +28,13 @@ trait PRMP_Admin_Settings {
             'default' => self::defaults(),
         ]);
 
+        // -- Section: General --
         add_settings_section(
-            'sh_review_members_main',
-            __('Member Pages', 'sh-review-members'),
+            'prmp_section_general',
+            __('General Settings', 'sh-review-members'),
             function () {
-                echo '<p>' . esc_html__('Configure front-end login/registration and “My Pages” without members needing to see wp-admin.', 'sh-review-members') . '</p>';
+                echo '<span class="prmp-section-marker" data-section="prmp_section_general"></span>';
+                echo '<p>' . esc_html__('Configure core settings.', 'sh-review-members') . '</p>';
             },
             'sh-review-member-pages'
         );
@@ -42,7 +44,7 @@ trait PRMP_Admin_Settings {
             __('Enable Feature', 'sh-review-members'),
             [__CLASS__, 'field_enabled'],
             'sh-review-member-pages',
-            'sh_review_members_main'
+            'prmp_section_general'
         );
 
         add_settings_field(
@@ -50,7 +52,17 @@ trait PRMP_Admin_Settings {
             __('Pages & Shortcodes', 'sh-review-members'),
             [__CLASS__, 'field_pages'],
             'sh-review-member-pages',
-            'sh_review_members_main'
+            'prmp_section_general'
+        );
+
+        // -- Section: Access Control --
+        add_settings_section(
+            'prmp_section_access',
+            __('Access Control', 'sh-review-members'),
+            function () {
+                echo '<span class="prmp-section-marker" data-section="prmp_section_access"></span>';
+            },
+            'sh-review-member-pages'
         );
 
         add_settings_field(
@@ -58,39 +70,79 @@ trait PRMP_Admin_Settings {
             __('Restrict wp-admin', 'sh-review-members'),
             [__CLASS__, 'field_admin_block'],
             'sh-review-member-pages',
-            'sh_review_members_main'
+            'prmp_section_access'
+        );
+
+        // -- Section: Security --
+        add_settings_section(
+            'prmp_section_security',
+            __('Security', 'sh-review-members'),
+            function () {
+                 echo '<span class="prmp-section-marker" data-section="prmp_section_security"></span>';
+            },
+            'sh-review-member-pages'
         );
 
         add_settings_field(
             'security',
-            __('Security', 'sh-review-members'),
+            __('Security Options', 'sh-review-members'),
             [__CLASS__, 'field_security'],
             'sh-review-member-pages',
-            'sh_review_members_main'
+            'prmp_section_security'
+        );
+
+        // -- Section: Privacy --
+        add_settings_section(
+            'prmp_section_privacy',
+            __('Privacy & GDPR', 'sh-review-members'),
+            function () {
+                 echo '<span class="prmp-section-marker" data-section="prmp_section_privacy"></span>';
+            },
+            'sh-review-member-pages'
         );
 
         add_settings_field(
             'privacy',
-            __('Privacy & GDPR', 'sh-review-members'),
+            __('GDPR Settings', 'sh-review-members'),
             [__CLASS__, 'field_privacy'],
             'sh-review-member-pages',
-            'sh_review_members_main'
+            'prmp_section_privacy'
+        );
+
+        // -- Section: Social Login --
+        add_settings_section(
+            'prmp_section_social',
+            __('Social Login', 'sh-review-members'),
+            function () {
+                 echo '<span class="prmp-section-marker" data-section="prmp_section_social"></span>';
+            },
+            'sh-review-member-pages'
         );
 
         add_settings_field(
             'social_login',
-            __('Social Login', 'sh-review-members'),
+            __('Providers', 'sh-review-members'),
             [__CLASS__, 'field_social_login'],
             'sh-review-member-pages',
-            'sh_review_members_main'
+            'prmp_section_social'
+        );
+
+        // -- Section: Dashboard --
+        add_settings_section(
+            'prmp_section_dashboard',
+            __('Dashboard', 'sh-review-members'),
+            function () {
+                 echo '<span class="prmp-section-marker" data-section="prmp_section_dashboard"></span>';
+            },
+            'sh-review-member-pages'
         );
 
         add_settings_field(
             'dashboard',
-            __('Dashboard', 'sh-review-members'),
+            __('Dashboard Content', 'sh-review-members'),
             [__CLASS__, 'field_dashboard'],
             'sh-review-member-pages',
-            'sh_review_members_main'
+            'prmp_section_dashboard'
         );
     }
 
@@ -171,12 +223,49 @@ trait PRMP_Admin_Settings {
         echo '<div class="wrap">';
         echo '<h1>' . esc_html__('Pixel Review — Member Pages', 'sh-review-members') . '</h1>';
 
+        // Tabs
+        $tabs = [
+            'general'  => __('General & Pages', 'sh-review-members'),
+            'access'   => __('Access Control', 'sh-review-members'),
+            'security' => __('Security', 'sh-review-members'),
+            'privacy'  => __('Privacy & GDPR', 'sh-review-members'),
+            'social'   => __('Social Login', 'sh-review-members'),
+            'dashboard'=> __('Dashboard', 'sh-review-members'),
+        ];
+        $active_tab = 'general';
+
+        echo '<h2 class="nav-tab-wrapper">';
+        foreach ($tabs as $key => $label) {
+            $class = ($key === $active_tab) ? 'nav-tab nav-tab-active' : 'nav-tab';
+            echo '<a href="#" class="' . esc_attr($class) . '" data-tab="' . esc_attr($key) . '">' . esc_html($label) . '</a>';
+        }
+        echo '</h2>';
+
         echo '<form method="post" action="options.php">';
         settings_fields('sh_review_members_pages_group');
+
+        // We wrap the standard do_settings_sections in a way we can control via JS?
+        // Actually, do_settings_sections outputs everything.
+        // We will inject the tab containers via a callback hack OR just wrap specific fields manually.
+        // Since we defined sections in register_settings, let's just output them and use JS to move them into tabs or hide/show.
+        // Better: Let's create a JS structure that finds the relevant sections.
+        // But WP settings API is rigid.
+        // Alternative: Re-implement the rendering manually instead of do_settings_sections, but that breaks forward compatibility.
+
+        // Plan B: Wrap do_settings_sections in a container and use JS to group fields based on the section IDs we added?
+        // We added ONE section: 'sh_review_members_main'. All fields are in it. This is why it's messy.
+        // We should split into multiple sections!
+
+        // Wait, I cannot change register_settings easily without modifying how they are registered.
+        // Let's modify register_settings() first to split into sections, then render them here.
+        // But the previous code had only one section 'sh_review_members_main'.
+        // I will change register_settings to have multiple sections corresponding to tabs.
+
         do_settings_sections('sh-review-member-pages');
         submit_button();
         echo '</form>';
 
+        echo '<div id="prmp-tab-general-extra" class="prmp-tab-content" data-tab="general">';
         echo '<hr />';
         echo '<h2>' . esc_html__('Quick Action', 'sh-review-members') . '</h2>';
         echo '<p>' . esc_html__('Create (or update) the standard pages with the correct shortcodes.', 'sh-review-members') . '</p>';
@@ -188,11 +277,155 @@ trait PRMP_Admin_Settings {
 
         echo '<p style="margin-top:16px;">' . esc_html__('Shortcodes you can use manually:', 'sh-review-members') . '</p>';
         echo '<code>[pr_login]</code> <code>[pr_register]</code> <code>[pr_profile]</code> <code>[pr_dashboard]</code> <code>[pr_logout]</code> <code>[pr_post_edit]</code>';
+        echo '</div>'; // End extra content for general tab
 
-        // Add Javascript for conditional logic
+        // Add Javascript for tabs and conditional logic
         ?>
         <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Tab switching logic
+            var tabs = document.querySelectorAll('.nav-tab-wrapper .nav-tab');
+
+            // Map tab keys to section markers (data-section attribute)
+            var tabMap = {
+                'general':  ['prmp_section_general', 'prmp-tab-general-extra'],
+                'access':   ['prmp_section_access'],
+                'security': ['prmp_section_security'],
+                'privacy':  ['prmp_section_privacy'],
+                'social':   ['prmp_section_social'],
+                'dashboard':['prmp_section_dashboard']
+            };
+
+            function setDisplay(markerId, display) {
+                // Special case for our custom div wrapper in General tab
+                var customDiv = document.getElementById(markerId);
+                if (customDiv && customDiv.classList.contains('prmp-tab-content')) {
+                    customDiv.style.display = display;
+                    return;
+                }
+
+                // For WP sections, we find the marker span/div
+                var marker = document.querySelector('[data-section="' + markerId + '"]') || document.getElementById(markerId);
+                if (!marker) return;
+
+                // WP outputs: <h2>Title</h2> <p>Callback output (marker)</p> <table class="form-table">...</table>
+                // The marker is inside the callback output, often wrapped in a <p> or just naked.
+                // We need to find the Table (next sibling) and the H2 (previous sibling).
+
+                // Find container (usually the form)
+                var container = marker.closest('form') || document.querySelector('.wrap');
+
+                // Find all elements in the container
+                // This is brittle but standard WP Settings API structure usually holds.
+
+                // 1. Find the table following this marker
+                var table = marker.closest('table'); // If inside table? No, markers are in section description.
+                if (!table) {
+                    // Look forward until we find a table
+                    var next = marker.parentElement; // Start from parent of span
+                    while (next && next.tagName !== 'TABLE' && next.tagName !== 'H2' && next.tagName !== 'FORM') {
+                        // Traverse next siblings of parent
+                         var sib = next.nextElementSibling;
+                         if (sib && sib.tagName === 'TABLE') {
+                             table = sib;
+                             break;
+                         }
+                         if (sib && sib.tagName === 'H2') break; // Next section
+                         next = next.nextElementSibling;
+                         if (!next && marker.parentElement.parentElement) {
+                             // Go up one level
+                             // This traversal is getting complex.
+                         }
+                         break; // Safety
+                    }
+
+                    // Simplified: WP renders sections sequentially.
+                    // We can just iterate all children of the form.
+                }
+            }
+
+            // Identify and group elements for each tab
+            var form = document.querySelector('.wrap form');
+
+            function resolveElements(markerId) {
+                var els = [];
+                // 1. Try ID direct (General tab extra content)
+                var direct = document.getElementById(markerId);
+                if (direct && direct.classList.contains('prmp-tab-content')) {
+                    els.push(direct);
+                    return els;
+                }
+
+                // 2. Try Marker
+                var marker = document.querySelector('[data-section="' + markerId + '"]') || document.getElementById(markerId);
+                if (marker) {
+                    // The marker is inside the form.
+                    // The H2 for this section is usually the previous Sibling of the marker's container.
+                    // Or previous element in the form.
+
+                    // Simple approach: Get all H2s in form.
+                    // Get index of the H2 that corresponds to this marker.
+                    // The marker is inside the Description callback.
+                    // WP: do_settings_sections -> foreach section -> echo "<h2>title</h2>"; call callback; echo table;
+
+                    // So: H2 is immediately before the callback output.
+                    // The callback output contains our marker.
+
+                    // Find the container of the marker that is a direct child of the form?
+                    // Usually marker is wrapped in <p> or just text.
+                    var container = marker;
+                    while (container && container.parentElement !== form) {
+                        container = container.parentElement;
+                    }
+
+                    if (container) {
+                        els.push(container); // The description block
+
+                        // Previous Sibling = H2
+                        var prev = container.previousElementSibling;
+                        if (prev && prev.tagName === 'H2') els.push(prev);
+
+                        // Next Sibling = Table
+                        var next = container.nextElementSibling;
+                        if (next && next.tagName === 'TABLE') els.push(next);
+                    }
+                }
+                return els;
+            }
+
+            function showTab(tabKey) {
+                // Remove active class
+                tabs.forEach(function(t) { t.classList.remove('nav-tab-active'); });
+                // Add active class
+                var link = document.querySelector('.nav-tab[data-tab="' + tabKey + '"]');
+                if (link) link.classList.add('nav-tab-active');
+
+                // Hide ALL mapped sections first
+                for (var key in tabMap) {
+                     tabMap[key].forEach(function(mid) {
+                         resolveElements(mid).forEach(el => el.style.display = 'none');
+                     });
+                }
+
+                // Show current
+                if (tabMap[tabKey]) {
+                    tabMap[tabKey].forEach(function(mid) {
+                         resolveElements(mid).forEach(el => el.style.display = 'block');
+                     });
+                }
+            }
+
+            tabs.forEach(function(t) {
+                t.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showTab(t.dataset.tab);
+                });
+            });
+
+            // Initial load
+            showTab('general');
+
+            // --- Existing Conditional Logic ---
             function toggleVisibility(checkboxId, targetId) {
                 var checkbox = document.getElementById(checkboxId);
                 var target = document.getElementById(targetId);

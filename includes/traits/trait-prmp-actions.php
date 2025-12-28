@@ -17,22 +17,25 @@ trait PRMP_Actions {
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') return;
 
-        if (!empty($_POST['pr_login_submit'])) {
+        $form = $_POST['pr_form'] ?? '';
+
+        if ($form === 'login') {
             self::handle_login();
             return;
         }
 
-        if (!empty($_POST['pr_register_submit'])) {
+        if ($form === 'register') {
             self::handle_register();
             return;
         }
 
-        if (!empty($_POST['pr_profile_submit']) || !empty($_POST['pr_privacy_action'])) {
-            if (!empty($_POST['pr_privacy_action'])) {
-                self::handle_privacy_request();
-                return;
-            }
+        if ($form === 'profile_update') {
             self::handle_profile_update();
+            return;
+        }
+
+        if ($form === 'privacy_request') {
+            self::handle_privacy_request();
             return;
         }
     }
@@ -147,14 +150,24 @@ trait PRMP_Actions {
             return;
         }
 
-        $display_name = sanitize_text_field($_POST['pr_display_name'] ?? '');
-        $bio          = wp_kses_post((string)($_POST['pr_bio'] ?? ''));
+        $display_name = sanitize_text_field($_POST['display_name'] ?? '');
 
         $update = [
             'ID'           => $user->ID,
             'display_name' => $display_name ?: $user->display_name,
-            'description'  => $bio,
         ];
+
+        if (isset($_POST['first_name'])) {
+            $update['first_name'] = sanitize_text_field($_POST['first_name']);
+        }
+
+        if (isset($_POST['last_name'])) {
+            $update['last_name'] = sanitize_text_field($_POST['last_name']);
+        }
+
+        if (isset($_POST['description'])) {
+            $update['description'] = wp_kses_post((string)$_POST['description']);
+        }
 
         $res = wp_update_user($update);
         if (is_wp_error($res)) {
@@ -166,8 +179,8 @@ trait PRMP_Actions {
             self::sync_author_profile_from_profile_form($user->ID);
         }
 
-        $pass1 = (string)($_POST['pr_new_pass'] ?? '');
-        $pass2 = (string)($_POST['pr_new_pass2'] ?? '');
+        $pass1 = (string)($_POST['pass1'] ?? '');
+        $pass2 = (string)($_POST['pass2'] ?? '');
         if ($pass1 || $pass2) {
             if ($pass1 !== $pass2) {
                 self::set_flash('error', __('Passwords do not match.', 'sh-review-members'));
@@ -193,12 +206,12 @@ trait PRMP_Actions {
             return;
         }
 
-        if (empty($_POST['_wpnonce']) || !wp_verify_nonce(sanitize_text_field($_POST['_wpnonce']), 'pr_profile')) {
+        if (empty($_POST['_wpnonce']) || !wp_verify_nonce(sanitize_text_field($_POST['_wpnonce']), 'pr_privacy')) {
             self::set_flash('error', __('Invalid security token. Please try again.', 'sh-review-members'));
             return;
         }
 
-        $action = sanitize_key($_POST['pr_privacy_action'] ?? '');
+        $action = sanitize_key($_POST['privacy_action'] ?? '');
         $opt = self::get_options();
         $user = wp_get_current_user();
 
