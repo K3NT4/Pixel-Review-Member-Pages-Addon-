@@ -96,6 +96,18 @@ class PR_Member_Pages {
         // Ensure Pixel Review base CSS (handle: sh-review) loads first when present.
         $deps = (wp_style_is('sh-review', 'registered') || wp_style_is('sh-review', 'enqueued')) ? ['sh-review'] : [];
         wp_enqueue_style('sh-review-members', $css_url, $deps, $ver);
+
+        // CAPTCHA Scripts
+        $provider = $opt['captcha_provider'] ?? '';
+
+        if ($provider === 'turnstile' && !empty($opt['turnstile_site_key'])) {
+            wp_enqueue_script('cf-turnstile', 'https://challenges.cloudflare.com/turnstile/v0/api.js', [], null, true);
+        }
+
+        if ($provider === 'recaptcha_v3' && !empty($opt['recaptcha_site_key'])) {
+            $key = esc_attr($opt['recaptcha_site_key']);
+            wp_enqueue_script('google-recaptcha', 'https://www.google.com/recaptcha/api.js?render=' . $key, [], null, true);
+        }
     }
 
     /* =========================================================
