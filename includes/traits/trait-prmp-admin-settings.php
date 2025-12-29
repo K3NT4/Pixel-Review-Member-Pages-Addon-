@@ -9,16 +9,38 @@ trait PRMP_Admin_Settings {
      * ======================================================= */
 
     public static function register_admin_menu() : void {
-        // Add as submenu under Pixel Review top-level if it exists.
-        add_submenu_page(
-            'sh-review',
+        // Prefer adding as submenu under Pixel Review (SH Review) when available.
+        if (self::prmp_parent_menu_exists('sh-review')) {
+            add_submenu_page(
+                'sh-review',
+                __('Member Pages', 'sh-review-members'),
+                __('Member Pages', 'sh-review-members'),
+                'manage_options',
+                'sh-review-member-pages',
+                [__CLASS__, 'render_settings_page']
+            );
+            return;
+        }
+
+        // Fallback: standalone top-level menu (when SH Review is not active).
+        add_menu_page(
             __('Member Pages', 'sh-review-members'),
             __('Member Pages', 'sh-review-members'),
             'manage_options',
             'sh-review-member-pages',
-            [__CLASS__, 'render_settings_page']
+            [__CLASS__, 'render_settings_page'],
+            'dashicons-groups'
         );
+    }
 
+    protected static function prmp_parent_menu_exists(string $slug) : bool {
+        global $menu;
+        if (!is_array($menu)) return false;
+        foreach ($menu as $item) {
+            if (!is_array($item) || !isset($item[2])) continue;
+            if ((string) $item[2] === $slug) return true;
+        }
+        return false;
     }
 
     public static function register_settings() : void {

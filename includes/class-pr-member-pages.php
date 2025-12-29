@@ -16,6 +16,7 @@ if (!defined('ABSPATH')) { exit; }
 
 // Split into smaller logical files.
 require_once __DIR__ . '/traits/trait-prmp-options.php';
+require_once __DIR__ . '/traits/trait-prmp-avatar.php';
 require_once __DIR__ . '/traits/trait-prmp-author-profile.php';
 require_once __DIR__ . '/traits/trait-prmp-admin-editor.php';
 require_once __DIR__ . '/traits/trait-prmp-restrictions.php';
@@ -31,6 +32,7 @@ class PR_Member_Pages {
     private const OPT_KEY = 'sh_review_members_pages';
 
     use PRMP_Options;
+    use PRMP_Avatar;
     use PRMP_Author_Profile;
     use PRMP_Admin_Editor;
     use PRMP_Restrictions;
@@ -59,6 +61,9 @@ class PR_Member_Pages {
 
         // Social Login
         self::init_social_login();
+
+        // Local avatar (optional) - allows profile picture URL to override get_avatar_url.
+        self::init_avatar();
 
         // Admin restrictions for members
         add_action('admin_init', [__CLASS__, 'maybe_block_wp_admin']);

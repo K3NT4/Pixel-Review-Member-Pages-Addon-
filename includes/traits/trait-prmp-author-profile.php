@@ -81,36 +81,40 @@ trait PRMP_Author_Profile {
      *  - All other fields are stored as user meta keys used by Pixel Review.
      */
     protected static function prmp_save_author_profile_from_post(int $user_id) : void {
-        // Long bio (allow limited HTML, but sync to WP description as plain text)
-        $bio_raw = '';
-        if (array_key_exists('pr_author_long_bio', $_POST)) {
-            $bio_raw = (string)wp_unslash($_POST['pr_author_long_bio']);
-        } elseif (array_key_exists('pr_description', $_POST)) {
-            // Backward compatibility with older field name.
-            $bio_raw = (string)wp_unslash($_POST['pr_description']);
-        }
+        // Long bio (Option A): one source of truth in Pixel Review meta (HTML),
+        // synced to WordPress "description" as plain text.
+        $bio_field_present = array_key_exists('pr_author_long_bio', $_POST) || array_key_exists('pr_description', $_POST);
+        if ($bio_field_present) {
+            $bio_raw = '';
+            if (array_key_exists('pr_author_long_bio', $_POST)) {
+                $bio_raw = (string) wp_unslash($_POST['pr_author_long_bio']);
+            } elseif (array_key_exists('pr_description', $_POST)) {
+                // Backward compatibility with older field name.
+                $bio_raw = (string) wp_unslash($_POST['pr_description']);
+            }
 
-        $bio_raw = trim($bio_raw);
+            $bio_raw = trim($bio_raw);
 
-        if ($bio_raw === '') {
-            delete_user_meta($user_id, 'sh_author_long_bio');
+            if ($bio_raw === '') {
+                delete_user_meta($user_id, 'sh_author_long_bio');
 
-            // Also clear WP description if the UI field was used.
-            wp_update_user([
-                'ID' => $user_id,
-                'description' => '',
-            ]);
-        } else {
-            $bio_html  = wp_kses_post($bio_raw);
-            $bio_plain = sanitize_textarea_field(wp_strip_all_tags($bio_html));
+                // Also clear WP description.
+                wp_update_user([
+                    'ID' => $user_id,
+                    'description' => '',
+                ]);
+            } else {
+                $bio_html  = wp_kses_post($bio_raw);
+                $bio_plain = sanitize_textarea_field(wp_strip_all_tags($bio_html));
 
-            update_user_meta($user_id, 'sh_author_long_bio', $bio_html);
+                update_user_meta($user_id, 'sh_author_long_bio', $bio_html);
 
-            // Keep WordPress biographical info in sync.
-            wp_update_user([
-                'ID' => $user_id,
-                'description' => $bio_plain,
-            ]);
+                // Keep WordPress biographical info in sync.
+                wp_update_user([
+                    'ID' => $user_id,
+                    'description' => $bio_plain,
+                ]);
+            }
         }
 
         // Text fields
@@ -161,6 +165,23 @@ trait PRMP_Author_Profile {
             } else {
                 update_user_meta($user_id, $meta_key, $sanitized);
             }
+        }
+    }
+
+    /**
+     * Public wrapper invoked from the profile form handler.
+     *
+     * Keeps Pixel Review author profile meta in sync with the addon's front-end
+     * profile form, including (optionally) a local avatar URL.
+     */
+    public static function sync_author_profile_from_profile_form(int $user_id) : void {
+        if ($user_id <= 0) return;
+
+        self::prmp_save_author_profile_from_post($user_id);
+
+        // Optional: local avatar support (provided by PRMP_Avatar).
+        if (method_exists(__CLASS__, 'prmp_save_custom_avatar_from_post')) {
+            self::prmp_save_custom_avatar_from_post($user_id);
         }
     }
 }

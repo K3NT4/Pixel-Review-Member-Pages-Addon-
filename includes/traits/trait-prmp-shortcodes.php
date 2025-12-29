@@ -109,6 +109,16 @@ trait PRMP_Shortcodes {
         $user = wp_get_current_user();
         if (!$user || !$user->ID) return '';
 
+        $author = [];
+        if (method_exists(__CLASS__, 'prmp_get_author_profile_values')) {
+            $author = self::prmp_get_author_profile_values($user->ID);
+        }
+
+        $custom_avatar_url = '';
+        if (method_exists(__CLASS__, 'prmp_get_custom_avatar_url')) {
+            $custom_avatar_url = self::prmp_get_custom_avatar_url($user->ID);
+        }
+
         $dashboard_url = self::page_url('dashboard');
         $logout_url = self::logout_url();
 
@@ -160,8 +170,53 @@ trait PRMP_Shortcodes {
         echo '<input type="text" name="last_name" value="' . esc_attr(get_user_meta($user->ID, 'last_name', true)) . '"></label></p>';
         echo '</div>';
 
-        echo '<p><label>' . esc_html__('Bio', 'sh-review-members') . '<br>';
-        echo '<textarea name="description">' . esc_textarea(get_user_meta($user->ID, 'description', true)) . '</textarea></label></p>';
+
+        echo '<h3>' . esc_html__('Author profile (Pixel Review)', 'sh-review-members') . '</h3>';
+        echo '<p class="pr-muted">' . esc_html__('This information is used on your author page and in Pixel Review author boxes.', 'sh-review-members') . '</p>';
+
+        echo '<div class="pr-grid">';
+        echo '<p><label>' . esc_html__('Author title / role', 'sh-review-members') . '<br>';
+        echo '<input type="text" name="pr_author_title" value="' . esc_attr($author['title'] ?? '') . '"></label></p>';
+
+        echo '<p><label>' . esc_html__('Location', 'sh-review-members') . '<br>';
+        echo '<input type="text" name="pr_author_location" value="' . esc_attr($author['location'] ?? '') . '"></label></p>';
+        echo '</div>';
+
+        echo '<p><label>' . esc_html__('Short tagline', 'sh-review-members') . '<br>';
+        echo '<input type="text" name="pr_author_tagline" value="' . esc_attr($author['tagline'] ?? '') . '"></label></p>';
+
+        echo '<p><label>' . esc_html__('Favorite games (optional)', 'sh-review-members') . '<br>';
+        echo '<input type="text" name="pr_author_favorite_games" value="' . esc_attr($author['favorite_games'] ?? '') . '"></label></p>';
+
+        echo '<p><label>' . esc_html__('Extended biography', 'sh-review-members') . '<br>';
+        echo '<textarea name="pr_author_long_bio">' . esc_textarea($author['long_bio'] ?? '') . '</textarea></label></p>';
+
+        echo '<div class="pr-grid">';
+        echo '<p><label>' . esc_html__('Website / portfolio', 'sh-review-members') . '<br>';
+        echo '<input type="url" name="pr_author_website" value="' . esc_attr($author['website'] ?? '') . '" placeholder="https://"></label></p>';
+
+        echo '<p><label>' . esc_html__('X / Twitter URL', 'sh-review-members') . '<br>';
+        echo '<input type="url" name="pr_author_x" value="' . esc_attr($author['x'] ?? '') . '" placeholder="https://x.com/... "></label></p>';
+        echo '</div>';
+
+        echo '<div class="pr-grid">';
+        echo '<p><label>' . esc_html__('Twitch URL', 'sh-review-members') . '<br>';
+        echo '<input type="url" name="pr_author_twitch" value="' . esc_attr($author['twitch'] ?? '') . '" placeholder="https://twitch.tv/... "></label></p>';
+
+        echo '<p><label>' . esc_html__('YouTube channel URL', 'sh-review-members') . '<br>';
+        echo '<input type="url" name="pr_author_youtube" value="' . esc_attr($author['youtube'] ?? '') . '" placeholder="https://youtube.com/... "></label></p>';
+        echo '</div>';
+
+        echo '<p><label>' . esc_html__('Discord server/profile URL', 'sh-review-members') . '<br>';
+        echo '<input type="url" name="pr_author_discord" value="' . esc_attr($author['discord'] ?? '') . '" placeholder="https://discord.gg/... "></label></p>';
+
+        echo '<div class="pr-grid">';
+        echo '<p><label>' . esc_html__('Author header background image URL', 'sh-review-members') . '<br>';
+        echo '<input type="url" name="pr_author_bg_url" value="' . esc_attr($author['bg_url'] ?? '') . '" placeholder="https://"></label></p>';
+
+        echo '<p><label>' . esc_html__('Profile picture URL', 'sh-review-members') . '<br>';
+        echo '<input type="url" name="pr_author_avatar_url" value="' . esc_attr($custom_avatar_url) . '" placeholder="https://"></label></p>';
+        echo '</div>';
 
         echo '<div class="pr-grid">';
         echo '<p><label>' . esc_html__('New password', 'sh-review-members') . '<br>';

@@ -165,10 +165,6 @@ trait PRMP_Actions {
             $update['last_name'] = sanitize_text_field($_POST['last_name']);
         }
 
-        if (isset($_POST['description'])) {
-            $update['description'] = wp_kses_post((string)$_POST['description']);
-        }
-
         $res = wp_update_user($update);
         if (is_wp_error($res)) {
             self::set_flash('error', $res->get_error_message());
