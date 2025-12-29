@@ -12,6 +12,7 @@ trait PRMP_Options {
             'enabled' => 1,
             'create_pages_on_activate' => 0,
             'redirect_wp_login' => 1,
+            'allow_register' => 1,
             'page_ids' => [
                 'login'     => 0,
                 'register'  => 0,
