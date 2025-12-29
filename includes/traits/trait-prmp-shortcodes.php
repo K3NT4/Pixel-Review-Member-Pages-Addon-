@@ -268,7 +268,104 @@ trait PRMP_Shortcodes {
 
         echo '<hr class="pr-hr">';
 
-        echo '<p class="pr-muted">' . esc_html__('This area can be extended with member-only content, saved lists, review drafts, etc.', 'sh-review-members') . '</p>';
+        // Create Actions
+        if (self::can_show_create_actions()) {
+            $types = self::dashboard_post_types();
+            if (!empty($types)) {
+                echo '<div class="pr-dashboard__actions" style="margin-bottom: 16px;">';
+                foreach ($types as $pt) {
+                    $obj = get_post_type_object($pt);
+                    if (!$obj || !$obj->cap->create_posts || !current_user_can($obj->cap->create_posts)) continue;
+
+                    $label = sprintf(__('New %s', 'sh-review-members'), $obj->labels->singular_name);
+                    $url = admin_url('post-new.php?post_type=' . $pt);
+
+                    // Specific handling for Pixel Review shortcode usage if needed, but standard admin URL is safest fallback.
+                    echo '<a class="pr-button" href="' . esc_url($url) . '"> + ' . esc_html($label) . '</a>';
+                }
+                echo '</div>';
+            }
+        }
+
+        // List user posts
+        $paged = max(1, get_query_var('paged'), get_query_var('page'));
+        $post_types = self::dashboard_post_types();
+
+        $args = [
+            'post_type' => $post_types,
+            'post_status' => ['publish', 'draft', 'pending', 'future'],
+            'author' => $user->ID,
+            'posts_per_page' => 20,
+            'paged' => $paged,
+            'orderby' => 'date',
+            'order' => 'DESC',
+        ];
+
+        $q = new WP_Query($args);
+
+        if ($q->have_posts()) {
+            echo '<div class="pr-table-wrap">';
+            echo '<table class="pr-table">';
+            echo '<thead><tr>';
+            echo '<th>' . esc_html__('Title', 'sh-review-members') . '</th>';
+            echo '<th>' . esc_html__('Status', 'sh-review-members') . '</th>';
+            echo '<th>' . esc_html__('Date', 'sh-review-members') . '</th>';
+            echo '<th style="text-align:right">' . esc_html__('Action', 'sh-review-members') . '</th>';
+            echo '</tr></thead>';
+            echo '<tbody>';
+
+            while ($q->have_posts()) {
+                $q->the_post();
+                $pid = get_the_ID();
+                $status_obj = get_post_status_object(get_post_status());
+                $status_label = $status_obj ? $status_obj->label : get_post_status();
+
+                $edit_url = get_edit_post_link($pid);
+                // If user cannot edit, maybe view?
+                $view_url = get_permalink($pid);
+
+                echo '<tr>';
+                echo '<td><strong>' . esc_html(get_the_title()) . '</strong></td>';
+                echo '<td><span class="pr-badge">' . esc_html($status_label) . '</span></td>';
+                echo '<td>' . get_the_date() . '</td>';
+                echo '<td style="text-align:right;">';
+                if ($edit_url) {
+                    echo '<a class="pr-link" href="' . esc_url($edit_url) . '">' . esc_html__('Edit', 'sh-review-members') . '</a>';
+                } elseif ($view_url && get_post_status() === 'publish') {
+                    echo '<a class="pr-link" href="' . esc_url($view_url) . '">' . esc_html__('View', 'sh-review-members') . '</a>';
+                }
+                echo '</td>';
+                echo '</tr>';
+            }
+            echo '</tbody></table>';
+            echo '</div>';
+
+            // Pagination
+            $big = 999999999;
+            $links = paginate_links([
+                'base' => str_replace($big, '%#%', esc_url(get_pagenum_link($big))),
+                'format' => '?paged=%#%',
+                'current' => $paged,
+                'total' => $q->max_num_pages,
+                'prev_text' => '&laquo;',
+                'next_text' => '&raquo;',
+                'type' => 'array',
+            ]);
+
+            if ($links) {
+                echo '<div class="pr-pagination" style="margin-top:12px;">';
+                foreach ($links as $link) {
+                    // Simple styling wrapper if needed, or just output
+                    echo $link;
+                }
+                echo '</div>';
+            }
+
+            wp_reset_postdata();
+
+        } else {
+            echo '<p class="pr-muted">' . esc_html__('You have not submitted any content yet.', 'sh-review-members') . '</p>';
+        }
 
         echo '</div>';
         return ob_get_clean();
