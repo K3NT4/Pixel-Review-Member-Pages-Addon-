@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Pixel Review — Member Pages (Addon)\n"
-"POT-Creation-Date: 2025-12-29 17:43+0100\n"
-"PO-Revision-Date: 2025-12-29 17:45+0100\n"
+"POT-Creation-Date: 2025-12-29 19:30+0100\n"
+"PO-Revision-Date: 2025-12-29 19:32+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sv_SE\n"
@@ -20,74 +20,74 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-0: *.min.js\n"
 
 #: includes/traits/trait-prmp-actions.php:45
-#: includes/traits/trait-prmp-actions.php:84
-#: includes/traits/trait-prmp-actions.php:143
-#: includes/traits/trait-prmp-actions.php:206
+#: includes/traits/trait-prmp-actions.php:88
+#: includes/traits/trait-prmp-actions.php:151
+#: includes/traits/trait-prmp-actions.php:214
 msgid "Invalid security token. Please try again."
 msgstr "Ogiltig säkerhetstoken. Försök igen."
 
-#: includes/traits/trait-prmp-actions.php:53
-#: includes/traits/trait-prmp-actions.php:100
+#: includes/traits/trait-prmp-actions.php:57
+#: includes/traits/trait-prmp-actions.php:108
 msgid "Please fill in all fields."
 msgstr "Vänligen fyll i alla fält."
 
-#: includes/traits/trait-prmp-actions.php:58
+#: includes/traits/trait-prmp-actions.php:62
 msgid "Too many login attempts. Please wait and try again."
 msgstr "För många inloggningsförsök. Vänta och försök igen."
 
-#: includes/traits/trait-prmp-actions.php:90
+#: includes/traits/trait-prmp-actions.php:98
 #: includes/traits/trait-prmp-social-login.php:101
 msgid "Registration is disabled."
 msgstr "Registreringen är inaktiverad."
 
-#: includes/traits/trait-prmp-actions.php:105
+#: includes/traits/trait-prmp-actions.php:113
 msgid "Please provide a valid email address."
 msgstr "Vänligen ange en giltig e-postadress."
 
-#: includes/traits/trait-prmp-actions.php:110
-#: includes/traits/trait-prmp-actions.php:182
+#: includes/traits/trait-prmp-actions.php:118
+#: includes/traits/trait-prmp-actions.php:190
 msgid "Passwords do not match."
 msgstr "Lösenorden matchar inte."
 
-#: includes/traits/trait-prmp-actions.php:115
+#: includes/traits/trait-prmp-actions.php:123
 msgid "Username already exists."
 msgstr "Användarnamnet finns redan."
 
-#: includes/traits/trait-prmp-actions.php:120
+#: includes/traits/trait-prmp-actions.php:128
 msgid "Email already exists."
 msgstr "E-postadressen finns redan."
 
-#: includes/traits/trait-prmp-actions.php:130
+#: includes/traits/trait-prmp-actions.php:138
 msgid "Account created. Please log in."
 msgstr "Konto skapat. Vänligen logga in."
 
-#: includes/traits/trait-prmp-actions.php:138
-#: includes/traits/trait-prmp-actions.php:201
-#: includes/traits/trait-prmp-shortcodes.php:245
+#: includes/traits/trait-prmp-actions.php:146
+#: includes/traits/trait-prmp-actions.php:209
+#: includes/traits/trait-prmp-shortcodes.php:250
 msgid "You must be logged in."
 msgstr "Du måste vara inloggad."
 
-#: includes/traits/trait-prmp-actions.php:149
+#: includes/traits/trait-prmp-actions.php:157
 msgid "User not found."
 msgstr "Användaren hittades inte."
 
-#: includes/traits/trait-prmp-actions.php:186
+#: includes/traits/trait-prmp-actions.php:194
 msgid "Password must be at least 8 characters."
 msgstr "Lösenordet måste vara minst 8 tecken långt."
 
-#: includes/traits/trait-prmp-actions.php:194
+#: includes/traits/trait-prmp-actions.php:202
 msgid "Profile updated."
 msgstr "Profilen uppdaterad."
 
-#: includes/traits/trait-prmp-actions.php:215
+#: includes/traits/trait-prmp-actions.php:223
 msgid "Data export is not enabled."
 msgstr "Dataexport är inte aktiverad."
 
-#: includes/traits/trait-prmp-actions.php:219
+#: includes/traits/trait-prmp-actions.php:227
 msgid "Account deletion is not enabled."
 msgstr "Kontoborttagning är inte aktiverat."
 
-#: includes/traits/trait-prmp-actions.php:235
+#: includes/traits/trait-prmp-actions.php:243
 msgid ""
 "A confirmation email has been sent to your address. Please click the link in "
 "the email to confirm your request."
@@ -95,13 +95,39 @@ msgstr ""
 "Ett bekräftelsemejl har skickats till din adress. Klicka på länken i mejlet "
 "för att bekräfta din begäran."
 
-#: includes/traits/trait-prmp-actions.php:237
+#: includes/traits/trait-prmp-actions.php:245
 msgid ""
 "Your request has been created. If you do not receive a confirmation email, "
 "please contact the site administrator."
 msgstr ""
 "Din förfrågan har skapats. Om du inte får ett bekräftelsemejl, vänligen "
 "kontakta webbplatsadministratören."
+
+#: includes/traits/trait-prmp-actions.php:313
+msgid "Spam detected (honeypot)."
+msgstr "Skräppost upptäckt (honeypot)."
+
+#: includes/traits/trait-prmp-actions.php:321
+msgid "Form submission too fast or expired. Please try again."
+msgstr "Formuläret skickades in för snabbt eller det har gått ut. Försök igen."
+
+#: includes/traits/trait-prmp-actions.php:332
+#: includes/traits/trait-prmp-actions.php:359
+msgid "Please verify that you are human."
+msgstr "Vänligen bekräfta att du är människa."
+
+#: includes/traits/trait-prmp-actions.php:345
+#: includes/traits/trait-prmp-actions.php:372
+msgid "CAPTCHA verification failed (connection error)."
+msgstr "CAPTCHA-verifiering misslyckades (anslutningsfel)."
+
+#: includes/traits/trait-prmp-actions.php:351
+msgid "CAPTCHA verification failed."
+msgstr "CAPTCHA-verifieringen misslyckades."
+
+#: includes/traits/trait-prmp-actions.php:378
+msgid "CAPTCHA verification failed (score too low)."
+msgstr "CAPTCHA-verifieringen misslyckades (poängen är för låg)."
 
 #: includes/traits/trait-prmp-admin-settings.php:16
 #: includes/traits/trait-prmp-admin-settings.php:17
@@ -147,7 +173,7 @@ msgstr "Säkerhetsalternativ"
 
 #: includes/traits/trait-prmp-admin-settings.php:119
 #: includes/traits/trait-prmp-admin-settings.php:253
-#: includes/traits/trait-prmp-shortcodes.php:312
+#: includes/traits/trait-prmp-shortcodes.php:468
 msgid "Privacy & GDPR"
 msgstr "Sekretess och GDPR"
 
@@ -166,7 +192,7 @@ msgstr "Leverantörer"
 
 #: includes/traits/trait-prmp-admin-settings.php:155
 #: includes/traits/trait-prmp-admin-settings.php:255
-#: includes/traits/trait-prmp-shortcodes.php:138
+#: includes/traits/trait-prmp-shortcodes.php:143
 msgid "Dashboard"
 msgstr "Dashboard"
 
@@ -219,6 +245,7 @@ msgid "Add-on"
 msgstr "Tillägg"
 
 #: includes/traits/trait-prmp-admin-settings.php:512
+#: includes/traits/trait-prmp-shortcodes.php:324
 msgid "Status"
 msgstr "Status"
 
@@ -269,15 +296,15 @@ msgstr "Shortcode"
 
 #: includes/traits/trait-prmp-admin-settings.php:568
 #: includes/traits/trait-prmp-shortcodes.php:25
-#: includes/traits/trait-prmp-shortcodes.php:34
-#: includes/traits/trait-prmp-shortcodes.php:106
-#: includes/traits/trait-prmp-shortcodes.php:245
+#: includes/traits/trait-prmp-shortcodes.php:37
+#: includes/traits/trait-prmp-shortcodes.php:111
+#: includes/traits/trait-prmp-shortcodes.php:250
 msgid "Log in"
 msgstr "Logga in"
 
 #: includes/traits/trait-prmp-admin-settings.php:569
 #: includes/traits/trait-prmp-pages.php:22
-#: includes/traits/trait-prmp-shortcodes.php:85
+#: includes/traits/trait-prmp-shortcodes.php:90
 msgid "Register"
 msgstr "Registrera"
 
@@ -292,8 +319,8 @@ msgid "Profile"
 msgstr "Profil"
 
 #: includes/traits/trait-prmp-admin-settings.php:572
-#: includes/traits/trait-prmp-shortcodes.php:139
-#: includes/traits/trait-prmp-shortcodes.php:265
+#: includes/traits/trait-prmp-shortcodes.php:144
+#: includes/traits/trait-prmp-shortcodes.php:270
 msgid "Log out"
 msgstr "Logga ut"
 
@@ -423,7 +450,7 @@ msgid "Log In"
 msgstr "Logga in"
 
 #: includes/traits/trait-prmp-pages.php:32
-#: includes/traits/trait-prmp-shortcodes.php:134
+#: includes/traits/trait-prmp-shortcodes.php:139
 msgid "My Profile"
 msgstr "Min profil"
 
@@ -432,12 +459,12 @@ msgid "Log Out"
 msgstr "Logga ut"
 
 #: includes/traits/trait-prmp-shortcodes.php:17
-#: includes/traits/trait-prmp-shortcodes.php:56
+#: includes/traits/trait-prmp-shortcodes.php:59
 msgid "You are already logged in."
 msgstr "Du är redan inloggad."
 
 #: includes/traits/trait-prmp-shortcodes.php:17
-#: includes/traits/trait-prmp-shortcodes.php:56
+#: includes/traits/trait-prmp-shortcodes.php:59
 msgid "Go to My Pages"
 msgstr "Gå till Mina sidor"
 
@@ -446,7 +473,7 @@ msgid "Username or Email"
 msgstr "Användarnamn eller e-postadress"
 
 #: includes/traits/trait-prmp-shortcodes.php:31
-#: includes/traits/trait-prmp-shortcodes.php:78
+#: includes/traits/trait-prmp-shortcodes.php:81
 msgid "Password"
 msgstr "Lösenord"
 
@@ -454,65 +481,65 @@ msgstr "Lösenord"
 msgid "Remember me"
 msgstr "Kom ihåg mig"
 
-#: includes/traits/trait-prmp-shortcodes.php:38
-#: includes/traits/trait-prmp-shortcodes.php:89
+#: includes/traits/trait-prmp-shortcodes.php:41
+#: includes/traits/trait-prmp-shortcodes.php:94
 msgid "or"
 msgstr "eller"
 
-#: includes/traits/trait-prmp-shortcodes.php:39
+#: includes/traits/trait-prmp-shortcodes.php:42
 msgid "No account yet?"
 msgstr "Inget konto än?"
 
-#: includes/traits/trait-prmp-shortcodes.php:39
+#: includes/traits/trait-prmp-shortcodes.php:42
 msgid "Register here"
 msgstr "Registrera dig här"
 
-#: includes/traits/trait-prmp-shortcodes.php:64
+#: includes/traits/trait-prmp-shortcodes.php:67
 msgid "Create an account"
 msgstr "Skapa ett konto"
 
-#: includes/traits/trait-prmp-shortcodes.php:70
+#: includes/traits/trait-prmp-shortcodes.php:73
 msgid "Username"
 msgstr "Användarnamn"
 
-#: includes/traits/trait-prmp-shortcodes.php:73
-#: includes/traits/trait-prmp-shortcodes.php:161
+#: includes/traits/trait-prmp-shortcodes.php:76
+#: includes/traits/trait-prmp-shortcodes.php:166
 msgid "Email"
 msgstr "E-post"
 
-#: includes/traits/trait-prmp-shortcodes.php:81
+#: includes/traits/trait-prmp-shortcodes.php:84
 msgid "Repeat password"
 msgstr "Upprepa lösenord"
 
-#: includes/traits/trait-prmp-shortcodes.php:90
+#: includes/traits/trait-prmp-shortcodes.php:95
 msgid "Already have an account?"
 msgstr "Har du redan ett konto?"
 
-#: includes/traits/trait-prmp-shortcodes.php:90
+#: includes/traits/trait-prmp-shortcodes.php:95
 msgid "Log in here"
 msgstr "Logga in här"
 
-#: includes/traits/trait-prmp-shortcodes.php:106
+#: includes/traits/trait-prmp-shortcodes.php:111
 msgid "You must be logged in to view your profile."
 msgstr "Du måste vara inloggad för att se din profil."
 
-#: includes/traits/trait-prmp-shortcodes.php:158
+#: includes/traits/trait-prmp-shortcodes.php:163
 msgid "Display name"
 msgstr "Visningsnamn"
 
-#: includes/traits/trait-prmp-shortcodes.php:166
+#: includes/traits/trait-prmp-shortcodes.php:171
 msgid "First name"
 msgstr "Förnamn"
 
-#: includes/traits/trait-prmp-shortcodes.php:169
+#: includes/traits/trait-prmp-shortcodes.php:174
 msgid "Last name"
 msgstr "Efternamn"
 
-#: includes/traits/trait-prmp-shortcodes.php:174
+#: includes/traits/trait-prmp-shortcodes.php:179
 msgid "Author profile (Pixel Review)"
 msgstr "Författarprofil (Pixel Review)"
 
-#: includes/traits/trait-prmp-shortcodes.php:175
+#: includes/traits/trait-prmp-shortcodes.php:180
 msgid ""
 "This information is used on your author page and in Pixel Review author "
 "boxes."
@@ -520,119 +547,148 @@ msgstr ""
 "Denna information används på din författarsida och i Pixel Reviews "
 "författarrutor."
 
-#: includes/traits/trait-prmp-shortcodes.php:178
+#: includes/traits/trait-prmp-shortcodes.php:183
 msgid "Author title / role"
 msgstr "Författartitel / roll"
 
-#: includes/traits/trait-prmp-shortcodes.php:181
+#: includes/traits/trait-prmp-shortcodes.php:186
 msgid "Location"
 msgstr "Plats"
 
-#: includes/traits/trait-prmp-shortcodes.php:185
+#: includes/traits/trait-prmp-shortcodes.php:190
 msgid "Short tagline"
 msgstr "Kort slogan"
 
-#: includes/traits/trait-prmp-shortcodes.php:188
+#: includes/traits/trait-prmp-shortcodes.php:193
 msgid "Favorite games (optional)"
 msgstr "Favoritspel (valfritt)"
 
-#: includes/traits/trait-prmp-shortcodes.php:191
+#: includes/traits/trait-prmp-shortcodes.php:196
 msgid "Extended biography"
 msgstr "Utökad biografi"
 
-#: includes/traits/trait-prmp-shortcodes.php:195
+#: includes/traits/trait-prmp-shortcodes.php:200
 msgid "Website / portfolio"
 msgstr "Webbplats / portfolio"
 
-#: includes/traits/trait-prmp-shortcodes.php:198
+#: includes/traits/trait-prmp-shortcodes.php:203
 msgid "X / Twitter URL"
 msgstr "X / Twitter-URL"
 
-#: includes/traits/trait-prmp-shortcodes.php:203
+#: includes/traits/trait-prmp-shortcodes.php:208
 msgid "Twitch URL"
 msgstr "Twitch-URL"
 
-#: includes/traits/trait-prmp-shortcodes.php:206
+#: includes/traits/trait-prmp-shortcodes.php:211
 msgid "YouTube channel URL"
 msgstr "YouTube-kanal-URL"
 
-#: includes/traits/trait-prmp-shortcodes.php:210
+#: includes/traits/trait-prmp-shortcodes.php:215
 msgid "Discord server/profile URL"
 msgstr "Discord-server/profil-URL"
 
-#: includes/traits/trait-prmp-shortcodes.php:214
+#: includes/traits/trait-prmp-shortcodes.php:219
 msgid "Author header background image URL"
 msgstr "URL för bakgrundsbild av författarens rubrik"
 
-#: includes/traits/trait-prmp-shortcodes.php:217
+#: includes/traits/trait-prmp-shortcodes.php:222
 msgid "Profile picture URL"
 msgstr "URL för profilbild"
 
-#: includes/traits/trait-prmp-shortcodes.php:222
+#: includes/traits/trait-prmp-shortcodes.php:227
 msgid "New password"
 msgstr "Nytt lösenord"
 
-#: includes/traits/trait-prmp-shortcodes.php:223
+#: includes/traits/trait-prmp-shortcodes.php:228
 msgid "Leave blank to keep current password."
 msgstr "Lämna tomt för att behålla aktuellt lösenord."
 
-#: includes/traits/trait-prmp-shortcodes.php:225
+#: includes/traits/trait-prmp-shortcodes.php:230
 msgid "Repeat new password"
 msgstr "Upprepa nytt lösenord"
 
-#: includes/traits/trait-prmp-shortcodes.php:229
+#: includes/traits/trait-prmp-shortcodes.php:234
 msgid "Save profile"
 msgstr "Spara profil"
 
-#: includes/traits/trait-prmp-shortcodes.php:260
+#: includes/traits/trait-prmp-shortcodes.php:265
 msgid "My Dashboard"
 msgstr "Min instrumentpanel"
 
-#: includes/traits/trait-prmp-shortcodes.php:261
+#: includes/traits/trait-prmp-shortcodes.php:266
 #, php-format
 msgid "Hello %s"
 msgstr "Hej %s"
 
-#: includes/traits/trait-prmp-shortcodes.php:264
+#: includes/traits/trait-prmp-shortcodes.php:269
 msgid "Edit Profile"
 msgstr "Redigera profil"
 
-#: includes/traits/trait-prmp-shortcodes.php:271
-msgid ""
-"This area can be extended with member-only content, saved lists, review "
-"drafts, etc."
-msgstr ""
-"Det här området kan utökas med innehåll endast för medlemmar, sparade "
-"listor, utkast till recensioner etc."
+#: includes/traits/trait-prmp-shortcodes.php:286
+msgid "Create Review"
+msgstr "Skapa recension"
 
-#: includes/traits/trait-prmp-shortcodes.php:287
+#: includes/traits/trait-prmp-shortcodes.php:293
+#, php-format
+msgid "New %s"
+msgstr "Nya %s"
+
+#: includes/traits/trait-prmp-shortcodes.php:323
+msgid "Title"
+msgstr "Titel"
+
+#: includes/traits/trait-prmp-shortcodes.php:325
+msgid "Date"
+msgstr "Datum"
+
+#: includes/traits/trait-prmp-shortcodes.php:326
+msgid "Action"
+msgstr "Handling"
+
+#: includes/traits/trait-prmp-shortcodes.php:346
+msgid "Edit"
+msgstr "Redigera"
+
+#: includes/traits/trait-prmp-shortcodes.php:348
+msgid "View"
+msgstr "Visa"
+
+#: includes/traits/trait-prmp-shortcodes.php:380
+msgid "You have not submitted any content yet."
+msgstr "Du har inte skickat in något innehåll än."
+
+#: includes/traits/trait-prmp-shortcodes.php:397
+msgid "Do not fill this field"
+msgstr "Fyll inte i det här fältet"
+
+#: includes/traits/trait-prmp-shortcodes.php:443
 msgid "Social login"
 msgstr "Social inloggning"
 
-#: includes/traits/trait-prmp-shortcodes.php:291
+#: includes/traits/trait-prmp-shortcodes.php:447
 msgid "Continue with WordPress"
 msgstr "Fortsätt med WordPress"
 
-#: includes/traits/trait-prmp-shortcodes.php:296
+#: includes/traits/trait-prmp-shortcodes.php:452
 msgid "Continue with Google"
 msgstr "Fortsätt med Google"
 
-#: includes/traits/trait-prmp-shortcodes.php:313
+#: includes/traits/trait-prmp-shortcodes.php:469
 msgid ""
 "You can request a copy of your personal data or request account deletion."
 msgstr ""
 "Du kan begära en kopia av dina personuppgifter eller begära att ditt konto "
 "raderas."
 
-#: includes/traits/trait-prmp-shortcodes.php:321
+#: includes/traits/trait-prmp-shortcodes.php:477
 msgid "Request my data (export)"
 msgstr "Begär mina uppgifter (export)"
 
-#: includes/traits/trait-prmp-shortcodes.php:324
+#: includes/traits/trait-prmp-shortcodes.php:480
 msgid "Are you sure? This starts the deletion request process."
 msgstr "Är du säker? Detta startar processen för borttagningsbegäran."
 
-#: includes/traits/trait-prmp-shortcodes.php:324
+#: includes/traits/trait-prmp-shortcodes.php:480
 msgid "Request deletion"
 msgstr "Begär radering"
 
@@ -680,6 +736,13 @@ msgstr "Spel Hubben"
 msgid "https://spelhubben.se"
 msgstr "https://spelhubben.se"
 
+#~ msgid ""
+#~ "This area can be extended with member-only content, saved lists, review "
+#~ "drafts, etc."
+#~ msgstr ""
+#~ "Det här området kan utökas med innehåll endast för medlemmar, sparade "
+#~ "listor, utkast till recensioner etc."
+
 #~ msgid "Bio"
 #~ msgstr "Bio"
 
@@ -692,9 +755,6 @@ msgstr "https://spelhubben.se"
 
 #~ msgid "Create standard pages on activation"
 #~ msgstr "Skapa standardsidor vid aktivering"
-
-#~ msgid "CAPTCHA verification failed. Please try again."
-#~ msgstr "CAPTCHA-verifieringen misslyckades. Försök igen."
 
 #~ msgid "Registration is disabled on this site."
 #~ msgstr "Registrering är inaktiverad på den här webbplatsen."
@@ -729,9 +789,6 @@ msgstr "https://spelhubben.se"
 #~ msgstr ""
 #~ "Dessa fält används av Pixel Review på författarsidor och kan också visas "
 #~ "i teman/moduler som läser Pixel Review-meta."
-
-#~ msgid "Title"
-#~ msgstr "Titel"
 
 #~ msgid "Editor"
 #~ msgstr "Redaktör"
@@ -780,9 +837,6 @@ msgstr "https://spelhubben.se"
 #~ msgid "Create New Post"
 #~ msgstr "Skapa nytt inlägg"
 
-#~ msgid "Create Review"
-#~ msgstr "Skapa recension"
-
 #~ msgid "My Articles"
 #~ msgstr "Mina artiklar"
 
@@ -795,12 +849,6 @@ msgstr "https://spelhubben.se"
 #~ msgid "Review Date"
 #~ msgstr "Recensionsdatum"
 
-#~ msgid "Date"
-#~ msgstr "Datum"
-
-#~ msgid "Action"
-#~ msgstr "Handling"
-
 #~ msgid "Product"
 #~ msgstr "Produkt"
 
@@ -810,9 +858,6 @@ msgstr "https://spelhubben.se"
 #, php-format
 #~ msgid "Edit \"%s\""
 #~ msgstr "Redigera \"%s\""
-
-#~ msgid "Edit"
-#~ msgstr "Redigera"
 
 #~ msgid "Page navigation"
 #~ msgstr "Sidnavigering"

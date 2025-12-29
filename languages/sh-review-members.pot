@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Pixel Review — Member Pages (Addon)\n"
-"POT-Creation-Date: 2025-12-29 17:45+0100\n"
+"POT-Creation-Date: 2025-12-29 19:30+0100\n"
 "PO-Revision-Date: 2025-12-27 13:02+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -21,83 +21,109 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-0: *.min.js\n"
 
 #: includes/traits/trait-prmp-actions.php:45
-#: includes/traits/trait-prmp-actions.php:84
-#: includes/traits/trait-prmp-actions.php:143
-#: includes/traits/trait-prmp-actions.php:206
+#: includes/traits/trait-prmp-actions.php:88
+#: includes/traits/trait-prmp-actions.php:151
+#: includes/traits/trait-prmp-actions.php:214
 msgid "Invalid security token. Please try again."
 msgstr ""
 
-#: includes/traits/trait-prmp-actions.php:53
-#: includes/traits/trait-prmp-actions.php:100
+#: includes/traits/trait-prmp-actions.php:57
+#: includes/traits/trait-prmp-actions.php:108
 msgid "Please fill in all fields."
 msgstr ""
 
-#: includes/traits/trait-prmp-actions.php:58
+#: includes/traits/trait-prmp-actions.php:62
 msgid "Too many login attempts. Please wait and try again."
 msgstr ""
 
-#: includes/traits/trait-prmp-actions.php:90
+#: includes/traits/trait-prmp-actions.php:98
 #: includes/traits/trait-prmp-social-login.php:101
 msgid "Registration is disabled."
 msgstr ""
 
-#: includes/traits/trait-prmp-actions.php:105
+#: includes/traits/trait-prmp-actions.php:113
 msgid "Please provide a valid email address."
 msgstr ""
 
-#: includes/traits/trait-prmp-actions.php:110
-#: includes/traits/trait-prmp-actions.php:182
+#: includes/traits/trait-prmp-actions.php:118
+#: includes/traits/trait-prmp-actions.php:190
 msgid "Passwords do not match."
 msgstr ""
 
-#: includes/traits/trait-prmp-actions.php:115
+#: includes/traits/trait-prmp-actions.php:123
 msgid "Username already exists."
 msgstr ""
 
-#: includes/traits/trait-prmp-actions.php:120
+#: includes/traits/trait-prmp-actions.php:128
 msgid "Email already exists."
 msgstr ""
 
-#: includes/traits/trait-prmp-actions.php:130
+#: includes/traits/trait-prmp-actions.php:138
 msgid "Account created. Please log in."
 msgstr ""
 
-#: includes/traits/trait-prmp-actions.php:138
-#: includes/traits/trait-prmp-actions.php:201
-#: includes/traits/trait-prmp-shortcodes.php:245
+#: includes/traits/trait-prmp-actions.php:146
+#: includes/traits/trait-prmp-actions.php:209
+#: includes/traits/trait-prmp-shortcodes.php:250
 msgid "You must be logged in."
 msgstr ""
 
-#: includes/traits/trait-prmp-actions.php:149
+#: includes/traits/trait-prmp-actions.php:157
 msgid "User not found."
 msgstr ""
 
-#: includes/traits/trait-prmp-actions.php:186
+#: includes/traits/trait-prmp-actions.php:194
 msgid "Password must be at least 8 characters."
 msgstr ""
 
-#: includes/traits/trait-prmp-actions.php:194
+#: includes/traits/trait-prmp-actions.php:202
 msgid "Profile updated."
 msgstr ""
 
-#: includes/traits/trait-prmp-actions.php:215
+#: includes/traits/trait-prmp-actions.php:223
 msgid "Data export is not enabled."
 msgstr ""
 
-#: includes/traits/trait-prmp-actions.php:219
+#: includes/traits/trait-prmp-actions.php:227
 msgid "Account deletion is not enabled."
 msgstr ""
 
-#: includes/traits/trait-prmp-actions.php:235
+#: includes/traits/trait-prmp-actions.php:243
 msgid ""
 "A confirmation email has been sent to your address. Please click the link "
 "in the email to confirm your request."
 msgstr ""
 
-#: includes/traits/trait-prmp-actions.php:237
+#: includes/traits/trait-prmp-actions.php:245
 msgid ""
 "Your request has been created. If you do not receive a confirmation "
 "email, please contact the site administrator."
+msgstr ""
+
+#: includes/traits/trait-prmp-actions.php:313
+msgid "Spam detected (honeypot)."
+msgstr ""
+
+#: includes/traits/trait-prmp-actions.php:321
+msgid "Form submission too fast or expired. Please try again."
+msgstr ""
+
+#: includes/traits/trait-prmp-actions.php:332
+#: includes/traits/trait-prmp-actions.php:359
+msgid "Please verify that you are human."
+msgstr ""
+
+#: includes/traits/trait-prmp-actions.php:345
+#: includes/traits/trait-prmp-actions.php:372
+msgid "CAPTCHA verification failed (connection error)."
+msgstr ""
+
+#: includes/traits/trait-prmp-actions.php:351
+msgid "CAPTCHA verification failed."
+msgstr ""
+
+#: includes/traits/trait-prmp-actions.php:378
+msgid "CAPTCHA verification failed (score too low)."
 msgstr ""
 
 #: includes/traits/trait-prmp-admin-settings.php:16
@@ -144,7 +170,7 @@ msgstr ""
 
 #: includes/traits/trait-prmp-admin-settings.php:119
 #: includes/traits/trait-prmp-admin-settings.php:253
-#: includes/traits/trait-prmp-shortcodes.php:312
+#: includes/traits/trait-prmp-shortcodes.php:468
 msgid "Privacy & GDPR"
 msgstr ""
 
@@ -163,7 +189,7 @@ msgstr ""
 
 #: includes/traits/trait-prmp-admin-settings.php:155
 #: includes/traits/trait-prmp-admin-settings.php:255
-#: includes/traits/trait-prmp-shortcodes.php:138
+#: includes/traits/trait-prmp-shortcodes.php:143
 msgid "Dashboard"
 msgstr ""
 
@@ -214,6 +240,7 @@ msgid "Add-on"
 msgstr ""
 
 #: includes/traits/trait-prmp-admin-settings.php:512
+#: includes/traits/trait-prmp-shortcodes.php:324
 msgid "Status"
 msgstr ""
 
@@ -261,15 +288,15 @@ msgstr ""
 
 #: includes/traits/trait-prmp-admin-settings.php:568
 #: includes/traits/trait-prmp-shortcodes.php:25
-#: includes/traits/trait-prmp-shortcodes.php:34
-#: includes/traits/trait-prmp-shortcodes.php:106
-#: includes/traits/trait-prmp-shortcodes.php:245
+#: includes/traits/trait-prmp-shortcodes.php:37
+#: includes/traits/trait-prmp-shortcodes.php:111
+#: includes/traits/trait-prmp-shortcodes.php:250
 msgid "Log in"
 msgstr ""
 
 #: includes/traits/trait-prmp-admin-settings.php:569
 #: includes/traits/trait-prmp-pages.php:22
-#: includes/traits/trait-prmp-shortcodes.php:85
+#: includes/traits/trait-prmp-shortcodes.php:90
 msgid "Register"
 msgstr ""
 
@@ -284,8 +311,8 @@ msgid "Profile"
 msgstr ""
 
 #: includes/traits/trait-prmp-admin-settings.php:572
-#: includes/traits/trait-prmp-shortcodes.php:139
-#: includes/traits/trait-prmp-shortcodes.php:265
+#: includes/traits/trait-prmp-shortcodes.php:144
+#: includes/traits/trait-prmp-shortcodes.php:270
 msgid "Log out"
 msgstr ""
 
@@ -407,7 +434,7 @@ msgid "Log In"
 msgstr ""
 
 #: includes/traits/trait-prmp-pages.php:32
-#: includes/traits/trait-prmp-shortcodes.php:134
+#: includes/traits/trait-prmp-shortcodes.php:139
 msgid "My Profile"
 msgstr ""
 
@@ -416,12 +443,12 @@ msgid "Log Out"
 msgstr ""
 
 #: includes/traits/trait-prmp-shortcodes.php:17
-#: includes/traits/trait-prmp-shortcodes.php:56
+#: includes/traits/trait-prmp-shortcodes.php:59
 msgid "You are already logged in."
 msgstr ""
 
 #: includes/traits/trait-prmp-shortcodes.php:17
-#: includes/traits/trait-prmp-shortcodes.php:56
+#: includes/traits/trait-prmp-shortcodes.php:59
 msgid "Go to My Pages"
 msgstr ""
 
@@ -430,7 +457,7 @@ msgid "Username or Email"
 msgstr ""
 
 #: includes/traits/trait-prmp-shortcodes.php:31
-#: includes/traits/trait-prmp-shortcodes.php:78
+#: includes/traits/trait-prmp-shortcodes.php:81
 msgid "Password"
 msgstr ""
 
@@ -438,179 +465,210 @@ msgstr ""
 msgid "Remember me"
 msgstr ""
 
-#: includes/traits/trait-prmp-shortcodes.php:38
-#: includes/traits/trait-prmp-shortcodes.php:89
+#: includes/traits/trait-prmp-shortcodes.php:41
+#: includes/traits/trait-prmp-shortcodes.php:94
 msgid "or"
 msgstr ""
 
-#: includes/traits/trait-prmp-shortcodes.php:39
+#: includes/traits/trait-prmp-shortcodes.php:42
 msgid "No account yet?"
 msgstr ""
 
-#: includes/traits/trait-prmp-shortcodes.php:39
+#: includes/traits/trait-prmp-shortcodes.php:42
 msgid "Register here"
 msgstr ""
 
-#: includes/traits/trait-prmp-shortcodes.php:64
+#: includes/traits/trait-prmp-shortcodes.php:67
 msgid "Create an account"
 msgstr ""
 
-#: includes/traits/trait-prmp-shortcodes.php:70
+#: includes/traits/trait-prmp-shortcodes.php:73
 msgid "Username"
 msgstr ""
 
-#: includes/traits/trait-prmp-shortcodes.php:73
-#: includes/traits/trait-prmp-shortcodes.php:161
+#: includes/traits/trait-prmp-shortcodes.php:76
+#: includes/traits/trait-prmp-shortcodes.php:166
 msgid "Email"
 msgstr ""
 
-#: includes/traits/trait-prmp-shortcodes.php:81
+#: includes/traits/trait-prmp-shortcodes.php:84
 msgid "Repeat password"
 msgstr ""
 
-#: includes/traits/trait-prmp-shortcodes.php:90
+#: includes/traits/trait-prmp-shortcodes.php:95
 msgid "Already have an account?"
 msgstr ""
 
-#: includes/traits/trait-prmp-shortcodes.php:90
+#: includes/traits/trait-prmp-shortcodes.php:95
 msgid "Log in here"
 msgstr ""
 
-#: includes/traits/trait-prmp-shortcodes.php:106
+#: includes/traits/trait-prmp-shortcodes.php:111
 msgid "You must be logged in to view your profile."
 msgstr ""
 
-#: includes/traits/trait-prmp-shortcodes.php:158
+#: includes/traits/trait-prmp-shortcodes.php:163
 msgid "Display name"
 msgstr ""
 
-#: includes/traits/trait-prmp-shortcodes.php:166
+#: includes/traits/trait-prmp-shortcodes.php:171
 msgid "First name"
 msgstr ""
 
-#: includes/traits/trait-prmp-shortcodes.php:169
+#: includes/traits/trait-prmp-shortcodes.php:174
 msgid "Last name"
 msgstr ""
 
-#: includes/traits/trait-prmp-shortcodes.php:174
+#: includes/traits/trait-prmp-shortcodes.php:179
 msgid "Author profile (Pixel Review)"
 msgstr ""
 
-#: includes/traits/trait-prmp-shortcodes.php:175
+#: includes/traits/trait-prmp-shortcodes.php:180
 msgid ""
 "This information is used on your author page and in Pixel Review author "
 "boxes."
 msgstr ""
 
-#: includes/traits/trait-prmp-shortcodes.php:178
+#: includes/traits/trait-prmp-shortcodes.php:183
 msgid "Author title / role"
 msgstr ""
 
-#: includes/traits/trait-prmp-shortcodes.php:181
+#: includes/traits/trait-prmp-shortcodes.php:186
 msgid "Location"
 msgstr ""
 
-#: includes/traits/trait-prmp-shortcodes.php:185
+#: includes/traits/trait-prmp-shortcodes.php:190
 msgid "Short tagline"
 msgstr ""
 
-#: includes/traits/trait-prmp-shortcodes.php:188
+#: includes/traits/trait-prmp-shortcodes.php:193
 msgid "Favorite games (optional)"
 msgstr ""
 
-#: includes/traits/trait-prmp-shortcodes.php:191
+#: includes/traits/trait-prmp-shortcodes.php:196
 msgid "Extended biography"
 msgstr ""
 
-#: includes/traits/trait-prmp-shortcodes.php:195
+#: includes/traits/trait-prmp-shortcodes.php:200
 msgid "Website / portfolio"
 msgstr ""
 
-#: includes/traits/trait-prmp-shortcodes.php:198
+#: includes/traits/trait-prmp-shortcodes.php:203
 msgid "X / Twitter URL"
 msgstr ""
 
-#: includes/traits/trait-prmp-shortcodes.php:203
+#: includes/traits/trait-prmp-shortcodes.php:208
 msgid "Twitch URL"
 msgstr ""
 
-#: includes/traits/trait-prmp-shortcodes.php:206
+#: includes/traits/trait-prmp-shortcodes.php:211
 msgid "YouTube channel URL"
 msgstr ""
 
-#: includes/traits/trait-prmp-shortcodes.php:210
+#: includes/traits/trait-prmp-shortcodes.php:215
 msgid "Discord server/profile URL"
 msgstr ""
 
-#: includes/traits/trait-prmp-shortcodes.php:214
+#: includes/traits/trait-prmp-shortcodes.php:219
 msgid "Author header background image URL"
 msgstr ""
 
-#: includes/traits/trait-prmp-shortcodes.php:217
+#: includes/traits/trait-prmp-shortcodes.php:222
 msgid "Profile picture URL"
 msgstr ""
 
-#: includes/traits/trait-prmp-shortcodes.php:222
+#: includes/traits/trait-prmp-shortcodes.php:227
 msgid "New password"
 msgstr ""
 
-#: includes/traits/trait-prmp-shortcodes.php:223
+#: includes/traits/trait-prmp-shortcodes.php:228
 msgid "Leave blank to keep current password."
 msgstr ""
 
-#: includes/traits/trait-prmp-shortcodes.php:225
+#: includes/traits/trait-prmp-shortcodes.php:230
 msgid "Repeat new password"
 msgstr ""
 
-#: includes/traits/trait-prmp-shortcodes.php:229
+#: includes/traits/trait-prmp-shortcodes.php:234
 msgid "Save profile"
 msgstr ""
 
-#: includes/traits/trait-prmp-shortcodes.php:260
+#: includes/traits/trait-prmp-shortcodes.php:265
 msgid "My Dashboard"
 msgstr ""
 
-#: includes/traits/trait-prmp-shortcodes.php:261
+#: includes/traits/trait-prmp-shortcodes.php:266
 #, php-format
 msgid "Hello %s"
 msgstr ""
 
-#: includes/traits/trait-prmp-shortcodes.php:264
+#: includes/traits/trait-prmp-shortcodes.php:269
 msgid "Edit Profile"
 msgstr ""
 
-#: includes/traits/trait-prmp-shortcodes.php:271
-msgid ""
-"This area can be extended with member-only content, saved lists, review "
-"drafts, etc."
+#: includes/traits/trait-prmp-shortcodes.php:286
+msgid "Create Review"
 msgstr ""
 
-#: includes/traits/trait-prmp-shortcodes.php:287
+#: includes/traits/trait-prmp-shortcodes.php:293
+#, php-format
+msgid "New %s"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:323
+msgid "Title"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:325
+msgid "Date"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:326
+msgid "Action"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:346
+msgid "Edit"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:348
+msgid "View"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:380
+msgid "You have not submitted any content yet."
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:397
+msgid "Do not fill this field"
+msgstr ""
+
+#: includes/traits/trait-prmp-shortcodes.php:443
 msgid "Social login"
 msgstr ""
 
-#: includes/traits/trait-prmp-shortcodes.php:291
+#: includes/traits/trait-prmp-shortcodes.php:447
 msgid "Continue with WordPress"
 msgstr ""
 
-#: includes/traits/trait-prmp-shortcodes.php:296
+#: includes/traits/trait-prmp-shortcodes.php:452
 msgid "Continue with Google"
 msgstr ""
 
-#: includes/traits/trait-prmp-shortcodes.php:313
+#: includes/traits/trait-prmp-shortcodes.php:469
 msgid ""
 "You can request a copy of your personal data or request account deletion."
 msgstr ""
 
-#: includes/traits/trait-prmp-shortcodes.php:321
+#: includes/traits/trait-prmp-shortcodes.php:477
 msgid "Request my data (export)"
 msgstr ""
 
-#: includes/traits/trait-prmp-shortcodes.php:324
+#: includes/traits/trait-prmp-shortcodes.php:480
 msgid "Are you sure? This starts the deletion request process."
 msgstr ""
 
-#: includes/traits/trait-prmp-shortcodes.php:324
+#: includes/traits/trait-prmp-shortcodes.php:480
 msgid "Request deletion"
 msgstr ""
 
