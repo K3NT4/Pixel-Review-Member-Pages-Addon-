@@ -278,6 +278,14 @@ trait PRMP_Shortcodes {
             $types = self::dashboard_post_types();
             if (!empty($types)) {
                 echo '<div class="pr-dashboard__actions" style="margin-bottom: 16px;">';
+
+                // Specific "Create Review" button if Pixel Review is active
+                if (defined('SH_REVIEW_VERSION') && current_user_can('edit_posts')) {
+                    $nonce = wp_create_nonce('sh_quick_review_create');
+                    $url = admin_url('admin.php?page=sh-quick-review-post&action=create&sh_nonce=' . $nonce);
+                    echo '<a class="pr-button pr-button--secondary" href="' . esc_url($url) . '"> + ' . esc_html__('Create Review', 'sh-review-members') . '</a>';
+                }
+
                 foreach ($types as $pt) {
                     $obj = get_post_type_object($pt);
                     if (!$obj || !$obj->cap->create_posts || !current_user_can($obj->cap->create_posts)) continue;
@@ -286,7 +294,7 @@ trait PRMP_Shortcodes {
                     $url = admin_url('post-new.php?post_type=' . $pt);
 
                     // Specific handling for Pixel Review shortcode usage if needed, but standard admin URL is safest fallback.
-                    echo '<a class="pr-button" href="' . esc_url($url) . '"> + ' . esc_html($label) . '</a>';
+                    echo '<a class="pr-button pr-button--secondary" href="' . esc_url($url) . '"> + ' . esc_html($label) . '</a>';
                 }
                 echo '</div>';
             }
