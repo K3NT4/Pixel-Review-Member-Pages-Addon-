@@ -46,6 +46,10 @@ trait PRMP_Actions {
             return;
         }
 
+        if (!self::verify_bot_protection()) {
+            return; // Error message set in verify_bot_protection
+        }
+
         $username = sanitize_text_field($_POST['log'] ?? '');
         $password = (string)($_POST['pwd'] ?? '');
 
@@ -82,6 +86,10 @@ trait PRMP_Actions {
     protected static function handle_register() : void {
         if (empty($_POST['_wpnonce']) || !wp_verify_nonce(sanitize_text_field($_POST['_wpnonce']), 'pr_register')) {
             self::set_flash('error', __('Invalid security token. Please try again.', 'sh-review-members'));
+            return;
+        }
+
+        if (!self::verify_bot_protection()) {
             return;
         }
 
@@ -297,5 +305,81 @@ trait PRMP_Actions {
         $ip = $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1';
         $key = 'prmp_login_fails_' . md5($ip);
         delete_transient($key);
+    }
+
+    protected static function verify_bot_protection() : bool {
+        // Honeypot
+        if (!empty($_POST['pr_hp'])) {
+            self::set_flash('error', __('Spam detected (honeypot).', 'sh-review-members'));
+            return false;
+        }
+
+        // Timestamp
+        $ts = absint($_POST['pr_ts'] ?? 0);
+        $now = time();
+        if ($ts === 0 || ($now - $ts) < 2 || ($now - $ts) > 86400) {
+            self::set_flash('error', __('Form submission too fast or expired. Please try again.', 'sh-review-members'));
+            return false;
+        }
+
+        // CAPTCHA
+        $opt = self::get_options();
+        $provider = $opt['captcha_provider'] ?? '';
+
+        if ($provider === 'turnstile' && !empty($opt['turnstile_secret_key'])) {
+            $response = sanitize_text_field($_POST['cf-turnstile-response'] ?? '');
+            if (empty($response)) {
+                self::set_flash('error', __('Please verify that you are human.', 'sh-review-members'));
+                return false;
+            }
+
+            $verify = wp_remote_post('https://challenges.cloudflare.com/turnstile/v0/siteverify', [
+                'body' => [
+                    'secret' => $opt['turnstile_secret_key'],
+                    'response' => $response,
+                    'remoteip' => $_SERVER['REMOTE_ADDR'] ?? '',
+                ]
+            ]);
+
+            if (is_wp_error($verify)) {
+                self::set_flash('error', __('CAPTCHA verification failed (connection error).', 'sh-review-members'));
+                return false;
+            }
+
+            $body = json_decode(wp_remote_retrieve_body($verify), true);
+            if (empty($body['success'])) {
+                self::set_flash('error', __('CAPTCHA verification failed.', 'sh-review-members'));
+                return false;
+            }
+        }
+
+        if ($provider === 'recaptcha_v3' && !empty($opt['recaptcha_secret_key'])) {
+            $response = sanitize_text_field($_POST['g-recaptcha-response'] ?? '');
+            if (empty($response)) {
+                self::set_flash('error', __('Please verify that you are human.', 'sh-review-members'));
+                return false;
+            }
+
+            $verify = wp_remote_post('https://www.google.com/recaptcha/api/siteverify', [
+                'body' => [
+                    'secret' => $opt['recaptcha_secret_key'],
+                    'response' => $response,
+                    'remoteip' => $_SERVER['REMOTE_ADDR'] ?? '',
+                ]
+            ]);
+
+            if (is_wp_error($verify)) {
+                self::set_flash('error', __('CAPTCHA verification failed (connection error).', 'sh-review-members'));
+                return false;
+            }
+
+            $body = json_decode(wp_remote_retrieve_body($verify), true);
+            if (empty($body['success']) || ($body['score'] ?? 0) < 0.5) {
+                self::set_flash('error', __('CAPTCHA verification failed (score too low).', 'sh-review-members'));
+                return false;
+            }
+        }
+
+        return true;
     }
 }

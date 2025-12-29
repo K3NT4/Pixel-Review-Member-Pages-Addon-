@@ -31,6 +31,9 @@ trait PRMP_Shortcodes {
         echo '<p><label>' . esc_html__('Password', 'sh-review-members') . '<br>';
         echo '<input type="password" name="pwd" autocomplete="current-password"></label></p>';
         echo '<p><label><input type="checkbox" name="rememberme" value="1"> ' . esc_html__('Remember me', 'sh-review-members') . '</label></p>';
+
+        echo self::render_bot_protection();
+
         echo '<p><button type="submit" class="pr-button pr-button--wordpress">' . esc_html__('Log in', 'sh-review-members') . '</button></p>';
         echo '</form>';
 
@@ -81,6 +84,8 @@ trait PRMP_Shortcodes {
         echo '<p><label>' . esc_html__('Repeat password', 'sh-review-members') . '<br>';
         echo '<input type="password" name="pass2" autocomplete="new-password"></label></p>';
         echo '</div>';
+
+        echo self::render_bot_protection();
 
         echo '<p><button type="submit" class="pr-button">' . esc_html__('Register', 'sh-review-members') . '</button></p>';
         echo '</form>';
@@ -374,6 +379,52 @@ trait PRMP_Shortcodes {
     /* =========================================================
      * Rendering helpers (privacy/social)
      * ======================================================= */
+
+    protected static function render_bot_protection() : string {
+        $opt = self::get_options();
+        $out = '';
+
+        // Honeypot: Hidden via inline style (safer against CSS loading failures)
+        $out .= '<div style="display:none; visibility:hidden; opacity:0; position:absolute; left:-9999px;">';
+        $out .= '<label>' . esc_html__('Do not fill this field', 'sh-review-members') . ' <input type="text" name="pr_hp" value="" autocomplete="off" tabindex="-1"></label>';
+        $out .= '</div>';
+
+        // Timestamp
+        $out .= '<input type="hidden" name="pr_ts" value="' . time() . '">';
+
+        // CAPTCHA
+        $provider = $opt['captcha_provider'] ?? '';
+
+        if ($provider === 'turnstile' && !empty($opt['turnstile_site_key'])) {
+            $out .= '<div class="cf-turnstile" data-sitekey="' . esc_attr($opt['turnstile_site_key']) . '"></div>';
+        }
+
+        if ($provider === 'recaptcha_v3' && !empty($opt['recaptcha_site_key'])) {
+            $key = esc_attr($opt['recaptcha_site_key']);
+            $out .= '<input type="hidden" name="g-recaptcha-response" class="g-recaptcha-response" value="">';
+            $out .= '<script>
+            (function() {
+                var init = function() {
+                    if (typeof grecaptcha !== "undefined") {
+                        grecaptcha.ready(function() {
+                            grecaptcha.execute("' . $key . '", {action: "submit"}).then(function(token) {
+                                var fields = document.querySelectorAll(".g-recaptcha-response");
+                                for (var i = 0; i < fields.length; i++) { fields[i].value = token; }
+                            });
+                        });
+                    }
+                };
+                if (document.readyState === "loading") {
+                    document.addEventListener("DOMContentLoaded", init);
+                } else {
+                    init();
+                }
+            })();
+            </script>';
+        }
+
+        return $out;
+    }
 
     protected static function render_social_login_buttons() : string {
         $opt = self::get_options();
