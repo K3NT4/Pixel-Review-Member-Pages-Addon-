@@ -8,11 +8,17 @@ trait PRMP_Actions {
         $opt = self::get_options();
         if (empty($opt['enabled'])) return;
 
+        // Logout action
         if (!empty($_GET['pr_action']) && $_GET['pr_action'] === 'logout') {
-            wp_logout();
-            $login = self::page_url('login') ?: home_url('/');
-            wp_safe_redirect($login);
-            exit;
+            // Nonce check if present (recommended). If missing, allow only for logged-in users.
+            if (is_user_logged_in()) {
+                if (!empty($_GET['_wpnonce']) && wp_verify_nonce(sanitize_text_field($_GET['_wpnonce']), 'pr_logout')) {
+                    wp_logout();
+                    $login = self::page_url('login') ?: home_url('/');
+                    wp_safe_redirect($login);
+                    exit;
+                }
+            }
         }
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') return;
